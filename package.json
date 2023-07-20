@@ -16,7 +16,6 @@
   "name": "the-dentor",
   "packageManager": "npm@8.19.4",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ]
 }
