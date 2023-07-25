@@ -14,11 +14,13 @@ export function Match(property: string, validationOptions?: ValidationOptions) {
 
 @ValidatorConstraint({ name: 'Match' })
 export class MatchConstraint implements ValidatorConstraintInterface {
+  public defaultMessage(validationArguments?: ValidationArguments): string {
+    return `"${validationArguments.property}" does not match "${validationArguments.constraints[0]}."`;
+  }
 
-  validate(value: any, args: ValidationArguments) {
+  public validate(value: any, args: ValidationArguments) {
     const [relatedPropertyName] = args.constraints;
     const relatedValue = (args.object as any)[relatedPropertyName];
     return value === relatedValue;
   }
-
 }

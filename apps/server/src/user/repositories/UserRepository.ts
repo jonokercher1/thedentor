@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from '../../database/prisma.service';
 
 @Injectable()
 export class UserRepository {
@@ -14,15 +14,28 @@ export class UserRepository {
   public async findUnique(key: keyof Prisma.UserWhereInput, value: string): Promise<User> {
     return this.entity.findFirstOrThrow({
       where: {
-        [key]: value
-      }
+        [key]: value,
+      },
     });
+  }
+
+  public async existsWithAnyUniqueKey(email: string, gdcNumber: string): Promise<boolean> {
+    const usersWithProperties = await this.entity.count({
+      where: {
+        OR: [
+          { email },
+          { gdcNumber },
+        ],
+      },
+    });
+
+    return usersWithProperties > 0;
   }
 
   public async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
     return this.entity.update({
       where: { id },
-      data: data
+      data: data,
     });
   }
 

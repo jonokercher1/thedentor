@@ -1,12 +1,13 @@
-import { Body, Controller, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UnauthorizedException } from '@nestjs/common';
 import { RegisterRequest } from './requests/RegisterRequest';
-import { SubscriptionService } from 'src/payment/subscription.service';
-import { UserService } from 'src/user/user.service';
+import { SubscriptionService } from '../payment/subscription.service';
+import { UserService } from '../user/user.service';
 import { RoleName } from '@prisma/client';
 import CurrentUserResponse from './responses/CurrentUserResponse';
 import { AuthService } from './auth.service';
 import { LoginRequest } from './requests/LoginRequest';
-import { HashingService } from 'src/user/hashing.service';
+import { HashingService } from '../user/hashing.service';
+import { Public } from '../common/guards/public';
 
 @Controller('auth')
 export class AuthController {
@@ -32,6 +33,9 @@ export class AuthController {
   }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
+  @Post('register')
+  @HttpCode(200)
+  @Public()
   public async register(@Body() body: RegisterRequest): Promise<CurrentUserResponse> {
     const role = RoleName.Dentist;
     const user = await this.userService.createUser({ ...body, role: { connect: { name: role } } });

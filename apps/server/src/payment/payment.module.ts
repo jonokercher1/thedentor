@@ -3,8 +3,8 @@ import { PaymentService } from './payment.service';
 import { IPaymentProvider } from './types/PaymentProvider';
 import { StripeProvider } from './providers/StripeProvider';
 import { SubscriptionService } from './subscription.service';
-import { DatabaseModule } from 'src/database/database.module';
-import { UserModule } from 'src/user/user.module';
+import { DatabaseModule } from '../database/database.module';
+import { UserModule } from '../user/user.module';
 import { SubscriptionTierRepository } from './repositories/SubscriptionTierRepository';
 
 @Module({

@@ -1,5 +1,5 @@
-import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MinLength } from 'class-validator';
+
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { Match } from '../decorators/MatchValidator';
 
 export class RegisterRequest {
@@ -9,8 +9,8 @@ export class RegisterRequest {
   @IsNotEmpty()
   public readonly name: string;
 
-  @Transform(value => value.toString())
-  @IsPhoneNumber()
+  // @Transform(value => value.toString())
+  // @IsPhoneNumber()
   @IsOptional()
   public readonly phone: string;
 

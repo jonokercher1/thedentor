@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { RoleName, User, Prisma } from '@prisma/client';
 import { HashingService } from './hashing.service';
 import { UserRepository } from './repositories/UserRepository';
@@ -16,6 +16,11 @@ export class UserService {
 
   public async createUser(input: Prisma.UserCreateInput): Promise<User> {
     const password = input?.password ? await this.hashingService.hashString(input.password) : null;
+    const existingUser = await this.checkUserExists(input.email, input.gdcNumber);
+
+    if (existingUser) {
+      throw new BadRequestException('User already exists');
+    }
 
     return this.userRepository.create({
       email: input.email,
@@ -40,5 +45,9 @@ export class UserService {
     }
 
     return this.userRepository.update(id, data);
+  }
+
+  public async checkUserExists(email: string, gdcNumber: string): Promise<boolean> {
+    return this.userRepository.existsWithAnyUniqueKey(email, gdcNumber);
   }
 }
