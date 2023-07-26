@@ -16,5 +16,9 @@
   "packageManager": "npm@8.19.4",
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "engines": {
+    "node": "v18.15.0",
+    "npm": "8.19.4"
+  }
 }
