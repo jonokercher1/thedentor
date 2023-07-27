@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 import TestDatabaseService from '../utils/TestDatabaseService';
 import { AuthModule } from '../../src/auth/auth.module';
@@ -11,6 +11,7 @@ import { IPaymentProvider } from '../../src/payment/types/PaymentProvider';
 import { TestPaymentProvider } from '../utils/TestPaymentProvider';
 import { BodyValidationPipe } from '../../src/common/pipes/BodyValidationPipe';
 import { RoleName, SubscriptionTierName } from '@prisma/client';
+import { Reflector } from '@nestjs/core';
 
 describe('Register', () => {
   let app: INestApplication;
@@ -30,6 +31,7 @@ describe('Register', () => {
     testUserService = new TestUserService(testDatabaseService);
 
     app.useGlobalPipes(new BodyValidationPipe());
+    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }));
 
     await app.init();
   });
@@ -210,8 +212,8 @@ describe('Register', () => {
 
     expect(responseBodyKeys).toEqual([
       'id',
-      'name',
       'email',
+      'name',
       'phone',
       'gdcNumber',
       'role',
