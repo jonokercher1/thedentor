@@ -32,7 +32,7 @@ class CurrentUserResponseData {
   }
 }
 
-export default class CurrentUserResponse extends HttpSuccessResponse<CurrentUserResponseData> {
+export class CurrentUserResponse extends HttpSuccessResponse<CurrentUserResponseData> {
   constructor(data?: ICurrentUserResponseData) {
     super(new CurrentUserResponseData(data));
   }

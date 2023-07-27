@@ -3,7 +3,7 @@ import { RegisterRequest } from './requests/RegisterRequest';
 import { SubscriptionService } from '../payment/subscription.service';
 import { UserService } from '../user/user.service';
 import { RoleName } from '@prisma/client';
-import CurrentUserResponse from './responses/CurrentUserResponse';
+import { CurrentUserResponse } from './responses/CurrentUserResponse';
 import { AuthService } from './auth.service';
 import { LoginRequest } from './requests/LoginRequest';
 import { HashingService } from '../user/hashing.service';

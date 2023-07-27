@@ -3,8 +3,6 @@ import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 import TestDatabaseService from '../utils/TestDatabaseService';
-import TestJwtService from '../utils/TestJwtService';
-import { JwtService } from '@nestjs/jwt';
 import { AuthModule } from '../../src/auth/auth.module';
 import { UserModule } from '../../src/user/user.module';
 import { DatabaseModule } from '../../src/database/database.module';
@@ -12,6 +10,7 @@ import { TestUserService } from '../utils/TestUserService';
 import { IPaymentProvider } from '../../src/payment/types/PaymentProvider';
 import { TestPaymentProvider } from '../utils/TestPaymentProvider';
 import { BodyValidationPipe } from '../../src/common/pipes/BodyValidationPipe';
+import { RoleName, SubscriptionTierName } from '@prisma/client';
 
 describe('Register', () => {
   let app: INestApplication;
@@ -101,13 +100,124 @@ describe('Register', () => {
       });
   });
 
-  it.todo('should create a new user with a payment provider customer ID');
+  it('should create a new user with a payment provider customer ID', async () => {
+    const password = faker.string.sample(10);
+    const userData = {
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      phone: faker.phone.number('+447#########'),
+      gdcNumber: faker.string.sample(8),
+      password,
+      passwordConfirmation: password,
+    };
 
-  it.todo('should create a new user with a dentist role');
+    const response = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(userData);
 
-  it.todo('should create a new user with a premium subscription');
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toBeTruthy();
 
-  it.todo('should return the correct format response');
+    const userDbRecord = await testDatabaseService.database.user.findFirst({
+      where: {
+        email: userData.email,
+      },
+    });
+
+    expect(userDbRecord.paymentProviderCustomerId).toEqual('payment-provider-customer-id');
+  });
+
+  it('should create a new user with a dentist role', async () => {
+    const password = faker.string.sample(10);
+    const userData = {
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      phone: faker.phone.number('+447#########'),
+      gdcNumber: faker.string.sample(8),
+      password,
+      passwordConfirmation: password,
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(userData);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toBeTruthy();
+
+    const userDbRecord = await testDatabaseService.database.user.findFirst({
+      where: {
+        email: userData.email,
+      },
+    });
+
+    expect(userDbRecord.roleName).toEqual(RoleName.Dentist);
+  });
+
+  it('should create a new user with a premium subscription', async () => {
+    const password = faker.string.sample(10);
+    const userData = {
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      phone: faker.phone.number('+447#########'),
+      gdcNumber: faker.string.sample(8),
+      password,
+      passwordConfirmation: password,
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(userData);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toBeTruthy();
+
+    const userDbRecord = await testDatabaseService.database.user.findFirst({
+      where: {
+        email: userData.email,
+      },
+      select: {
+        subscription: {
+          select: {
+            subscriptionTier: true,
+          },
+        },
+      },
+    });
+
+    expect(userDbRecord.subscription.subscriptionTier.name).toEqual(SubscriptionTierName.DentistPremium);
+  });
+
+  it('should return the correct format response', async () => {
+    const password = faker.string.sample(10);
+    const userData = {
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      phone: faker.phone.number('+447#########'),
+      gdcNumber: faker.string.sample(8),
+      password,
+      passwordConfirmation: password,
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(userData);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toBeTruthy();
+
+    const responseBodyKeys = Object.keys(response.body.data);
+
+    expect(responseBodyKeys).toEqual([
+      'id',
+      'name',
+      'email',
+      'phone',
+      'gdcNumber',
+      'role',
+      'accessToken',
+    ]);
+  });
 
   afterAll(async () => {
     await testDatabaseService.disconnect();
