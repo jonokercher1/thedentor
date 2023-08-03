@@ -1,6 +1,7 @@
 import { Prisma, RoleName, User } from '@prisma/client';
 import TestDatabaseService from './TestDatabaseService';
 import { faker } from '@faker-js/faker/locale/en_GB';
+import * as bcrypt from 'bcrypt';
 
 export class TestUserService {
   private readonly entity: Prisma.UserDelegate;
@@ -18,6 +19,8 @@ export class TestUserService {
   }
 
   public async createUserWithRole(role: RoleName, dataOverrides?: Partial<User>) {
+    const password = await bcrypt.hash(dataOverrides?.password ?? faker.internet.password({ length: 10 }), 10);
+
     return this.entity.create({
       data: {
         name: faker.person.fullName(),
@@ -26,6 +29,7 @@ export class TestUserService {
         gdcNumber: faker.string.sample(8),
         roleName: role,
         ...dataOverrides,
+        password,
       },
     });
   }

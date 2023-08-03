@@ -14,6 +14,7 @@ import { RoleName, SubscriptionTierName } from '@prisma/client';
 import { Reflector } from '@nestjs/core';
 
 describe('Register', () => {
+  const URL = '/auth/register';
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
   let testUserService: TestUserService;
@@ -38,7 +39,7 @@ describe('Register', () => {
 
   it('should error if the request body is invalid', async () => {
     return request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send({
         email: faker.internet.email(),
         name: faker.person.fullName(),
@@ -63,7 +64,7 @@ describe('Register', () => {
     const password = faker.internet.password({ length: 10 });
 
     return request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send({
         email: existingUser.email,
         name: faker.person.fullName(),
@@ -85,7 +86,7 @@ describe('Register', () => {
     const password = faker.internet.password({ length: 10 });
 
     return request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send({
         email: faker.internet.email(),
         name: faker.person.fullName(),
@@ -114,7 +115,7 @@ describe('Register', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send(userData);
 
     expect(response.status).toEqual(200);
@@ -141,7 +142,7 @@ describe('Register', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send(userData);
 
     expect(response.status).toEqual(200);
@@ -168,7 +169,7 @@ describe('Register', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send(userData);
 
     expect(response.status).toEqual(200);
@@ -202,7 +203,7 @@ describe('Register', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post(URL)
       .send(userData);
 
     expect(response.status).toEqual(200);

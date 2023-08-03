@@ -10,6 +10,12 @@ export class HashingService {
   }
 
   public async verifyHashMatch(unhashed: string, hashed: string): Promise<boolean> {
-    return bcrypt.compare(unhashed, hashed);
+    const matches = await bcrypt.compare(unhashed, hashed);
+
+    if (!matches) {
+      throw new Error('Hashes don\'t match');
+    }
+
+    return true;
   }
 }

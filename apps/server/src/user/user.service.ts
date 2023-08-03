@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RoleName, User, Prisma } from '@prisma/client';
 import { HashingService } from './hashing.service';
 import { UserRepository } from './repositories/UserRepository';
@@ -19,7 +19,7 @@ export class UserService {
     const existingUser = await this.checkUserExists(input.email, input.gdcNumber);
 
     if (existingUser) {
-      throw new BadRequestException('User already exists');
+      throw new Error('User already exists');
     }
 
     return this.userRepository.create({

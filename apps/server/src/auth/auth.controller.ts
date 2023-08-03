@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpCode, Post, UnauthorizedException } from '@nestjs/common';
 import { RegisterRequest } from './requests/RegisterRequest';
 import { SubscriptionService } from '../payment/subscription.service';
 import { UserService } from '../user/user.service';
@@ -19,17 +19,21 @@ export class AuthController {
   ) { }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
+  @Post('login')
+  @HttpCode(200)
+  @Public()
   public async login(@Body() body: LoginRequest): Promise<CurrentUserResponse> {
-    const user = await this.userService.getUserByEmail(body.email);
-    const passwordIsValid = await this.hashingService.verifyHashMatch(body.password, user.password);
+    try {
+      const user = await this.userService.getUserByEmail(body.email);
+      await this.hashingService.verifyHashMatch(body.password, user.password);
 
-    if (!passwordIsValid) {
+      const accessToken = await this.authService.getAccessToken(user.email);
+
+      return new CurrentUserResponse({ ...user, accessToken });
+    } catch (e) {
+      // TOOD: add logger
       throw new UnauthorizedException();
     }
-
-    const accessToken = await this.authService.getAccessToken(user.email);
-
-    return new CurrentUserResponse({ ...user, accessToken });
   }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
@@ -37,13 +41,22 @@ export class AuthController {
   @HttpCode(200)
   @Public()
   public async register(@Body() body: RegisterRequest): Promise<CurrentUserResponse> {
-    const role = RoleName.Dentist;
-    const user = await this.userService.createUser({ ...body, role: { connect: { name: role } } });
+    try {
+      const role = RoleName.Dentist;
+      const user = await this.userService.createUser({ ...body, role: { connect: { name: role } } });
 
-    await this.subscriptionService.createCustomerWithPremiumSubscription(user);
+      await this.subscriptionService.createCustomerWithPremiumSubscription(user);
 
-    const accessToken = await this.authService.getAccessToken(body.email);
+      const accessToken = await this.authService.getAccessToken(body.email);
 
-    return new CurrentUserResponse({ ...user, accessToken });
+      return new CurrentUserResponse({ ...user, accessToken });
+    } catch (e) {
+      // TOOD: add logger
+      if (e.message === 'User already exists') {
+        throw new BadRequestException(e.message);
+      }
+
+      throw new BadRequestException('Unable to register');
+    }
   }
 }
