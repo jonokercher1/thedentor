@@ -15,21 +15,27 @@ module.exports = {
             dark: '#38B7E5',
           },
           secondary: {
-            light: '#ACB8FF',
+            light: '#96A4FA',
             DEFAULT: '#8494F8',
             dark: '#6C7FF5',
           },
         },
         state: {
-          success: '#6FAD67'
+          success: '#59AF5E',
+          warning: '#FCEFD4',
+          error: '#F8D3D2'
         },
         neutral: {
           100: '#FFFFFF',
+          200: '#F7F9FC',
           300: '#CBCFD5',
           500: '#41546E',
           700: '#162D4C',
           900: '#091728'
         }
+      },
+      fontFamily: {
+        body: 'var(--body-font)',
       }
     },
   },
