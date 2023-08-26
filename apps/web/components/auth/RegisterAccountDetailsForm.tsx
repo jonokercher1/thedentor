@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import EmailValidator from 'email-validator'
 import TextInput from '../common/form/TextInput'
 import { RegisterFormData } from '@/app/(auth)/register/page'
-import CreateAccountIcon from '../icons/CreateAccountIcon'
+import CreateAccountIcon from '../common/icons/CreateAccountIcon'
 
 interface RegisterAccountDetailsProps {
 
@@ -17,7 +17,7 @@ const RegisterAccountDetailsForm: FC<RegisterAccountDetailsProps> = () => {
       <header className="mb-10">
         <CreateAccountIcon className="text-neutral-900 mb-10" />
         <h1 className="text-neutral-900 font-bold text-4xl mb-2 font-body">Create Account</h1>
-        <p className="text-base font-light text-neutral-900">Stay ahead of the curve, benefit from the best education.</p>
+        <p className="text-base font-light font-medium text-neutral-900">Stay ahead of the curve, benefit from the best education.</p>
       </header>
 
       <Controller

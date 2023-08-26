@@ -1,10 +1,11 @@
 'use client'
 
-import { useReducer, type FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import RegisterAccountDetailsForm from '@/components/auth/RegisterAccountDetailsForm'
 import Button, { ButtonVariant } from '@/components/common/Button'
 import { FormProvider, useForm } from 'react-hook-form'
 import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
+import Link from 'next/link'
 
 export interface RegisterFormData {
   name: string
@@ -16,22 +17,40 @@ export interface RegisterFormData {
   termsAndConditions: boolean
 }
 
+enum RegisterView {
+  AccountDetails = 'account-details',
+  Password = 'password',
+}
+
 const viewConfig = [
-  { name: 'account-details', component: <RegisterAccountDetailsForm /> },
-  { name: 'password', component: <RegisterPasswordForm /> },
+  { name: RegisterView.AccountDetails, component: <RegisterAccountDetailsForm /> },
+  { name: RegisterView.Password, component: <RegisterPasswordForm /> },
 ]
 
 const Register: FC = () => {
   const form = useForm<RegisterFormData>()
   const [currentView, setCurrentView] = useState(viewConfig[0])
 
-  const onMoveForward = () => {
+  const validateView = async (viewName: RegisterView): Promise<boolean> => {
+    if (viewName === RegisterView.AccountDetails) {
+      return form.trigger(['name', 'email', 'gdcNumber', 'phone'])
+    }
+
+    return form.trigger(['password', 'passwordConfirmation'])
+  }
+
+  const onMoveForward = async () => {
     const currentViewIndex = viewConfig.findIndex(config => config.name === currentView.name)
     const hasAnotherView = currentViewIndex + 1 < viewConfig.length
 
     if (hasAnotherView) {
+      const currentView = viewConfig[currentViewIndex]
       const nextView = viewConfig[currentViewIndex + 1]
-      setCurrentView(nextView)
+      const isViewValid = await validateView(currentView.name)
+
+      if (isViewValid) {
+        setCurrentView(nextView)
+      }
     }
   }
 
@@ -40,7 +59,7 @@ const Register: FC = () => {
   }
 
   return (
-    <div className="p-8 lg:p-20 w-full">
+    <div className="p-8 lg:px-20 w-full">
       <FormProvider {...form}>
         <form action="" onSubmit={e => e.preventDefault()}>
           {currentView.component}
@@ -55,6 +74,8 @@ const Register: FC = () => {
           >
             Continue
           </Button>
+
+          <p className="text-neutral-900 text-center mt-6">Already have an account? <Link href="/login" className="text-accent-secondary font-medium">Log In</Link></p>
         </form>
       </FormProvider>
     </div>

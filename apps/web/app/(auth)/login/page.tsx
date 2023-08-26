@@ -1,9 +1,7 @@
 'use client'
 
 import LoginForm from '@/components/auth/LoginForm'
-import Button, { ButtonVariant } from '@/components/common/Button'
-import TextInput from '@/components/common/form/TextInput'
-import LoginNextIcon from '@/components/icons/LoginNextIcon'
+import LoginNextIcon from '@/components/common/icons/LoginNextIcon'
 import Link from 'next/link'
 import { type FC } from 'react'
 

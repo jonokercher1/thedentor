@@ -2,7 +2,7 @@ import { type FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import PasswordInput from '../common/form/PasswordInput'
 import { RegisterFormData } from '@/app/(auth)/register/page'
-import PadlockIcon from '../icons/PadlockIcon'
+import PadlockIcon from '../common/icons/PadlockIcon'
 import Checkbox from '../common/form/Checkbox'
 import Link from 'next/link'
 
