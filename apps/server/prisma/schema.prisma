@@ -21,6 +21,7 @@ model User {
   paymentProviderCustomerId String?
   createdAt                 DateTime          @default(now())
   updatedAt                 DateTime          @default(now())
+  courses                   Course[]
 }
 
 model Role {
@@ -51,6 +52,27 @@ model UserSubscription {
   @@id([subscriptionTierId, userId])
 }
 
+model Category {
+  slug      String   @id
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  courses   Course[]
+}
+
+model Course {
+  id          String     @id @default(uuid())
+  type        CourseType
+  price       Int
+  cpdValue    Float
+  description String
+  dentorId    String
+  dentor      User       @relation(fields: [dentorId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now())
+  category    Category[]
+}
+
 enum RoleName {
   Dentist
   Dentor
@@ -59,4 +81,9 @@ enum RoleName {
 enum SubscriptionTierName {
   DentistPremium
   DentistFree
+}
+
+enum CourseType {
+  Video
+  InPerson
 }

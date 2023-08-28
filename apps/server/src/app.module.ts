@@ -5,6 +5,7 @@ import { PaymentModule } from '@/payment/payment.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@/auth/guards/auth.guard';
+import { CourseCategoryModule } from '@/course-category/course-category.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AuthGuard } from '@/auth/guards/auth.guard';
     DatabaseModule,
     AuthModule,
     PaymentModule,
+    CourseCategoryModule,
   ],
   controllers: [],
   providers: [

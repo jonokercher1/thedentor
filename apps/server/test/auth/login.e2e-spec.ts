@@ -1,14 +1,14 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
-import { faker } from '@faker-js/faker/locale/en';
-import TestDatabaseService from '../utils/TestDatabaseService';
+import { faker } from '@faker-js/faker/locale/en_GB';
+import TestDatabaseService from '../utils/test-database-service';
 import { AuthModule } from '@/auth/auth.module';
 import { UserModule } from '@/user/user.module';
 import { DatabaseModule } from '@/database/database.module';
-import { TestUserService } from '@test/utils/TestUserService';
+import { TestUserService } from '@test/utils/test-user-service';
 import { IPaymentProvider } from '@/payment/types/payment-provider';
-import { TestPaymentProvider } from '@test/utils/TestPaymentProvider';
+import { TestPaymentProvider } from '@test/utils/test-payment-provider';
 import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
 import { Reflector } from '@nestjs/core';
 

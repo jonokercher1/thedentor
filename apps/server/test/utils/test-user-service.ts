@@ -1,5 +1,5 @@
 import { Prisma, RoleName, User } from '@prisma/client';
-import TestDatabaseService from './TestDatabaseService';
+import TestDatabaseService from './test-database-service';
 import { faker } from '@faker-js/faker/locale/en_GB';
 import * as bcrypt from 'bcrypt';
 
