@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import HttpSuccessResponse from './responses/http-success.response';
+import HttpSuccessResponse from '@/common/responses/http-success.response';
 
 @Module({
   providers: [HttpSuccessResponse],
   exports: [],
-  imports: []
+  imports: [],
 })
 export class CommonModule { }

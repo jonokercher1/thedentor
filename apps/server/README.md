@@ -13,3 +13,16 @@
 - `*.repository.ts`: Handles ***ALL*** data layer interaction (no where else should ***EVER*** access to the data layer)
 - `*.guard.ts`: Determins if a request is safe to be passed to the route handler (controller)
 - `*.exception.ts`: Any custom exception that can be raised (internal or public facing)
+
+### Imports
+Where possible, we should use absolute imports (even if this is not the shortest possible route). This will create consistency and make readability easier across the entire codebase. 
+
+For Example: 
+`import UserController from '../../user.controller.ts'` 
+should be 
+`import UserController from '@/user/user.controller.ts'`
+
+This is still true when importing from the same module so:
+`import UserController from './user.controller.ts'` 
+should be 
+`import UserController from '@/user/user.controller.ts'`

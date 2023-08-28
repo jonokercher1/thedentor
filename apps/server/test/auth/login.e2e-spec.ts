@@ -3,13 +3,13 @@ import { Test } from '@nestjs/testing';
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
 import { faker } from '@faker-js/faker/locale/en';
 import TestDatabaseService from '../utils/TestDatabaseService';
-import { AuthModule } from '../../src/auth/auth.module';
-import { UserModule } from '../../src/user/user.module';
-import { DatabaseModule } from '../../src/database/database.module';
-import { TestUserService } from '../utils/TestUserService';
-import { IPaymentProvider } from '../../src/payment/types/payment-provider';
-import { TestPaymentProvider } from '../utils/TestPaymentProvider';
-import { BodyValidationPipe } from '../../src/common/pipes/body-validation-pipe';
+import { AuthModule } from '@/auth/auth.module';
+import { UserModule } from '@/user/user.module';
+import { DatabaseModule } from '@/database/database.module';
+import { TestUserService } from '@test/utils/TestUserService';
+import { IPaymentProvider } from '@/payment/types/payment-provider';
+import { TestPaymentProvider } from '@test/utils/TestPaymentProvider';
+import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
 import { Reflector } from '@nestjs/core';
 
 describe('Login', () => {

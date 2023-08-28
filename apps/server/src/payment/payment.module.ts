@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PaymentService } from './payment.service';
-import { IPaymentProvider } from './types/payment-provider';
-import { StripeProvider } from './providers/stripe-provider';
-import { SubscriptionService } from './subscription.service';
-import { DatabaseModule } from '../database/database.module';
-import { UserModule } from '../user/user.module';
-import { SubscriptionTierRepository } from './repositories/subscription-tier.repository';
+import { PaymentService } from '@/payment/payment.service';
+import { IPaymentProvider } from '@/payment/types/payment-provider';
+import { StripeProvider } from '@/payment/providers/stripe-provider';
+import { SubscriptionService } from '@/payment/subscription.service';
+import { DatabaseModule } from '@/database/database.module';
+import { UserModule } from '@/user/user.module';
+import { SubscriptionTierRepository } from '@/payment/repositories/subscription-tier.repository';
 
 @Module({
   providers: [

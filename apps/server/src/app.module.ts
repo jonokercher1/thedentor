@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from './database/database.module';
-import { AuthModule } from './auth/auth.module';
-import { PaymentModule } from './payment/payment.module';
+import { DatabaseModule } from '@/database/database.module';
+import { AuthModule } from '@/auth/auth.module';
+import { PaymentModule } from '@/payment/payment.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/guards/auth.guard';
+import { AuthGuard } from '@/auth/guards/auth.guard';
 
 @Module({
   imports: [

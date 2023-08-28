@@ -5,10 +5,10 @@ import {
   UnauthorizedException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from '../constants';
+import { jwtConstants } from '@/auth/constants';
 import { Request } from 'express';
-import { CurrentUser } from '../types/current-user';
-import { IS_PUBLIC_KEY } from '../../common/guards/public.guard';
+import { CurrentUser } from '@/auth/types/current-user';
+import { IS_PUBLIC_KEY } from '@/common/guards/public.guard';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()

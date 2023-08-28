@@ -3,11 +3,11 @@ import { RegisterRequest } from './requests/register.request';
 import { SubscriptionService } from '../payment/subscription.service';
 import { UserService } from '../user/user.service';
 import { RoleName } from '@prisma/client';
-import { CurrentUserResponse } from './responses/current-user.response';
-import { AuthService } from './auth.service';
-import { LoginRequest } from './requests/login.request';
-import { HashingService } from '../user/hashing.service';
-import { Public } from '../common/guards/public.guard';
+import { CurrentUserResponse } from '@/auth/responses/current-user.response';
+import { AuthService } from '@/auth/auth.service';
+import { LoginRequest } from '@/auth/requests/login.request';
+import { HashingService } from '@/user/hashing.service';
+import { Public } from '@/common/guards/public.guard';
 
 @Controller('auth')
 export class AuthController {
