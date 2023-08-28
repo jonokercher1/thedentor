@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { BodyValidationPipe } from './common/pipes/BodyValidationPipe';
+import { BodyValidationPipe } from './common/pipes/body-validation-pipe';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 
 async function bootstrap() {

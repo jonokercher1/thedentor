@@ -7,9 +7,9 @@ import { AuthModule } from '../../src/auth/auth.module';
 import { UserModule } from '../../src/user/user.module';
 import { DatabaseModule } from '../../src/database/database.module';
 import { TestUserService } from '../utils/TestUserService';
-import { IPaymentProvider } from '../../src/payment/types/PaymentProvider';
+import { IPaymentProvider } from '../../src/payment/types/payment-provider';
 import { TestPaymentProvider } from '../utils/TestPaymentProvider';
-import { BodyValidationPipe } from '../../src/common/pipes/BodyValidationPipe';
+import { BodyValidationPipe } from '../../src/common/pipes/body-validation-pipe';
 import { RoleName, SubscriptionTierName } from '@prisma/client';
 import { Reflector } from '@nestjs/core';
 

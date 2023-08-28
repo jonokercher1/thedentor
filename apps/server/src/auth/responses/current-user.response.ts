@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import { Expose } from 'class-transformer';
-import HttpSuccessResponse from '../../common/responses/HttpSuccessResponse';
+import HttpSuccessResponse from '../../common/responses/http-success.response';
 
 type ICurrentUserResponseData = Partial<User> & { accessToken: string };
 

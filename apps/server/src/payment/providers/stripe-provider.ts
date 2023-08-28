@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { PaymentProvider } from '../types/PaymentProvider';
+import { PaymentProvider } from '../types/payment-provider';
 import { SubscriptionTier, User } from '@prisma/client';
 
 export class StripeProvider implements PaymentProvider {

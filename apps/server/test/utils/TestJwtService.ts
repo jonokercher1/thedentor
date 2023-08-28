@@ -1,7 +1,7 @@
 import { fakerEN as faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
 import { RoleName } from '@prisma/client';
-import { CurrentUser } from '../../src/auth/types/CurrentUser';
+import { CurrentUser } from '../../src/auth/types/current-user';
 
 export default class TestJwtService {
   private readonly secret: string = 'secret';

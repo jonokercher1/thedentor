@@ -4,7 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { PaymentModule } from './payment/payment.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/guards/Auth';
+import { AuthGuard } from './auth/guards/auth.guard';
 
 @Module({
   imports: [
