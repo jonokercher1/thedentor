@@ -8,6 +8,8 @@ import { Reflector } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
+import { TestCourseService } from '@test/utils/test-course-service';
+import { CourseType } from '@prisma/client';
 
 describe('Get Course Categories', () => {
   const URL = '/course-category';
@@ -15,6 +17,7 @@ describe('Get Course Categories', () => {
   let testDatabaseService: TestDatabaseService;
   let testCategoryService: TestCategoryService;
   let testJwtService: TestJwtService;
+  let testCourseService: TestCourseService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -25,6 +28,7 @@ describe('Get Course Categories', () => {
     testDatabaseService = new TestDatabaseService();
     testCategoryService = new TestCategoryService(testDatabaseService);
     testJwtService = new TestJwtService();
+    testCourseService = new TestCourseService(testDatabaseService);
 
     app.useGlobalPipes(new BodyValidationPipe());
     app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }));
@@ -49,10 +53,11 @@ describe('Get Course Categories', () => {
       });
   });
 
-  it('should return all categories when no type is specified', async () => {
+  it('should return all categories with or without content when no type is specified', async () => {
     const categoryOne = await testCategoryService.createCategory();
     const categoryTwo = await testCategoryService.createCategory();
     const accessToken = await testJwtService.generateAccessToken();
+    await testCourseService.createVideoCourse([categoryOne.slug]);
 
     const response = await request(app.getHttpServer())
       .get(URL)
@@ -83,9 +88,39 @@ describe('Get Course Categories', () => {
       });
   });
 
-  it.todo('should return categories related to video content');
-  it.todo('should return categories related to in-person content');
+  it('should return categories related to video content', async () => {
+    const categoryOne = await testCategoryService.createCategory();
+    const categoryTwo = await testCategoryService.createCategory();
+    const accessToken = await testJwtService.generateAccessToken();
+    await testCourseService.createVideoCourse([categoryOne.slug]);
+    // To ensure that the content is actually filtered
+    await testCourseService.createInPersonCourse([categoryTwo.slug]);
 
-  // we cannot do this until the other course relationships are introduced
-  it.todo('should not return categories without related content');
+    const response = await request(app.getHttpServer())
+      .get(`${URL}?type=${CourseType.Video}`)
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toBeTruthy();
+    expect(response.body.data).toHaveLength(1);
+    expect(response.body.data[0].slug).toEqual(categoryOne.slug);
+  });
+
+  it('should return categories related to in-person content', async () => {
+    const categoryOne = await testCategoryService.createCategory();
+    const categoryTwo = await testCategoryService.createCategory();
+    const accessToken = await testJwtService.generateAccessToken();
+    await testCourseService.createVideoCourse([categoryOne.slug]);
+    // To ensure that the content is actually filtered
+    await testCourseService.createInPersonCourse([categoryTwo.slug]);
+
+    const response = await request(app.getHttpServer())
+      .get(`${URL}?type=${CourseType.InPerson}`)
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toBeTruthy();
+    expect(response.body.data).toHaveLength(1);
+    expect(response.body.data[0].slug).toEqual(categoryTwo.slug);
+  });
 });
