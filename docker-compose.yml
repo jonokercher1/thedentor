@@ -1,17 +1,18 @@
 version: '3.8'
 services:
   db:
+    container_name: TheDentorDatabase
     image: postgres:14.1-alpine
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=thedentor
+      - POSTGRES_MULTIPLE_DATABASES=thedentor,thedentor-test
     ports:
       - '5432:5432'
     volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
       - db:/var/lib/postgresql/data
-
 volumes:
   db:
     driver: local
