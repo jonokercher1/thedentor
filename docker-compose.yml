@@ -7,12 +7,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_MULTIPLE_DATABASES=thedentor,thedentor-test
+      - POSTGRES_MULTIPLE_DATABASES="thedentor","thedentor-test"
     ports:
       - '5432:5432'
     volumes:
-      - ./scripts:/docker-entrypoint-initdb.d
-      - db:/var/lib/postgresql/data
+      - ./apps/server/scripts:/docker-entrypoint-initdb.d
 volumes:
   db:
     driver: local

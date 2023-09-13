@@ -26,3 +26,11 @@ This is still true when importing from the same module so:
 `import UserController from './user.controller.ts'` 
 should be 
 `import UserController from '@/user/user.controller.ts'`
+
+### Testing
+We should only write full integration tests. These are heavy, slow and expensive BUT they give us the most coverage for the least amount of time and effort. All tests live in the `/test` folder for now. If we introduce unit tests, these will likely live alongside the unit they are testing. 
+
+#### Running Tests
+To run integration tests, you should first setup the test framework which includes a database. The testing database runs in the same docker container as the local dev database. Once the docker container is running (run `npm run db:up` in the root of the project) you can run the test setup script. Inside `apps/server`, run `npm run test:setup`. You should also run this everytime there are schema changes. You will not need to run this setup script everytime code changes are made.
+
+Once the test framework is setup, you can run `npm run test:e2e` to run all e2e tests

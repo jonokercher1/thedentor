@@ -4,7 +4,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "db:start": "docker compose up -d"
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down"
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
