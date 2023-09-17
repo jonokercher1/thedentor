@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@/auth/guards/auth.guard';
 import { CourseCategoryModule } from '@/course-category/course-category.module';
+import { CourseVideoModule } from './course-video/course-video.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { CourseCategoryModule } from '@/course-category/course-category.module';
     AuthModule,
     PaymentModule,
     CourseCategoryModule,
+    CourseVideoModule,
+    FileModule,
   ],
   controllers: [],
   providers: [
