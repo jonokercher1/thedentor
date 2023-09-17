@@ -10,6 +10,7 @@ import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
 import { TestCourseService } from '@test/utils/test-course-service';
 import { CourseType } from '@prisma/client';
+import TestApp from '@test/utils/test-app';
 
 describe('Get Course Categories', () => {
   const URL = '/course-category';
@@ -20,20 +21,13 @@ describe('Get Course Categories', () => {
   let testCourseService: TestCourseService;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleRef.createNestApplication();
+    const testApp = new TestApp();
     testDatabaseService = new TestDatabaseService();
     testCategoryService = new TestCategoryService(testDatabaseService);
     testJwtService = new TestJwtService();
     testCourseService = new TestCourseService(testDatabaseService);
 
-    app.useGlobalPipes(new BodyValidationPipe());
-    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }));
-
-    await app.init();
+    app = await testApp.init();
   });
 
   beforeEach(async () => {

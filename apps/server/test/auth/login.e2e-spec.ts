@@ -1,16 +1,9 @@
 import * as request from 'supertest';
-import { Test } from '@nestjs/testing';
-import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { faker } from '@faker-js/faker/locale/en_GB';
 import TestDatabaseService from '../utils/test-database-service';
-import { AuthModule } from '@/auth/auth.module';
-import { UserModule } from '@/user/user.module';
-import { DatabaseModule } from '@/database/database.module';
 import { TestUserService } from '@test/utils/test-user-service';
-import { IPaymentProvider } from '@/payment/types/payment-provider';
-import { TestPaymentProvider } from '@test/utils/test-payment-provider';
-import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
-import { Reflector } from '@nestjs/core';
+import TestApp from '@test/utils/test-app';
 
 describe('Login', () => {
   const URL = '/auth/login';
@@ -19,21 +12,12 @@ describe('Login', () => {
   let testUserService: TestUserService;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AuthModule, DatabaseModule, UserModule],
-    })
-      .overrideProvider(IPaymentProvider)
-      .useClass(TestPaymentProvider)
-      .compile();
+    const testApp = new TestApp();
 
-    app = moduleRef.createNestApplication();
     testDatabaseService = new TestDatabaseService();
     testUserService = new TestUserService(testDatabaseService);
 
-    app.useGlobalPipes(new BodyValidationPipe());
-    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }));
-
-    await app.init();
+    app = await testApp.init();
   });
 
   it('should error if the request body is invalid', async () => {
