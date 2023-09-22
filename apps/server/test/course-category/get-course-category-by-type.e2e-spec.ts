@@ -1,11 +1,7 @@
 import * as request from 'supertest';
-import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
 import TestDatabaseService from '@test/utils/test-database-service';
 import { faker } from '@faker-js/faker/locale/en_GB';
-import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
-import { Reflector } from '@nestjs/core';
-import { AppModule } from '@/app.module';
 import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
 import { TestCourseService } from '@test/utils/test-course-service';

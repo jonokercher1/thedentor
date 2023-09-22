@@ -63,17 +63,17 @@ model Category {
 }
 
 model Course {
-  id          String         @id @default(uuid())
+  id          String        @id @default(uuid())
   type        CourseType
   price       Int
   cpdValue    Float
   description String
   dentorId    String
-  dentor      User           @relation(fields: [dentorId], references: [id])
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @default(now())
+  dentor      User          @relation(fields: [dentorId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
   category    Category[]
-  videos      CourseVideos[]
+  videos      CourseVideo[]
 }
 
 model File {
@@ -84,7 +84,7 @@ model File {
   imageId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  Image     Image    @relation(fields: [imageId], references: [id])
+  image     Image    @relation(fields: [imageId], references: [id])
 }
 
 model Image {
@@ -98,20 +98,20 @@ model Image {
 }
 
 model Video {
-  id          String         @id @default(uuid())
+  id          String        @id @default(uuid())
   url         String
   title       String
   description String
   userId      String
   thumbnailId String
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @default(now())
-  thumbnail   Image          @relation(fields: [thumbnailId], references: [id])
-  user        User           @relation(fields: [userId], references: [id])
-  courses     CourseVideos[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  thumbnail   Image         @relation(fields: [thumbnailId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  courses     CourseVideo[]
 }
 
-model CourseVideos {
+model CourseVideo {
   id         String   @id @default(uuid())
   videoId    String
   courseId   String

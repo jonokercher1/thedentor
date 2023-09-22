@@ -4,10 +4,10 @@ import { PrismaService } from '@/database/prisma.service';
 
 @Injectable()
 export class CourseVideoRepository {
-  private readonly entity: Prisma.CourseVideosDelegate;
+  private readonly entity: Prisma.CourseVideoDelegate;
 
   constructor(database: PrismaService) {
-    this.entity = database.courseVideos;
+    this.entity = database.courseVideo;
   }
 
   public async getByCourseId(courseId: string) {

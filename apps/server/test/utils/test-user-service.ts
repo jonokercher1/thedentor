@@ -10,15 +10,15 @@ export class TestUserService {
     this.entity = databaseService.database.user;
   }
 
-  public async createDentist(dataOverrides?: Partial<User>) {
+  public async createDentist(dataOverrides?: Partial<User>): Promise<User> {
     return this.createUserWithRole(RoleName.Dentist, dataOverrides);
   }
 
-  public async createDentor(dataOverrides?: Partial<User>) {
+  public async createDentor(dataOverrides?: Partial<User>): Promise<User> {
     return this.createUserWithRole(RoleName.Dentor, dataOverrides);
   }
 
-  public async createUserWithRole(role: RoleName, dataOverrides?: Partial<User>) {
+  public async createUserWithRole(role: RoleName, dataOverrides?: Partial<User>): Promise<User> {
     const password = await bcrypt.hash(dataOverrides?.password ?? faker.internet.password({ length: 10 }), 10);
 
     return this.entity.create({

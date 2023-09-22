@@ -9,9 +9,7 @@ export class TestCategoryService {
     this.entity = databaseService.database.category;
   }
 
-  // public async createCourseCategory(dataOverrides?: Partial<Category>) { }
-
-  public async createCategory(dataOverrides?: Partial<Category>) {
+  public async createCategory(dataOverrides?: Partial<Category>): Promise<Category> {
     return this.entity.create({
       data: {
         slug: faker.string.sample(),
@@ -21,7 +19,7 @@ export class TestCategoryService {
     });
   }
 
-  public async deleteAll() {
-    return this.entity.deleteMany();
+  public async deleteAll(): Promise<void> {
+    await this.entity.deleteMany();
   }
 }

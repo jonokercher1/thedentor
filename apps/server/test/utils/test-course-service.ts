@@ -13,15 +13,15 @@ export class TestCourseService {
     this, this.testUserService = new TestUserService(databaseService);
   }
 
-  public async createInPersonCourse(categories: string[] = [], dataOverrides?: Partial<Course>) {
+  public async createInPersonCourse(categories: string[] = [], dataOverrides?: Partial<Course>): Promise<Course> {
     return this.createCourse(CourseType.InPerson, categories, dataOverrides);
   }
 
-  public async createVideoCourse(categories: string[] = [], dataOverrides?: Partial<Course>) {
+  public async createVideoCourse(categories: string[] = [], dataOverrides?: Partial<Course>): Promise<Course> {
     return this.createCourse(CourseType.Video, categories, dataOverrides);
   }
 
-  public async createCourse(type: CourseType = CourseType.InPerson, categories: string[] = [], dataOverrides?: Partial<Course>) {
+  public async createCourse(type: CourseType = CourseType.InPerson, categories: string[] = [], dataOverrides?: Partial<Course>): Promise<Course> {
     let dentorId = dataOverrides?.dentorId;
 
     if (!dentorId) {
@@ -47,7 +47,7 @@ export class TestCourseService {
     });
   }
 
-  public async deleteAll() {
-    return this.entity.deleteMany();
+  public async deleteAll(): Promise<void> {
+    await this.entity.deleteMany();
   }
 }

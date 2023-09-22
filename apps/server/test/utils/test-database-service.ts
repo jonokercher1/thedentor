@@ -7,7 +7,7 @@ export default class TestDatabaseService {
     this.database = new PrismaClient();
   }
 
-  public async disconnect() {
+  public async disconnect(): Promise<void> {
     await this.database.$disconnect();
   }
 }
