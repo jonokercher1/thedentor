@@ -69,9 +69,11 @@ model Course {
   cpdValue    Float
   description String
   dentorId    String
-  dentor      User          @relation(fields: [dentorId], references: [id])
+  startDate   DateTime?
+  endDate     DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now())
+  dentor      User          @relation(fields: [dentorId], references: [id])
   category    Category[]
   videos      CourseVideo[]
 }
