@@ -1,9 +1,9 @@
-import { CourseVideos, Video } from '@prisma/client';
+import { CourseVideo, Video } from '@prisma/client';
 import { Expose } from 'class-transformer';
 import HttpSuccessResponse from '../../common/responses/http-success.response';
 import { ImageResponse } from '@/file/responses/image-response';
 
-type ICourseVideoData = Partial<CourseVideos> & Partial<Video & { thumbnail: any }>;
+type ICourseVideoData = Partial<CourseVideo> & Partial<Video & { thumbnail: any }>;
 
 class CourseVideoResponseData {
   @Expose()
