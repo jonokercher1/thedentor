@@ -6,16 +6,18 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/auth/constants';
-import { Request } from 'express';
 import { CurrentUser } from '@/auth/types/current-user';
 import { IS_PUBLIC_KEY } from '@/common/guards/public.guard';
 import { Reflector } from '@nestjs/core';
+import SessionManager from '../utils/session-manager';
 
+// TOOD: add logger to log auth errors
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private jwtService: JwtService,
-    private reflector: Reflector,
+    private readonly jwtService: JwtService,
+    private readonly sessionManager: SessionManager,
+    private readonly reflector: Reflector,
   ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,7 +31,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.sessionManager.getSessionCookieFromRequest(request);
 
     if (!token) throw new UnauthorizedException();
 
@@ -42,15 +44,11 @@ export class AuthGuard implements CanActivate {
       );
 
       request['user'] = payload;
-    } catch {
+    } catch (e) {
+      // TODO: add logger
       throw new UnauthorizedException();
     }
 
     return true;
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }

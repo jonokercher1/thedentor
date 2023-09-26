@@ -5,6 +5,7 @@ import { TestPaymentProvider } from './test-payment-provider';
 import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
 import { Reflector } from '@nestjs/core';
 import { AppModule } from '@/app.module';
+import * as cookieParser from 'cookie-parser';
 
 export default class TestApp {
   private _instance: INestApplication;
@@ -30,6 +31,7 @@ export default class TestApp {
   }
 
   private async initGlobalPipes() {
+    this.instance.use(cookieParser());
     this.instance.useGlobalPipes(new BodyValidationPipe());
   }
 

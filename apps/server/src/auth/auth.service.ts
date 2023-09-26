@@ -20,4 +20,10 @@ export class AuthService {
 
     return this.jwtService.signAsync(payload);
   }
+
+  public async decryptAccessToken(accessToken: string): Promise<CurrentUser> {
+    const payload = this.jwtService.decode(accessToken);
+
+    return payload as CurrentUser;
+  }
 }

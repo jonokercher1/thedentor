@@ -84,7 +84,6 @@ describe('Login', () => {
       'phone',
       'gdcNumber',
       'role',
-      'accessToken',
     ]);
   });
 

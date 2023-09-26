@@ -7,10 +7,12 @@ import { DatabaseModule } from '@/database/database.module';
 import { CommonModule } from '@/common/common.module';
 import { UserModule } from '@/user/user.module';
 import { PaymentModule } from '@/payment/payment.module';
+import SessionManager from '@/auth/utils/session-manager';
 
 @Module({
-  providers: [AuthService],
+  providers: [AuthService, SessionManager],
   controllers: [AuthController],
+  exports: [SessionManager],
   imports: [
     DatabaseModule,
     UserModule,

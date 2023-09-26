@@ -201,7 +201,6 @@ describe('Register', () => {
       'phone',
       'gdcNumber',
       'role',
-      'accessToken',
     ]);
   });
 

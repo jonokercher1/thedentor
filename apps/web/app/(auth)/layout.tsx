@@ -17,7 +17,7 @@ const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
       </aside>
 
       <section className="bg-neutral-200 flex flex-col">
-        <div className="flex-grow flex items-center">
+        <div className="flex-grow flex items-center 2xl:px-20">
           {children}
         </div>
 

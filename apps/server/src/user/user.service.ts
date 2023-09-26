@@ -10,6 +10,10 @@ export class UserService {
     private readonly hashingService: HashingService,
   ) { }
 
+  public async getUserById(id: string): Promise<User> {
+    return this.userRepository.findUnique('id', id);
+  }
+
   public async getUserByEmail(email: string): Promise<User> {
     return this.userRepository.findUnique('email', email);
   }

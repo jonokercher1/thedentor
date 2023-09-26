@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { Expose } from 'class-transformer';
 import HttpSuccessResponse from '@/common/responses/http-success.response';
 
-type ICurrentUserResponseData = Partial<User> & { accessToken: string };
+type ICurrentUserResponseData = Partial<User>;
 
 class CurrentUserResponseData {
   @Expose()
@@ -22,9 +22,6 @@ class CurrentUserResponseData {
 
   @Expose()
   public readonly role: string;
-
-  @Expose()
-  public readonly accessToken: string;
 
   constructor(data?: ICurrentUserResponseData) {
     Object.assign(this, data);
