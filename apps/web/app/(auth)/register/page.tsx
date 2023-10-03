@@ -7,6 +7,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
 import Link from 'next/link'
 import register from '@/api/auth/register'
+import { useQueryState } from '@/utils/hooks/useQueryState'
+import { useRouter } from 'next/navigation'
+import { errorToast, successToast } from '@/utils/toast'
 
 export interface RegisterFormData {
   name: string
@@ -29,8 +32,10 @@ const viewConfig = [
 ]
 
 const Register: FC = () => {
+  const router = useRouter()
   const form = useForm<RegisterFormData>()
-  const [currentView, setCurrentView] = useState(viewConfig[0])
+  const [currentView, setCurrentView] = useState(viewConfig[0]) // TODO: replace with reducer
+  const { isLoading, queryLoading, querySuccessful, setQueryError } = useQueryState()
 
   const validateView = async (viewName: RegisterView): Promise<boolean> => {
     if (viewName === RegisterView.AccountDetails) {
@@ -57,10 +62,19 @@ const Register: FC = () => {
 
   const onRegister = async (data: RegisterFormData) => {
     try {
+      queryLoading()
       const response = await register(data)
-      console.log("🚀 ~ file: page.tsx:61 ~ onRegister ~ response:", response)
-    } catch (e) {
-      console.log("🚀 ~ file: page.tsx:61 ~ onRegister ~ e:", e)
+
+      if (response.statusCode > 299) {
+        throw new Error('Error logging in')
+      }
+
+      querySuccessful()
+      successToast('Account created')
+      router.push('/')
+    } catch (e: any) {
+      setQueryError(e.message)
+      errorToast('Unable to register')
     }
   }
 
@@ -83,9 +97,9 @@ const Register: FC = () => {
             type="submit"
             className="mt-6"
             fluid
-          // loading
+            loading={isLoading}
           >
-            Continue
+            {currentView.name === viewConfig[0].name ? 'Continue' : 'Create Account'}
           </Button>
 
           <p className="text-neutral-900 text-center mt-6">Already have an account? <Link href="/login" className="text-accent-secondary font-medium">Log In</Link></p>
