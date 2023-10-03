@@ -1,11 +1,14 @@
-'use client'
-
-import Button, { ButtonVariant } from '@/components/common/Button'
-import TextInput from '@/components/common/form/TextInput'
-import Image from 'next/image'
 import { FC } from 'react'
+import getSelf from '@/api/auth/get-self'
+import { redirect } from 'next/navigation'
 
-const Home: FC = () => {
+const Home: FC = async () => {
+  const currentUser = await getSelf()
+
+  if (currentUser.statusCode > 299) {
+    redirect('/login')
+  }
+
   return (
     <main>
 

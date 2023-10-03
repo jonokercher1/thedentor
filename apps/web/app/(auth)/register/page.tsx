@@ -6,6 +6,7 @@ import Button, { ButtonVariant } from '@/components/common/Button'
 import { FormProvider, useForm } from 'react-hook-form'
 import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
 import Link from 'next/link'
+import register from '@/api/auth/register'
 
 export interface RegisterFormData {
   name: string
@@ -54,21 +55,33 @@ const Register: FC = () => {
     }
   }
 
-  const onRegister = (data: RegisterFormData) => {
-    console.log("🚀 ~ file: page.tsx:35 ~ onSubmit ~ data:", data)
+  const onRegister = async (data: RegisterFormData) => {
+    try {
+      const response = await register(data)
+      console.log("🚀 ~ file: page.tsx:61 ~ onRegister ~ response:", response)
+    } catch (e) {
+      console.log("🚀 ~ file: page.tsx:61 ~ onRegister ~ e:", e)
+    }
+  }
+
+  const onSubmit = (data: RegisterFormData) => {
+    if (currentView.name === viewConfig[viewConfig.length - 1].name) {
+      onRegister(data)
+    } else {
+      onMoveForward()
+    }
   }
 
   return (
     <div className="p-8 lg:px-20 w-full">
       <FormProvider {...form}>
-        <form action="" onSubmit={e => e.preventDefault()}>
+        <form action="" onSubmit={form.handleSubmit(onSubmit)}>
           {currentView.component}
 
           <Button
             variant={ButtonVariant.Secondary}
             type="submit"
             className="mt-6"
-            onClick={onMoveForward}
             fluid
           // loading
           >

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { FC, PropsWithChildren } from 'react'
 import { Roboto } from 'next/font/google'
 import classNames from 'classnames'
+import { Toaster } from 'react-hot-toast'
 
 export const roboto = Roboto({
   subsets: ['latin'],
@@ -21,7 +22,10 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <html lang="en" className={rootClasses}>
-      <body className={bodyClasses}>{children}</body>
+      <body className={bodyClasses}>
+        <Toaster />
+        {children}
+      </body>
     </html>
   )
 }

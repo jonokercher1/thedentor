@@ -1,22 +1,26 @@
-type RequestOptions = Exclude<RequestInit, 'body'>
+export type RequestOptions = Exclude<RequestInit, 'body'>
 
-export default class ApiClient {
-  // TODO: use env variable for url
-  private readonly BASE_URL = 'http://localhost:4000/api'
+export class ApiClient {
+  private readonly BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
   public async POST<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
-    return this.makeRequest(resource, { ...options, method: 'POST', credentials: 'include' }, body)
+    return this.makeRequest(resource, { ...options, method: 'POST' }, body)
   }
 
   public async GET<Response>(resource: string, options?: RequestOptions) {
-    return this.makeRequest<Response, undefined>(resource, { ...options, method: 'GET', credentials: 'include' })
+    return this.makeRequest<Response, undefined>(resource, { ...options, method: 'GET' })
   }
 
-  private async makeRequest<Response, Body>(resource: string, options: RequestOptions, body?: Body): Promise<Response> {
+  protected async makeRequest<Response, Body>(resource: string, options: RequestOptions, body?: Body): Promise<Response> {
     const requestOptions: RequestInit = {
       ...options,
       body: body ? JSON.stringify(body) : undefined,
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        ...options.headers,
+      },
     }
 
     const response = await fetch(`${this.BASE_URL}/${resource}`, requestOptions)

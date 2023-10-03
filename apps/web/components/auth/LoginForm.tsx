@@ -6,18 +6,14 @@ import Button, { ButtonVariant } from '../common/Button'
 import Checkbox from '../common/form/Checkbox'
 import Link from 'next/link'
 import PasswordInput from '../common/form/PasswordInput'
-
-interface LoginFormData {
-  email: string
-  password: string
-  remember?: boolean
-}
+import { type LoginFormData } from '@/app/(auth)/login/page'
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void
+  loading?: boolean
 }
 
-const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
+const LoginForm: FC<LoginFormProps> = ({ onSubmit, loading }) => {
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({ mode: 'onSubmit' })
 
   return (
@@ -72,7 +68,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
         )}
       />
 
-      <section className="flex items-center gap-3 flex-row justify-between">
+      {/* <section className="flex items-center gap-3 flex-row justify-between">
         <Controller
           name="remember"
           control={control}
@@ -88,7 +84,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
         <Link href="/forgot-password">
           <p className="font-bold text-accent-secondary">Forgot Password?</p>
         </Link>
-      </section>
+      </section> */}
 
       <Button
         variant={ButtonVariant.Secondary}
@@ -96,7 +92,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
         className="mt-6"
         onClick={handleSubmit(onSubmit)}
         fluid
-      // loading
+        loading={loading}
       >
         Login
       </Button>
