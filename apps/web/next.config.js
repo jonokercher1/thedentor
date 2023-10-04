@@ -2,7 +2,8 @@
 const nextConfig = {
   experimental: {
     typedRoutes: true,
-  }
-}
+  },
+  transpilePackages: ['@dentor/ui'],
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

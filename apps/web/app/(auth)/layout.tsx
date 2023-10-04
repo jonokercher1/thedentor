@@ -1,7 +1,7 @@
 import { PropsWithChildren, type FC } from 'react'
 import BackgroundImage from '../../public/auth-background.png'
 import Image from 'next/image'
-import Logo from '@/components/common/icons/Logo'
+import { Logo } from '@dentor/ui'
 
 const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
   return (

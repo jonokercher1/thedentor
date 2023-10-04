@@ -11,8 +11,8 @@ interface CheckboxProps {
   onChange: ChangeEventHandler<HTMLInputElement>
 }
 
-const Checkbox: ForwardRefRenderFunction<HTMLInputElement, CheckboxProps> = ({ label, name, className, value, onChange }, ref) => {
-  const inputId = name ?? useId()
+const Checkbox: ForwardRefRenderFunction<HTMLInputElement, CheckboxProps> = ({ label, className, value, onChange }, ref) => {
+  const inputId = useId()
   const containerClasses = classNames(className, 'relative font-body flex items-center justify-start gap-2')
 
   return (

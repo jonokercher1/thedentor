@@ -14,8 +14,8 @@ export interface TextInputProps {
   endSlot?: ReactNode
 }
 
-const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({ label, name, error, className, value, onChange, endSlot, type = 'text' }, ref) => {
-  const inputId = name ?? useId()
+const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({ label, error, className, value, onChange, endSlot, type = 'text' }, ref) => {
+  const inputId = useId()
   const containerClasses = classNames(className, 'relative font-body')
   const inputWrapperClasses = classNames('border-2 rounded-lg border-neutral-300 bg-white outline-none p-[2px] flex w-full')
   const inputClasses = classNames('flex-1 p-3 outline-none', {

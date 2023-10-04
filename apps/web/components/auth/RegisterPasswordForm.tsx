@@ -1,15 +1,13 @@
 import { type FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import PasswordInput from '../common/form/PasswordInput'
 import { RegisterFormData } from '@/app/(auth)/register/page'
-import PadlockIcon from '../common/icons/PadlockIcon'
-import Checkbox from '../common/form/Checkbox'
+import { Checkbox, PasswordInput, PadlockIcon } from '@dentor/ui'
 import Link from 'next/link'
 
 interface RegisterPasswordFormProps { }
 
 const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
-  const { control, handleSubmit, formState: { errors } } = useFormContext<RegisterFormData>()
+  const { control } = useFormContext<RegisterFormData>()
 
   return (
     <div>
@@ -70,7 +68,7 @@ const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
           <Checkbox
             label={
               <p className="text-neutral-900">
-                I Agree to The <Link href="" className="text-accent-secondary">Terms & Conditions</Link> and <Link href="" className="text-accent-secondary">Privacy Policy</Link>
+                I Agree to The <Link href="/" className="text-accent-secondary">Terms & Conditions</Link> and <Link href="/" className="text-accent-secondary">Privacy Policy</Link>
               </p>
             }
             {...field}

@@ -2,8 +2,8 @@
 
 import { type FC } from 'react'
 import classNames from 'classnames'
-import LoadingSpinner from '@/components/common/LoadingSpinner'
-import { AtomWithChildrenProps } from '@/types/Component'
+import LoadingSpinner from './LoadingSpinner'
+import { AtomWithChildrenProps } from '../../types/Component'
 
 export enum ButtonVariant {
   Primary = 'Primary',

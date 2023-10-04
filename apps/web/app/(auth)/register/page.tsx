@@ -2,7 +2,6 @@
 
 import { type FC, useState } from 'react'
 import RegisterAccountDetailsForm from '@/components/auth/RegisterAccountDetailsForm'
-import Button, { ButtonVariant } from '@/components/common/Button'
 import { FormProvider, useForm } from 'react-hook-form'
 import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
 import Link from 'next/link'
@@ -10,6 +9,7 @@ import register from '@/api/auth/register'
 import { useQueryState } from '@/utils/hooks/useQueryState'
 import { useRouter } from 'next/navigation'
 import { errorToast, successToast } from '@/utils/toast'
+import { Button, ButtonVariant } from '@dentor/ui'
 
 export interface RegisterFormData {
   name: string
