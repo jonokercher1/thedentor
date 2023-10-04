@@ -2,12 +2,12 @@
 
 import login from '@/api/auth/login'
 import LoginForm from '@/components/auth/LoginForm'
-import LoginNextIcon from '@/components/common/icons/LoginNextIcon'
 import { useQueryState } from '@/utils/hooks/useQueryState'
 import { errorToast } from '@/utils/toast'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
+import { LoginNextIcon } from '@dentor/ui'
 
 export interface LoginFormData {
   email: string

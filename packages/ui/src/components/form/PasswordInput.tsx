@@ -2,9 +2,9 @@
 
 import classNames from 'classnames'
 import { type ChangeEventHandler, type ForwardRefRenderFunction, forwardRef, useState } from 'react'
-import TextInput from '@/components/common/form/TextInput'
+import TextInput from './TextInput'
 import { passwordStrength as checkPasswordStrength } from 'check-password-strength'
-import Icon, { IconName } from '@/components/common/Icon'
+import Icon, { IconName } from '../common/Icon'
 
 interface PasswordInputProps {
   label?: string
@@ -45,6 +45,7 @@ const PasswordInput: ForwardRefRenderFunction<HTMLInputElement, PasswordInputPro
     <div className={containerClasses}>
       <TextInput
         {...inputProps}
+        ref={ref}
         label={label}
         onChange={onChange}
         type={visible ? 'text' : 'password'}

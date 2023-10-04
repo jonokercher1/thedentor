@@ -16,7 +16,8 @@
   "name": "the-dentor",
   "packageManager": "npm@8.19.4",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "engines": {
     "node": "v18.15.0",

@@ -1,11 +1,9 @@
 import { type FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import EmailValidator from 'email-validator'
-import TextInput from '../common/form/TextInput'
-import Button, { ButtonVariant } from '../common/Button'
-import Checkbox from '../common/form/Checkbox'
+import { TextInput } from '@dentor/ui'
+import { Button, ButtonVariant, Checkbox, PasswordInput } from '@dentor/ui'
 import Link from 'next/link'
-import PasswordInput from '../common/form/PasswordInput'
 import { type LoginFormData } from '@/app/(auth)/login/page'
 
 interface LoginFormProps {

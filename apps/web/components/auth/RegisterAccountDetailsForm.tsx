@@ -1,16 +1,15 @@
 import { type FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import EmailValidator from 'email-validator'
-import TextInput from '../common/form/TextInput'
+import { TextInput, CreateAccountIcon } from '@dentor/ui'
 import { RegisterFormData } from '@/app/(auth)/register/page'
-import CreateAccountIcon from '../common/icons/CreateAccountIcon'
 
 interface RegisterAccountDetailsProps {
 
 }
 
 const RegisterAccountDetailsForm: FC<RegisterAccountDetailsProps> = () => {
-  const { control, handleSubmit, formState: { errors } } = useFormContext<RegisterFormData>()
+  const { control, formState: { errors } } = useFormContext<RegisterFormData>()
 
   return (
     <div>
