@@ -6,6 +6,10 @@ import Button, { ButtonVariant } from '@/components/common/Button'
 import { FormProvider, useForm } from 'react-hook-form'
 import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
 import Link from 'next/link'
+import register from '@/api/auth/register'
+import { useQueryState } from '@/utils/hooks/useQueryState'
+import { useRouter } from 'next/navigation'
+import { errorToast, successToast } from '@/utils/toast'
 
 export interface RegisterFormData {
   name: string
@@ -28,8 +32,10 @@ const viewConfig = [
 ]
 
 const Register: FC = () => {
+  const router = useRouter()
   const form = useForm<RegisterFormData>()
-  const [currentView, setCurrentView] = useState(viewConfig[0])
+  const [currentView, setCurrentView] = useState(viewConfig[0]) // TODO: replace with reducer
+  const { isLoading, queryLoading, querySuccessful, setQueryError } = useQueryState()
 
   const validateView = async (viewName: RegisterView): Promise<boolean> => {
     if (viewName === RegisterView.AccountDetails) {
@@ -54,25 +60,46 @@ const Register: FC = () => {
     }
   }
 
-  const onRegister = (data: RegisterFormData) => {
-    console.log("🚀 ~ file: page.tsx:35 ~ onSubmit ~ data:", data)
+  const onRegister = async (data: RegisterFormData) => {
+    try {
+      queryLoading()
+      const response = await register(data)
+
+      if (response.statusCode > 299) {
+        throw new Error('Error logging in')
+      }
+
+      querySuccessful()
+      successToast('Account created')
+      router.push('/')
+    } catch (e: any) {
+      setQueryError(e.message)
+      errorToast('Unable to register')
+    }
+  }
+
+  const onSubmit = (data: RegisterFormData) => {
+    if (currentView.name === viewConfig[viewConfig.length - 1].name) {
+      onRegister(data)
+    } else {
+      onMoveForward()
+    }
   }
 
   return (
     <div className="p-8 lg:px-20 w-full">
       <FormProvider {...form}>
-        <form action="" onSubmit={e => e.preventDefault()}>
+        <form action="" onSubmit={form.handleSubmit(onSubmit)}>
           {currentView.component}
 
           <Button
             variant={ButtonVariant.Secondary}
             type="submit"
             className="mt-6"
-            onClick={onMoveForward}
             fluid
-          // loading
+            loading={isLoading}
           >
-            Continue
+            {currentView.name === viewConfig[0].name ? 'Continue' : 'Create Account'}
           </Button>
 
           <p className="text-neutral-900 text-center mt-6">Already have an account? <Link href="/login" className="text-accent-secondary font-medium">Log In</Link></p>

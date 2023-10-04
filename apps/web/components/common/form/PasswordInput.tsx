@@ -2,8 +2,9 @@
 
 import classNames from 'classnames'
 import { type ChangeEventHandler, type ForwardRefRenderFunction, forwardRef, useState } from 'react'
-import TextInput from './TextInput'
+import TextInput from '@/components/common/form/TextInput'
 import { passwordStrength as checkPasswordStrength } from 'check-password-strength'
+import Icon, { IconName } from '@/components/common/Icon'
 
 interface PasswordInputProps {
   label?: string
@@ -17,6 +18,7 @@ interface PasswordInputProps {
 
 const PasswordInput: ForwardRefRenderFunction<HTMLInputElement, PasswordInputProps> = ({ showStrength, className, label = 'Password*', ...inputProps }, ref) => {
   const [passwordStrength, setPasswordStrength] = useState<number>()
+  const [visible, setVisible] = useState(false)
 
   const containerClasses = classNames(className, 'relative font-body')
   const strengthIndicatorClasses = 'h-1 bg-neutral-300 rounded-full w-full block lg:h-2'
@@ -35,13 +37,25 @@ const PasswordInput: ForwardRefRenderFunction<HTMLInputElement, PasswordInputPro
     }
   }
 
+  const onToggleVisibility = () => {
+    setVisible(!visible)
+  }
+
   return (
     <div className={containerClasses}>
       <TextInput
         {...inputProps}
         label={label}
         onChange={onChange}
-        type="text"
+        type={visible ? 'text' : 'password'}
+        endSlot={(
+          <button type="button" onClick={onToggleVisibility}>
+            <Icon
+              name={visible ? IconName.VisibilityOff : IconName.Visibility}
+              className="h-5 w-5 mx-2"
+            />
+          </button>
+        )}
       />
 
       {showStrength && (

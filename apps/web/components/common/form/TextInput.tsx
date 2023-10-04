@@ -1,7 +1,7 @@
 'use client'
 
 import classNames from 'classnames'
-import { useId, type ChangeEventHandler, type ForwardRefRenderFunction, forwardRef } from 'react'
+import { useId, type ChangeEventHandler, type ForwardRefRenderFunction, forwardRef, ReactNode } from 'react'
 
 export interface TextInputProps {
   label: string
@@ -11,12 +11,14 @@ export interface TextInputProps {
   type?: 'text' | 'email' | 'password'
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
+  endSlot?: ReactNode
 }
 
-const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({ label, name, error, className, value, onChange, type = 'text' }, ref) => {
+const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({ label, name, error, className, value, onChange, endSlot, type = 'text' }, ref) => {
   const inputId = name ?? useId()
   const containerClasses = classNames(className, 'relative font-body')
-  const inputClasses = classNames('border-2 rounded-lg border-neutral-300 p-3 outline-none block w-full', {
+  const inputWrapperClasses = classNames('border-2 rounded-lg border-neutral-300 bg-white outline-none p-[2px] flex w-full')
+  const inputClasses = classNames('flex-1 p-3 outline-none', {
     'border-state-error': error
   })
   const labelClasses = classNames('font-medium uppercase text-sm block mb-2', {
@@ -32,14 +34,18 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({
         {label}
       </label>
 
-      <input
-        ref={ref}
-        type={type}
-        name={inputId}
-        value={value}
-        onChange={onChange}
-        className={inputClasses}
-      />
+      <div className={inputWrapperClasses}>
+        <input
+          ref={ref}
+          type={type}
+          name={inputId}
+          value={value}
+          onChange={onChange}
+          className={inputClasses}
+        />
+
+        {endSlot}
+      </div>
 
       {error && (
         <p className="text-xs absolute block top-full pt-1 text-state-error font-bold">{error}</p>

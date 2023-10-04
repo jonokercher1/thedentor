@@ -2,13 +2,17 @@ import { Expose } from 'class-transformer';
 
 export default class HttpSuccessResponse<Data> {
   @Expose()
-  public readonly success: boolean = true;
+  public readonly message: string = 'success';
 
   @Expose()
   public readonly data: Data | Data[];
 
-  constructor(data?: Data | Data[]) {
+  @Expose()
+  public readonly statusCode: number = 200;
+
+  constructor(data?: Data | Data[], statusCode?: number) {
     this.data = data;
+    this.statusCode = statusCode;
   }
 }
 
