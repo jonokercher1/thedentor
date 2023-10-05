@@ -1,3 +1,5 @@
+import './style.css'
+
 /** Common components */
 export * from './components/common/Button'
 export { default as Button } from './components/common/Button'

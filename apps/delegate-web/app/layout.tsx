@@ -1,4 +1,4 @@
-import './globals.css'
+import '@dentor/ui/styles.css'
 import type { Metadata } from 'next'
 import { FC, PropsWithChildren } from 'react'
 import { Roboto } from 'next/font/google'
