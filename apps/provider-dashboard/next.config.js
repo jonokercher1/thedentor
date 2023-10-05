@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  experimental: {
+    typedRoutes: true,
+  },
+  transpilePackages: ['@dentor/ui', '@dentor/config'],
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
