@@ -19,7 +19,7 @@ const Login: FC = () => {
   const router = useRouter()
   const { errorToast } = useToast()
   const { control, handleSubmit, setError, formState: { errors } } = useForm<LoginFormData>({ mode: 'onSubmit' })
-  const { isLoading, sendApiRequest } = useApiRequest<LoginResponse['data'], LoginResponse, LoginBody>({
+  const { isLoading, sendApiRequest } = useApiRequest<LoginResponse, LoginBody>({
     request: login,
     onSuccess: () => router.push('/'),
     onError: () => errorToast('Unable to login'),
