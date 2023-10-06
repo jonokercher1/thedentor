@@ -4,9 +4,10 @@ import { type FC, type ChangeEvent, useRef, createRef, useState, useEffect } fro
 import classnames from 'classnames'
 
 interface OneTimePasscodeInputProps {
+  value: string[]
   codeLength?: number
-  onPasswordEntered: (password: string) => void
-  onChange?: (value: string[]) => void
+  onPasswordEntered: (password: string[]) => void
+  onChange: (value: string[]) => void
   disabled?: boolean
   className?: string
   error?: string
@@ -14,7 +15,8 @@ interface OneTimePasscodeInputProps {
 
 const OneTimePasscodeInput: FC<OneTimePasscodeInputProps> = ({ onPasswordEntered, onChange, disabled, className, error, codeLength = 6 }) => {
   const containerClasses = classnames(className, 'relative font-body')
-  const inputClasses = classnames()
+  const inputContainerClasses = classnames('flex gap-3')
+  const inputClasses = classnames('w-full h-20 text-center text-3xl border-2 rounded-lg border-neutral-300 outline-none')
 
   const [password, setPassword] = useState<string[]>([])
   const inputRefsArray = useRef(Array.from({ length: codeLength }, () => createRef<HTMLInputElement>()))
@@ -54,8 +56,7 @@ const OneTimePasscodeInput: FC<OneTimePasscodeInputProps> = ({ onPasswordEntered
       newPassword[index] = value;
       setPassword(newPassword);
       if (newPassword.filter(Boolean).length === 6) {
-        const fullPassword = newPassword.join('')
-        onPasswordEntered(fullPassword)
+        onPasswordEntered(newPassword)
         inputRefsArray.current[index]?.current?.blur()
       } else if (value) {
         moveToNextInput(index)
@@ -83,28 +84,32 @@ const OneTimePasscodeInput: FC<OneTimePasscodeInputProps> = ({ onPasswordEntered
       setPassword(newPassword)
 
       if (newPassword.filter(Boolean).length === 6) {
-        const fullPassword = newPassword.join('')
-        onPasswordEntered(fullPassword)
+        onPasswordEntered(newPassword)
         inputRefsArray.current[currentIndex + 5]?.current?.blur()
       }
     }
   }
 
   useEffect(() => {
-    if (onChange) {
-      onChange(password)
-    }
+    onChange(password)
   }, [password, onChange])
 
   return (
     <div className={containerClasses}>
-      <div>
+      <div className={inputContainerClasses}>
         {inputRefsArray.current?.map((ref, index) => (
           <input
             key={`magic-code-input-${index}`}
             ref={ref}
             disabled={disabled}
-            className={inputClasses}
+            className={
+              classnames(
+                inputClasses,
+                {
+                  'border-state-success border-3': !!password[index]
+                }
+              )
+            }
             onChange={(e) => onHandleChange(e, index)}
             onKeyDown={(e) => onKeyDown(e, index)}
             onPaste={(e) => onPaste(e, index)}

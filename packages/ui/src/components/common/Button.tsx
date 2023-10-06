@@ -16,9 +16,11 @@ interface ButtonProps extends AtomWithChildrenProps {
   fluid?: boolean
   type?: HTMLButtonElement['type']
   loading?: boolean
+  disabled?: boolean
 }
 
-const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, loading, variant = ButtonVariant.Primary }) => {
+const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, disabled, loading, variant = ButtonVariant.Primary }) => {
+  const isDisabled = disabled || loading
   const buttonClasses = classNames(
     'bg-accent-primary text-neutral-100 rounded-full px-6 py-4 transition-colors duration-200',
     className,
@@ -26,7 +28,7 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
       'w-full': fluid,
       'bg-accent-primary text-neutral-700 hover:bg-accent-primary-dark': variant === ButtonVariant.Primary,
       'bg-accent-secondary hover:bg-accent-secondary-dark': variant === ButtonVariant.Secondary,
-      'cursor-not-allowed': loading,
+      'bg-opacity-50 cursor-not-allowed': isDisabled
       // 'bg-accent-primary-light hover:bg-accent-primary-light': variant === ButtonVariant.Primary && loading,
       // 'bg-accent-secondary-light hover:bg-accent-secondary-light': variant === ButtonVariant.Secondary && loading,
     }
@@ -37,7 +39,7 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
       className={buttonClasses}
       onClick={onClick}
       type={type ?? 'button'}
-      disabled={loading}
+      disabled={isDisabled}
       id={id}
     >
       {children}
