@@ -6,16 +6,17 @@ import { Controller, type Control } from 'react-hook-form'
 import PasswordInput from '../PasswordInput'
 
 interface PasswordFieldProps extends Omit<TextInputProps, 'label' | 'value' | 'onChange'> {
+  name?: string
   label?: TextInputProps['label']
   control: Control<any, any>
   error?: string
   showStrength?: boolean
 }
 
-const PasswordField: FC<PasswordFieldProps> = ({ control, error, label, showStrength, ...inputProps }) => {
+const PasswordField: FC<PasswordFieldProps> = ({ control, error, label, name, showStrength, ...inputProps }) => {
   return (
     <Controller
-      name="password"
+      name={name ?? 'password'}
       defaultValue=""
       control={control}
       rules={{
@@ -35,6 +36,7 @@ const PasswordField: FC<PasswordFieldProps> = ({ control, error, label, showStre
           {...field}
           error={error}
           showStrength={showStrength}
+          label={label?.value ?? 'Password*'}
         />
       )}
     />
