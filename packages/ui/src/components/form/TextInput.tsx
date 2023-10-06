@@ -4,14 +4,17 @@ import classNames from 'classnames'
 import { useId, type ChangeEventHandler, type ForwardRefRenderFunction, forwardRef, ReactNode } from 'react'
 
 export interface TextInputProps {
-  label: string
+  label: {
+    value: string,
+    error?: boolean
+  }
   name?: string
   error?: string
   className?: string
   type?: 'text' | 'email' | 'password'
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
-  endSlot?: ReactNode
+  endSlot?: ReactNode,
 }
 
 const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({ label, error, className, value, onChange, endSlot, type = 'text' }, ref) => {
@@ -22,7 +25,7 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({
     'border-state-error': error
   })
   const labelClasses = classNames('font-medium uppercase text-sm block mb-2', {
-    'text-state-error': error
+    'text-state-error': label.error || error
   })
 
   return (
@@ -31,7 +34,7 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({
         className={labelClasses}
         htmlFor={inputId}
       >
-        {label}
+        {label.value}
       </label>
 
       <div className={inputWrapperClasses}>
@@ -48,7 +51,7 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({
       </div>
 
       {error && (
-        <p className="text-xs absolute block top-full pt-1 text-state-error font-bold">{error}</p>
+        <p className="text-xs absolute block top-full pt-1 text-state-error font-bold capitalize">{error}</p>
       )}
     </div>
   )

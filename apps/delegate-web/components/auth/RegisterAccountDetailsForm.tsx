@@ -31,7 +31,9 @@ const RegisterAccountDetailsForm: FC<RegisterAccountDetailsProps> = () => {
         }}
         render={({ field }) => (
           <TextInput
-            label="Name*"
+            label={{
+              value: 'Name*'
+            }}
             className="mb-7"
             error={errors.name?.message}
             {...field}
@@ -58,7 +60,9 @@ const RegisterAccountDetailsForm: FC<RegisterAccountDetailsProps> = () => {
         }}
         render={({ field }) => (
           <TextInput
-            label="Email*"
+            label={{
+              value: 'Email*'
+            }}
             className="mb-7"
             type="email"
             error={errors.email?.message}
@@ -73,7 +77,9 @@ const RegisterAccountDetailsForm: FC<RegisterAccountDetailsProps> = () => {
         defaultValue=""
         render={({ field }) => (
           <TextInput
-            label="Phone"
+            label={{
+              value: 'Phone'
+            }}
             className="mb-7"
             error={errors.phone?.message}
             {...field}
@@ -90,10 +96,16 @@ const RegisterAccountDetailsForm: FC<RegisterAccountDetailsProps> = () => {
             value: true,
             message: 'GDC Number is required'
           },
+          maxLength: {
+            value: 6,
+            message: 'Please enter a valid GDC number'
+          }
         }}
         render={({ field }) => (
           <TextInput
-            label="GDC Number*"
+            label={{
+              value: 'GDC Number*'
+            }}
             className="mb-7"
             error={errors.gdcNumber?.message}
             {...field}

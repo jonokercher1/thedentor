@@ -11,7 +11,7 @@ export interface LoginBody {
 
 export interface LoginResponse extends HttpSuccessResponse<CurrentUser> { }
 
-const login = async (body: LoginBody): Promise<LoginResponse> => {
+const login = async (body?: LoginBody): Promise<LoginResponse> => {
   const apiClient = new ClientApiClient()
   return apiClient.POST<LoginResponse, LoginBody>('auth/login', body, { cache: 'no-cache' })
 }
