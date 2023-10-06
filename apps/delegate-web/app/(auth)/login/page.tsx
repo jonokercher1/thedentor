@@ -1,13 +1,13 @@
 'use client'
 
-import login from '@/api/auth/login'
+import login, { type LoginBody, type LoginResponse } from '@/api/auth/login'
 import LoginForm from '@/components/auth/LoginForm'
-import { useQueryState } from '@/utils/hooks/useQueryState'
-import { errorToast } from '@/utils/toast'
+import { useApiRequest, useToast } from '@dentor/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
 import { LoginNextIcon } from '@dentor/ui'
+import { useForm } from 'react-hook-form'
 
 export interface LoginFormData {
   email: string
@@ -17,24 +17,14 @@ export interface LoginFormData {
 
 const Login: FC = () => {
   const router = useRouter()
-  const { isLoading, setQueryError, queryLoading, querySuccessful } = useQueryState()
-
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      queryLoading()
-      const response = await login(data)
-
-      if (response.statusCode > 299) {
-        throw new Error('Error logging in')
-      }
-
-      querySuccessful()
-      router.push('/')
-    } catch (e: any) {
-      setQueryError(e.message)
-      errorToast('Unable to login')
-    }
-  }
+  const { errorToast } = useToast()
+  const { control, handleSubmit, setError, formState: { errors } } = useForm<LoginFormData>({ mode: 'onSubmit' })
+  const { isLoading, sendApiRequest } = useApiRequest<LoginResponse['data'], LoginResponse, LoginBody>({
+    request: login,
+    onSuccess: () => router.push('/'),
+    onError: () => errorToast('Unable to login'),
+    setFieldError: (name, { message }) => setError(name as any, { message })
+  })
 
   return (
     <div className="p-8 lg:p-20 w-full">
@@ -46,8 +36,11 @@ const Login: FC = () => {
 
       <section className="w-full">
         <LoginForm
-          onSubmit={onSubmit}
+          onSubmit={sendApiRequest}
           loading={isLoading}
+          control={control}
+          errors={errors}
+          handleSubmit={handleSubmit}
         />
 
         <p className="text-neutral-900 text-center mt-6">Don't have an account? <Link href="/register" className="text-accent-secondary font-medium">Sign Up</Link></p>

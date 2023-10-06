@@ -7,7 +7,8 @@ import Link from 'next/link'
 interface RegisterPasswordFormProps { }
 
 const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
-  const { control } = useFormContext<RegisterFormData>()
+  const { control, watch, formState: { errors } } = useFormContext<RegisterFormData>()
+  const password = watch('password')
 
   return (
     <div>
@@ -36,6 +37,7 @@ const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
             className="mb-5"
             showStrength
             {...field}
+            error={errors.password?.message}
           />
         )}
       />
@@ -51,6 +53,11 @@ const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
           minLength: {
             value: 8,
             message: 'Password must be at least 8 characters'
+          },
+          validate: (value: string) => {
+            if (value !== password) {
+              return 'Passwords don\'t match'
+            }
           }
         }}
         render={({ field }) => (
@@ -58,12 +65,19 @@ const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
             label="Confirm Password*"
             className="mb-5"
             {...field}
+            error={errors.passwordConfirmation?.message}
           />
         )}
       />
       <Controller
         name="termsAndConditions"
         control={control}
+        rules={{
+          required: {
+            value: true,
+            message: 'You must accept the terms & conditions'
+          }
+        }}
         render={({ field }) => (
           <Checkbox
             label={
@@ -71,8 +85,10 @@ const RegisterPasswordForm: FC<RegisterPasswordFormProps> = () => {
                 I Agree to The <Link href="/" className="text-accent-secondary">Terms & Conditions</Link> and <Link href="/" className="text-accent-secondary">Privacy Policy</Link>
               </p>
             }
+            className="pt-6 mb-6"
             {...field}
             value={field.value ?? false}
+            error={errors.termsAndConditions?.message}
           />
         )}
       />

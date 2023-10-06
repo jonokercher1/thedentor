@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
 import Link from 'next/link'
 import register from '@/api/auth/register'
-import { useQueryState } from '@/utils/hooks/useQueryState'
+import { useQueryState } from '@dentor/ui'
 import { useRouter } from 'next/navigation'
 import { errorToast, successToast } from '@/utils/toast'
 import { Button, ButtonVariant } from '@dentor/ui'
@@ -66,7 +66,7 @@ const Register: FC = () => {
       const response = await register(data)
 
       if (response.statusCode > 299) {
-        throw new Error('Error logging in')
+        throw new Error(response.message)
       }
 
       querySuccessful()
@@ -74,7 +74,7 @@ const Register: FC = () => {
       router.push('/')
     } catch (e: any) {
       setQueryError(e.message)
-      errorToast('Unable to register')
+      errorToast(e.message ?? 'Unable to register')
     }
   }
 

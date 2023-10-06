@@ -1,19 +1,19 @@
 import { type FC } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Control, Controller, FieldErrors, UseFormHandleSubmit, useForm } from 'react-hook-form'
 import EmailValidator from 'email-validator'
 import { TextInput } from '@dentor/ui'
-import { Button, ButtonVariant, Checkbox, PasswordInput } from '@dentor/ui'
-import Link from 'next/link'
+import { Button, ButtonVariant, PasswordInput } from '@dentor/ui'
 import { type LoginFormData } from '@/app/(auth)/login/page'
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void
   loading?: boolean
+  control: Control<LoginFormData, any>
+  errors?: FieldErrors<LoginFormData>
+  handleSubmit: UseFormHandleSubmit<LoginFormData, undefined>
 }
 
-const LoginForm: FC<LoginFormProps> = ({ onSubmit, loading }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({ mode: 'onSubmit' })
-
+const LoginForm: FC<LoginFormProps> = ({ onSubmit, loading, control, handleSubmit, errors }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
@@ -35,10 +35,12 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit, loading }) => {
         }}
         render={({ field }) => (
           <TextInput
-            label="Email"
+            label={{
+              value: 'Email'
+            }}
             className="mb-7"
             type="email"
-            error={errors.email?.message}
+            error={errors?.email?.message}
             {...field}
           />
         )}
@@ -62,6 +64,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit, loading }) => {
           <PasswordInput
             className="mb-5"
             {...field}
+            error={errors?.password?.message}
           />
         )}
       />
