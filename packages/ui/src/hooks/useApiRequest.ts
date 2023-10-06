@@ -5,7 +5,7 @@ import { HttpSuccessResponse } from '../types/api/http-success-response'
 
 type ApiRequestFunction<Response, Body> = ((body: Body | undefined) => Response | Promise<Response>) | (() => Response | Promise<Response>)
 
-interface UseApiRequestArgs<Data, Response extends HttpSuccessResponse<Data>, Body = {}> {
+interface UseApiRequestArgs<Response extends HttpSuccessResponse<Response['data']>, Body = {}> {
   request: ApiRequestFunction<Response, Body>
   onSuccess?: (response?: Response) => void
   onError?: (error: any) => void
@@ -20,7 +20,7 @@ interface UseApiRequestResponse<Body> {
   sendApiRequest: (body?: Body) => void
 }
 
-export const useApiRequest = <Data, Response extends HttpSuccessResponse<Data>, Body>(args: UseApiRequestArgs<Data, Response, Body>): UseApiRequestResponse<Body> => {
+export const useApiRequest = <Response extends HttpSuccessResponse<Response['data']>, Body>(args: UseApiRequestArgs<Response, Body>): UseApiRequestResponse<Body> => {
   const { isLoading, isSuccess, error, setQueryError, queryLoading, querySuccessful } = useQueryState()
 
   const sendApiRequest = async (body?: Body): Promise<void> => {
