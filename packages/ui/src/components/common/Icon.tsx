@@ -1,9 +1,14 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+'use client'
+
+import { Visibility, VisibilityOff, KeyOutlined, ChevronLeft, DraftsOutlined } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
 export enum IconName {
   Visibility,
-  VisibilityOff
+  VisibilityOff,
+  Key,
+  ChevronLeft,
+  EnvelopeOpen
 }
 
 interface IconProps {
@@ -14,6 +19,9 @@ interface IconProps {
 const icons = {
   [IconName.Visibility]: Visibility,
   [IconName.VisibilityOff]: VisibilityOff,
+  [IconName.Key]: KeyOutlined,
+  [IconName.ChevronLeft]: ChevronLeft,
+  [IconName.EnvelopeOpen]: DraftsOutlined,
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {
