@@ -19,7 +19,7 @@ const passwordStrengthConfiguration: Options<PasswordStrength> = [
     id: 1,
     value: 1,
     minDiversity: 1,
-    minLength: 6,
+    minLength: 8,
   },
   {
     id: 2,
