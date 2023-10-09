@@ -8,22 +8,23 @@ datasource db {
 }
 
 model User {
-  id                        String            @id @default(uuid())
+  id                        String               @id @default(uuid())
   name                      String
-  email                     String            @unique
+  email                     String               @unique
   phone                     String
-  gdcNumber                 String            @unique
+  gdcNumber                 String               @unique
   password                  String?
   roleName                  RoleName
-  role                      Role              @relation(fields: [roleName], references: [name])
-  subscriptionId            String?           @unique
+  role                      Role                 @relation(fields: [roleName], references: [name])
+  subscriptionId            String?              @unique
   subscription              UserSubscription?
   paymentProviderCustomerId String?
-  createdAt                 DateTime          @default(now())
-  updatedAt                 DateTime          @default(now())
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime             @default(now())
   courses                   Course[]
   images                    Image[]
   videos                    Video[]
+  passwordResetTokens       PasswordResetToken[]
 }
 
 model Role {
@@ -52,6 +53,15 @@ model UserSubscription {
   updatedAt          DateTime         @default(now())
 
   @@id([subscriptionTierId, userId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Category {

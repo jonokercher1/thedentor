@@ -8,6 +8,7 @@ import { AuthGuard } from '@/auth/guards/auth.guard';
 import { CourseCategoryModule } from '@/course-category/course-category.module';
 import { CourseVideoModule } from './course-video/course-video.module';
 import { FileModule } from './file/file.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { FileModule } from './file/file.module';
     CourseCategoryModule,
     CourseVideoModule,
     FileModule,
+    NotificationModule,
   ],
   controllers: [],
   providers: [
