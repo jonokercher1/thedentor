@@ -1,4 +1,4 @@
-import Notification from '@/notification/notifications/Notification';
+import Notification, { EmailConfig } from '@/notification/notifications/notification';
 import { User } from '@prisma/client';
 
 interface PasswordResetRequestData {
@@ -7,8 +7,8 @@ interface PasswordResetRequestData {
 }
 
 export default class PasswordResetRequest extends Notification<PasswordResetRequestData> {
-  public emailConfig = {
-    template: 'password-reset.mjml',
+  protected emailConfig: EmailConfig = {
     subject: 'Reset Your Password',
+    template: 'password-reset',
   };
 }

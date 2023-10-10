@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PasswordResetRepository } from '@/user/repositories/password-reset.repository';
 import { NotificationService } from '@/notification/notification.service';
-import PasswordResetRequest from '@/notification/notifications/PasswordResetRequest';
+import PasswordResetRequest from '@/notification/notifications/password-reset-request.notification';
 import { UserService } from './user.service';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
 

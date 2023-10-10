@@ -1,16 +1,14 @@
 {
   "name": "server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
     "db:generate": "prisma generate",
     "db:migrate:create": "prisma migrate dev --name ",
     "db:seed": "ts-node prisma/seed.ts",
     "db:reset": "npm run db:migrate init_db && npm run db:generate",
+    "email:dev": "open https://mjml.io/try-it-live",
     "dev": "nest start --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "start:debug": "nest start --debug --watch",

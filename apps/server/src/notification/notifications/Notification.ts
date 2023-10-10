@@ -1,14 +1,16 @@
-import { promises as fs } from 'fs';
-import { compile } from 'handlebars';
+import * as fs from 'fs/promises';
 import * as mjml2html from 'mjml';
 import { Inject } from '@nestjs/common';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
+import { compile } from 'handlebars';
+
+export interface EmailConfig {
+  template: string
+  subject: string
+}
 
 export default abstract class Notification<Data> {
-  public emailConfig: {
-    template: string,
-    subject: string
-  };
+  protected abstract readonly emailConfig: EmailConfig;
 
   constructor(
     public readonly data: Data,
@@ -20,7 +22,7 @@ export default abstract class Notification<Data> {
   // TODO: replace this with react email
   public async viaEmail(emailAddress: string): Promise<boolean> {
     const templateContents = await fs.readFile(
-      `${__dirname}/../channels/email/templates/${this.emailConfig.template}`,
+      `${__dirname}/../channels/email/templates/${this.emailConfig.template}.mjml`,
       'utf8',
     );
     const compiledTemplate = compile(templateContents);
