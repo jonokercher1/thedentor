@@ -102,7 +102,7 @@ describe('Register', () => {
       .send(userData);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
 
     const userDbRecord = await testDatabaseService.database.user.findFirst({
       where: {
@@ -129,7 +129,7 @@ describe('Register', () => {
       .send(userData);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
 
     const userDbRecord = await testDatabaseService.database.user.findFirst({
       where: {
@@ -156,7 +156,7 @@ describe('Register', () => {
       .send(userData);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
 
     const userDbRecord = await testDatabaseService.database.user.findFirst({
       where: {
@@ -190,7 +190,7 @@ describe('Register', () => {
       .send(userData);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
 
     const responseBodyKeys = Object.keys(response.body.data);
 

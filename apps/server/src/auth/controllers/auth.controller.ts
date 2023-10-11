@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, Post, Put, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { RegisterRequest } from '@/auth/requests/register.request';
 import { SubscriptionService } from '@/payment/subscription.service';
 import { UserService } from '@/user/services/user.service';
@@ -11,8 +11,6 @@ import { Public } from '@/common/guards/public.guard';
 import { Response } from 'express';
 import SessionManager from '@/auth/utils/session-manager';
 import AuthenticatedRequest from '@/common/types/authenticated-request';
-import { RequestPasswordResetRequest } from '@/auth/requests/request-password-reset.request';
-import { UserPasswordResetService } from '@/user/services/user-password-reset.service';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +20,6 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly hashingService: HashingService,
     private readonly sessionManager: SessionManager,
-    private readonly userPasswordResetService: UserPasswordResetService,
   ) { }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
@@ -66,19 +63,6 @@ export class AuthController {
       }
 
       throw new BadRequestException('Unable to register');
-    }
-  }
-
-  // TODO: handle any internal errors thrown -> we should have logging from day 0
-  @Put('password-reset')
-  @HttpCode(204)
-  @Public()
-  public async requestPasswordReset(@Body() body: RequestPasswordResetRequest) {
-    try {
-      await this.userPasswordResetService.requestPasswordReset(body.email);
-    } catch (e) {
-      // TODO: add logger
-      // Fail silently
     }
   }
 

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from '@/auth/auth.service';
-import { AuthController } from '@/auth/auth.controller';
+import { AuthController } from '@/auth/controllers/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '@/auth/constants';
 import { DatabaseModule } from '@/database/database.module';
@@ -8,10 +8,11 @@ import { CommonModule } from '@/common/common.module';
 import { UserModule } from '@/user/user.module';
 import { PaymentModule } from '@/payment/payment.module';
 import SessionManager from '@/auth/utils/session-manager';
+import { PasswordResetController } from '@/auth/controllers/password-reset.controller';
 
 @Module({
   providers: [AuthService, SessionManager],
-  controllers: [AuthController],
+  controllers: [AuthController, PasswordResetController],
   exports: [SessionManager],
   imports: [
     DatabaseModule,
