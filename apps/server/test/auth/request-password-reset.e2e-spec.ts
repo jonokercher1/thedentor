@@ -8,7 +8,7 @@ import { User } from '@prisma/client';
 import { TestPasswordResetTokenService } from '@test/utils/test-password-reset-token-service';
 
 describe('Request Password Reset', () => {
-  const URL = '/auth/password-reset';
+  const URL = '/auth/password-reset/token';
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
   let testUserService: TestUserService;

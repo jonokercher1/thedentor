@@ -1,15 +1,33 @@
 import { Public } from '@/common/guards/public.guard';
-import { Body, Controller, Get, HttpCode, Param, Put, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Patch, Put, UnauthorizedException } from '@nestjs/common';
 import { RequestPasswordResetRequest } from '../requests/request-password-reset.request';
 import { UserPasswordResetService } from '@/user/services/user-password-reset.service';
 import { PasswordResetTokenResponse } from '@/auth/responses/password-reset-token.response';
 import HttpSuccessResponse from '@/common/responses/http-success.response';
+import { ResetPasswordRequest } from '@/auth/requests/reset-password.request';
+import { UserService } from '@/user/services/user.service';
 
 @Controller('auth/password-reset')
 export class PasswordResetController {
   constructor(
     private readonly userPasswordResetService: UserPasswordResetService,
+    private readonly userSerivce: UserService,
   ) { }
+
+  @Patch()
+  @HttpCode(200)
+  @Public()
+  public async resetPassword(@Body() body: ResetPasswordRequest) {
+    try {
+      const passwordResetRequest = await this.userPasswordResetService.getPasswordResetRequestByToken(body.token);
+      await this.userSerivce.updateUser(passwordResetRequest.userId, { password: body.password });
+
+      return new HttpSuccessResponse();
+    } catch (e) {
+      // TODO: add logger
+      throw new UnauthorizedException();
+    }
+  }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
   @Get('/:token')
@@ -27,7 +45,7 @@ export class PasswordResetController {
   }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
-  @Put('/')
+  @Put('/token')
   @HttpCode(200)
   @Public()
   public async requestPasswordReset(@Body() body: RequestPasswordResetRequest) {
@@ -38,6 +56,6 @@ export class PasswordResetController {
       // Fail silently
     }
 
-    return new HttpSuccessResponse({}, 200);
+    return new HttpSuccessResponse();
   }
-}
+} 
