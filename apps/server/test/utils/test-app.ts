@@ -6,6 +6,8 @@ import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
 import { Reflector } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import * as cookieParser from 'cookie-parser';
+import { IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
+import ConsoleEmailProvider from '@/notification/channels/email/providers/ConsoleEmailProvider';
 
 export default class TestApp {
   private _instance: INestApplication;
@@ -25,6 +27,8 @@ export default class TestApp {
     })
       .overrideProvider(IPaymentProvider)
       .useClass(TestPaymentProvider)
+      .overrideProvider(IEmailNotificationProvider)
+      .useClass(ConsoleEmailProvider)
       .compile();
 
     this.instance = moduleRef.createNestApplication();

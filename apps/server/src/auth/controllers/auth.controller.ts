@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { RegisterRequest } from '@/auth/requests/register.request';
 import { SubscriptionService } from '@/payment/subscription.service';
-import { UserService } from '@/user/user.service';
+import { UserService } from '@/user/services/user.service';
 import { RoleName } from '@prisma/client';
 import { CurrentUserResponse } from '@/auth/responses/current-user.response';
 import { AuthService } from '@/auth/auth.service';
@@ -67,7 +67,6 @@ export class AuthController {
   }
 
   // TODO: handle any internal errors thrown -> we should have logging from day 0
-  // TODO: add custom request type to include user object
   @Get('me')
   @HttpCode(200)
   public async getSelf(@Req() request: AuthenticatedRequest, @Res({ passthrough: true }) response: Response): Promise<CurrentUserResponse> {
@@ -84,5 +83,4 @@ export class AuthController {
       throw new UnauthorizedException();
     }
   }
-
 }

@@ -1,29 +1,31 @@
 'use client'
 
-import login, { type LoginResponse } from '@/api/auth/login'
-import { Button, ButtonVariant, EmailField, Icon, IconName, OneTimePasscodeInput, PasswordField, useApiRequest, useToast } from '@dentor/ui'
+import login from '@/api/auth/login'
+import { Button, ButtonVariant, Icon, IconName, PasswordField, useApiRequest, useToast } from '@dentor/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-export interface SetPasswordFormData {
+interface ResetPasswordFormProps { }
+
+interface ResetPasswordFormData {
   password: string
   passwordConfirmation: string
 }
 
-const SetPassword: FC = () => {
+const ResetPasswordForm: FC<ResetPasswordFormProps> = () => {
   const router = useRouter()
   const { errorToast } = useToast()
-  const { control, handleSubmit, setError, watch, formState: { errors } } = useForm<SetPasswordFormData>({ mode: 'onSubmit' })
-  const { isLoading, sendApiRequest } = useApiRequest<LoginResponse, SetPasswordFormData>({
+  const { control, handleSubmit, setError, watch, formState: { errors } } = useForm<ResetPasswordFormData>({ mode: 'onSubmit' })
+  const { isLoading, sendApiRequest } = useApiRequest<any, ResetPasswordFormData>({
     request: login,
     onSuccess: () => router.push('/'),
-    onError: () => errorToast('Unable to login'),
+    onError: () => errorToast('Error resetting password'),
     setFieldError: (name, { message }) => setError(name as any, { message })
   })
 
-  const onSubmit = (data: SetPasswordFormData) => {
+  const onSubmit = (data: ResetPasswordFormData) => {
     console.log("🚀 ~ file: page.tsx:26 ~ onSubmit ~ data:", data)
     // sendApiRequest(data)
   }
@@ -80,4 +82,4 @@ const SetPassword: FC = () => {
   )
 }
 
-export default SetPassword
+export default ResetPasswordForm
