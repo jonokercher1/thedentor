@@ -5,10 +5,19 @@ import PasswordResetRequest from '@/notification/notifications/password-reset-re
 import { UserService } from './user.service';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
 import * as dayjs from 'dayjs';
+import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class UserPasswordResetService {
-  private readonly MAX_TOKEN_VALIDITY_MILLISECONDS = 1000 * 60 * 60 * 24;
+  private readonly TOKEN_WITH_USER_FIELDS: Prisma.PasswordResetTokenSelect<DefaultArgs> = {
+    ...this.passwordResetRepository.DEFAULT_FIELDS,
+    user: {
+      select: {
+        email: true,
+      },
+    },
+  };
 
   constructor(
     private readonly userService: UserService,
@@ -20,39 +29,35 @@ export class UserPasswordResetService {
 
   public async requestPasswordReset(email: string) {
     const token = this.generateResetToken();
-    await this.passwordResetRepository.create({
+    const user = await this.userService.getUserByEmail(email);
+
+    const request = await this.passwordResetRepository.create({
       token,
       user: {
         connect: {
           email,
         },
       },
-    });
+    }, this.TOKEN_WITH_USER_FIELDS);
 
-    const user = await this.userService.getUserByEmail(email);
     this.notificationService.notifyUser(
       user,
-      new PasswordResetRequest({
-        user,
-        token,
-      }, this.emailProvider),
+      new PasswordResetRequest(
+        {
+          user,
+          token,
+        },
+        this.emailProvider,
+      ),
     );
+
+    return request;
   }
 
   public async getPasswordResetRequestByToken(token: string) {
-    const passwordResetRequest = await this.passwordResetRepository.findByToken(
-      token,
-      {
-        ...this.passwordResetRepository.DEFAULT_FIELDS,
-        user: {
-          select: {
-            email: true,
-          },
-        },
-      },
-    );
+    const passwordResetRequest = await this.passwordResetRepository.findByToken(token, this.TOKEN_WITH_USER_FIELDS);
 
-    const isValid = await this.isResetRequestValid(passwordResetRequest.createdAt);
+    const isValid = await this.isResetRequestValid(passwordResetRequest.expiresAt);
 
     if (!isValid) {
       // TODO: we should have some internal errors being thrown with better metadata and logging attached
@@ -62,8 +67,8 @@ export class UserPasswordResetService {
     return passwordResetRequest;
   }
 
-  private isResetRequestValid(createdAt?: Date): boolean {
-    const isValidAge = dayjs(createdAt).add(this.MAX_TOKEN_VALIDITY_MILLISECONDS, 'milliseconds').isAfter(dayjs());
+  private isResetRequestValid(expiresAt?: Date): boolean {
+    const isValidAge = dayjs(expiresAt).isAfter(dayjs());
 
     return isValidAge;
   }
@@ -73,6 +78,6 @@ export class UserPasswordResetService {
       return Math.random().toString(36).substring(2);
     };
 
-    return `${randomValue}${randomValue}${randomValue}`;
+    return `${randomValue()}${randomValue()}${randomValue()}`;
   }
 }

@@ -42,10 +42,10 @@ describe('Get Password Reset By Token', () => {
   });
 
   it('Should error if the token has expired', async () => {
-    const { token } = await testPasswordResetTokenService.create({ userId: user.id, createdAt: dayjs().subtract(2, 'days').toDate() });
+    const token = await testPasswordResetTokenService.create({ userId: user.id, expiresAt: dayjs().subtract(2, 'days').toDate() });
 
     return request(app.getHttpServer())
-      .get(`${URL}/${token}`)
+      .get(`${URL}/${token.token}`)
       .expect(401)
       .expect({
         statusCode: 401,

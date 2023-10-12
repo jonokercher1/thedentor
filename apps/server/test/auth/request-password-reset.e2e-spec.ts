@@ -52,7 +52,7 @@ describe('Request Password Reset', () => {
         email: user.email,
       });
 
-    expect(response.statusCode).toEqual(204);
+    expect(response.statusCode).toEqual(200);
 
     const resetToken = await testPasswordResetTokenService.findForUserEmail(user.email);
     expect(resetToken.userId).toEqual(user.id);
@@ -66,7 +66,7 @@ describe('Request Password Reset', () => {
         email: faker.internet.email(),
       });
 
-    expect(response.statusCode).toEqual(204);
+    expect(response.statusCode).toEqual(200);
 
     const resetToken = await testPasswordResetTokenService.findForUserEmail(user.email);
     expect(resetToken?.userId).not.toBeDefined();

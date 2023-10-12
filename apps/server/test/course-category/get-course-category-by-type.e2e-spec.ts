@@ -51,10 +51,10 @@ describe('Get Course Categories', () => {
 
     const response = await request(app.getHttpServer())
       .get(URL)
-      .set('Authorization', `Bearer ${accessToken}`);
+      .set('Cookie', ['Authorization', `authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
     expect(response.body.data).toHaveLength(2);
 
     const returnedTokenSlugs = response.body.data.map(i => i.slug);
@@ -67,7 +67,7 @@ describe('Get Course Categories', () => {
 
     return request(app.getHttpServer())
       .get(`${URL}?type=invalidtype`)
-      .set('Authorization', `Bearer ${accessToken}`)
+      .set('Cookie', ['Authorization', `authSession=${accessToken}`])
       .expect(422)
       .expect({
         statusCode: 422,
@@ -88,10 +88,10 @@ describe('Get Course Categories', () => {
 
     const response = await request(app.getHttpServer())
       .get(`${URL}?type=${CourseType.Video}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+      .set('Cookie', ['Authorization', `authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
     expect(response.body.data).toHaveLength(1);
     expect(response.body.data[0].slug).toEqual(categoryOne.slug);
   });
@@ -106,10 +106,10 @@ describe('Get Course Categories', () => {
 
     const response = await request(app.getHttpServer())
       .get(`${URL}?type=${CourseType.InPerson}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+      .set('Cookie', ['Authorization', `authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
-    expect(response.body.success).toBeTruthy();
+    expect(response.body.message).toEqual('success');
     expect(response.body.data).toHaveLength(1);
     expect(response.body.data[0].slug).toEqual(categoryTwo.slug);
   });

@@ -21,14 +21,14 @@ export default abstract class Notification<Data> {
   // TODO: we might need to introduce a queue here to make this non-blocking
   // TODO: replace this with react email
   public async viaEmail(emailAddress: string): Promise<boolean> {
-    const templateContents = await fs.readFile(
-      `${__dirname}/../channels/email/templates/${this.emailConfig.template}.mjml`,
-      'utf8',
-    );
-    const compiledTemplate = compile(templateContents);
-    const mjml = compiledTemplate(this.data);
-    const { html } = mjml2html(mjml);
+    // const templateContents = await fs.readFile(
+    //   `notification/channels/email/templates/${this.emailConfig.template}.mjml`,
+    //   'utf8',
+    // );
+    // const compiledTemplate = compile(templateContents);
+    // const mjml = compiledTemplate(this.data);
+    // const { html } = mjml2html(mjml);
 
-    return this.emailProvider.sendEmail(emailAddress, this.emailConfig.subject, html);
+    return this.emailProvider.sendEmail(emailAddress, this.emailConfig.subject, '');
   }
 }

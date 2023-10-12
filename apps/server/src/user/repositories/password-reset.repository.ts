@@ -10,6 +10,7 @@ export class PasswordResetRepository {
     id: true,
     userId: true,
     token: true,
+    expiresAt: true,
     createdAt: true,
     updatedAt: true,
   };
@@ -19,8 +20,8 @@ export class PasswordResetRepository {
     this.entity = database.passwordResetToken;
   }
 
-  public async create(data: Prisma.PasswordResetTokenCreateInput) {
-    return this.entity.create({ data });
+  public async create(data: Prisma.PasswordResetTokenCreateInput, select = this.DEFAULT_FIELDS) {
+    return this.entity.create({ data, select });
   }
 
   public async findByToken(token: string, select = this.DEFAULT_FIELDS) {

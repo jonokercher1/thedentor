@@ -58,8 +58,9 @@ model UserSubscription {
 model PasswordResetToken {
   id        String   @id @default(uuid())
   token     String   @unique
-  userId    String   @unique
+  userId    String
   user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime @default(dbgenerated("NOW() + interval '1 day'"))
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }

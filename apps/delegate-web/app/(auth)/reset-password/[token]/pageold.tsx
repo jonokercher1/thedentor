@@ -1,34 +1,34 @@
-'use client'
+'use client';
 
-import login, { type LoginResponse } from '@/api/auth/login'
-import { Button, ButtonVariant, EmailField, Icon, IconName, OneTimePasscodeInput, useApiRequest, useToast } from '@dentor/ui'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { type FC } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import login, { type LoginResponse } from '@/api/auth/login';
+import { Button, ButtonVariant, EmailField, Icon, IconName, OneTimePasscodeInput, useApiRequest, useToast } from '@dentor/ui';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { type FC } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 export interface ResetPasswordFormData {
   code: string[]
 }
 
 const ResetPassword: FC = () => {
-  const router = useRouter()
-  const { errorToast } = useToast()
-  const { control, handleSubmit, setError, watch, formState: { errors } } = useForm<ResetPasswordFormData>({ mode: 'onSubmit' })
+  const router = useRouter();
+  const { errorToast } = useToast();
+  const { control, handleSubmit, setError, watch, formState: { errors } } = useForm<ResetPasswordFormData>({ mode: 'onSubmit' });
   const { isLoading, sendApiRequest } = useApiRequest<LoginResponse, ResetPasswordFormData>({
     request: login,
     onSuccess: () => router.push('/'),
     onError: () => errorToast('Unable to login'),
-    setFieldError: (name, { message }) => setError(name as any, { message })
-  })
+    setFieldError: (name, { message }) => setError(name as any, { message }),
+  });
 
-  const code = watch('code', [])
-  const codeIsValid = code.filter(Boolean).length === 6
+  const code = watch('code', []);
+  const codeIsValid = code.filter(Boolean).length === 6;
 
   const onSubmit = (data: ResetPasswordFormData) => {
-    console.log("🚀 ~ file: page.tsx:26 ~ onSubmit ~ data:", data)
+    console.log('🚀 ~ file: page.tsx:26 ~ onSubmit ~ data:', data);
     // sendApiRequest(data)
-  }
+  };
 
   return (
     <div className="p-8 lg:p-20 w-full">
@@ -82,7 +82,7 @@ const ResetPassword: FC = () => {
         </Link>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default ResetPassword
+export default ResetPassword;

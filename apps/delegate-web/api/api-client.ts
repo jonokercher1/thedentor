@@ -7,6 +7,10 @@ export class ApiClient {
     return this.makeRequest(resource, { ...options, method: 'POST' }, body)
   }
 
+  public async PUT<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
+    return this.makeRequest(resource, { ...options, method: 'PUT' }, body)
+  }
+
   public async GET<Response>(resource: string, options?: RequestOptions) {
     return this.makeRequest<Response, undefined>(resource, { ...options, method: 'GET' })
   }
