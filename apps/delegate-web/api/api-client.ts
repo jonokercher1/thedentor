@@ -3,6 +3,10 @@ export type RequestOptions = Exclude<RequestInit, 'body'>
 export class ApiClient {
   private readonly BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
+  public async GET<Response>(resource: string, options?: RequestOptions) {
+    return this.makeRequest<Response, undefined>(resource, { ...options, method: 'GET' })
+  }
+
   public async POST<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
     return this.makeRequest(resource, { ...options, method: 'POST' }, body)
   }
@@ -11,8 +15,8 @@ export class ApiClient {
     return this.makeRequest(resource, { ...options, method: 'PUT' }, body)
   }
 
-  public async GET<Response>(resource: string, options?: RequestOptions) {
-    return this.makeRequest<Response, undefined>(resource, { ...options, method: 'GET' })
+  public async PATCH<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
+    return this.makeRequest(resource, { ...options, method: 'PATCH' }, body)
   }
 
   protected async makeRequest<Response, Body>(resource: string, options: RequestOptions, body?: Body): Promise<Response> {

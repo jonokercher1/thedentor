@@ -10,7 +10,7 @@ export default class HttpSuccessResponse<Data> {
   @Expose()
   public readonly statusCode: number = 200;
 
-  constructor(data?: Data | Data[], statusCode?: number) {
+  constructor(data?: Data | Data[], statusCode = 200) {
     this.data = data;
     this.statusCode = statusCode;
   }

@@ -1,33 +1,41 @@
 'use client'
 
-import login from '@/api/auth/login'
-import { Button, ButtonVariant, Icon, IconName, PasswordField, useApiRequest, useToast } from '@dentor/ui'
+import resetPassword from '@/api/auth/reset-password'
+import { Button, ButtonVariant, Icon, IconName, PasswordField, PasswordInput, useApiRequest, useToast } from '@dentor/ui'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { type FC } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 interface ResetPasswordFormProps { }
 
 interface ResetPasswordFormData {
+  token: string
   password: string
   passwordConfirmation: string
 }
 
 const ResetPasswordForm: FC<ResetPasswordFormProps> = () => {
+  const params = useParams()
   const router = useRouter()
   const { errorToast } = useToast()
   const { control, handleSubmit, setError, watch, formState: { errors } } = useForm<ResetPasswordFormData>({ mode: 'onSubmit' })
   const { isLoading, sendApiRequest } = useApiRequest<any, ResetPasswordFormData>({
-    request: login,
-    onSuccess: () => router.push('/'),
+    request: (body) => resetPassword(body!), // TODO: workout how to fix sometimes optional body
+    onSuccess: () => router.push('/login'), // TODO: add success toast query param
     onError: () => errorToast('Error resetting password'),
     setFieldError: (name, { message }) => setError(name as any, { message })
   })
 
-  const onSubmit = (data: ResetPasswordFormData) => {
-    console.log("🚀 ~ file: page.tsx:26 ~ onSubmit ~ data:", data)
-    // sendApiRequest(data)
+  const password = watch('password')
+
+  const onSubmit = (data: Pick<ResetPasswordFormData, 'password' | 'passwordConfirmation'>) => {
+    const token = params.token as string
+
+    sendApiRequest({
+      ...data,
+      token,
+    })
   }
 
   return (
@@ -50,11 +58,33 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = () => {
             showStrength
           />
 
-          <PasswordField
+          <Controller
             name="passwordConfirmation"
+            defaultValue=""
             control={control}
-            error={errors.passwordConfirmation?.message}
-            label={{ value: 'Confirm Password*' }}
+            rules={{
+              required: {
+                value: true,
+                message: 'Password is required'
+              },
+              minLength: {
+                value: 8,
+                message: 'Password must be at least 8 characters'
+              },
+              validate: (value: string) => {
+                if (value !== password) {
+                  return 'Passwords don\'t match'
+                }
+              }
+            }}
+            render={({ field }) => (
+              <PasswordInput
+                label="Confirm Password*"
+                className="mb-5"
+                {...field}
+                error={errors.passwordConfirmation?.message}
+              />
+            )}
           />
 
           <Button

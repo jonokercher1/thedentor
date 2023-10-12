@@ -1,6 +1,6 @@
 
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
-import { Match } from '@/auth/decorators/match-validator';
+import { Match } from '@/common/decorators/match-validator';
 
 export class RegisterRequest {
   @IsEmail()
