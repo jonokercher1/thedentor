@@ -94,4 +94,21 @@ describe('Reset Password', () => {
         message: 'success',
       });
   });
+
+  it('should delete the reset request on successful reset', async () => {
+    const resetToken = await testPasswordResetTokenService.create();
+    const password = faker.internet.password(12);
+    const response = await request(app.getHttpServer())
+      .patch(URL)
+      .send({
+        token: resetToken.token,
+        password,
+        passwordConfirmation: password,
+      });
+
+    expect(response.statusCode).toEqual(200);
+
+    const refetchDbToken = await testPasswordResetTokenService.findByToken(resetToken.token);
+    expect(refetchDbToken).toBeNull();
+  });
 });

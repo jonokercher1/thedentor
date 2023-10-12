@@ -43,6 +43,10 @@ export class PasswordResetRepository {
     });
   }
 
+  public async delete(id: string) {
+    return this.entity.delete({ where: { id } });
+  }
+
   public async findByToken(token: string, select = this.DEFAULT_FIELDS) {
     return this.entity.findUniqueOrThrow({
       where: {

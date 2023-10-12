@@ -1,6 +1,6 @@
 import { Public } from '@/common/guards/public.guard';
 import { Body, Controller, Get, HttpCode, Param, Patch, Put, UnauthorizedException } from '@nestjs/common';
-import { RequestPasswordResetRequest } from '../requests/request-password-reset.request';
+import { RequestPasswordResetRequest } from '@/auth/requests/request-password-reset.request';
 import { UserPasswordResetService } from '@/user/services/user-password-reset.service';
 import { PasswordResetTokenResponse } from '@/auth/responses/password-reset-token.response';
 import HttpSuccessResponse from '@/common/responses/http-success.response';
@@ -19,8 +19,10 @@ export class PasswordResetController {
   @Public()
   public async resetPassword(@Body() body: ResetPasswordRequest) {
     try {
+      // TODO: this could be a good candidate for a db txn
       const passwordResetRequest = await this.userPasswordResetService.getPasswordResetRequestByToken(body.token);
       await this.userSerivce.updateUser(passwordResetRequest.userId, { password: body.password });
+      await this.userPasswordResetService.deleteResetToken(passwordResetRequest.id);
 
       return new HttpSuccessResponse();
     } catch (e) {

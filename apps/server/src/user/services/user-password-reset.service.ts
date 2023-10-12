@@ -78,6 +78,10 @@ export class UserPasswordResetService {
     );
   }
 
+  public async deleteResetToken(id: string) {
+    return this.passwordResetRepository.delete(id);
+  }
+
   private isResetRequestValid(expiresAt?: Date): boolean {
     const isValidAge = dayjs(expiresAt).isAfter(dayjs());
 
