@@ -57,7 +57,6 @@ export class AuthController {
 
       return new CurrentUserResponse(user);
     } catch (e) {
-      console.log('🚀 ~ file: auth.controller.ts:60 ~ AuthController ~ register ~ e:', e);
       // TOOD: add logger
       if (e.message === 'User already exists') {
         throw new BadRequestException(e.message);

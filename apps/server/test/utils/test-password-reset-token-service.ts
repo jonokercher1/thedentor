@@ -2,7 +2,6 @@ import { PasswordResetToken, Prisma } from '@prisma/client';
 import TestDatabaseService from './test-database-service';
 import { TestUserService } from './test-user-service';
 import { faker } from '@faker-js/faker/locale/en_GB';
-import * as dayjs from 'dayjs';
 
 export class TestPasswordResetTokenService {
   private readonly entity: Prisma.PasswordResetTokenDelegate;
@@ -27,6 +26,10 @@ export class TestPasswordResetTokenService {
         },
       },
     });
+  }
+
+  public async findAllForUserId(userId: string): Promise<PasswordResetToken[]> {
+    return this.entity.findMany({ where: { userId } });
   }
 
   public async create(dataOverrides?: Partial<PasswordResetToken>): Promise<PasswordResetToken> {

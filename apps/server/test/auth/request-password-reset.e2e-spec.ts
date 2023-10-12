@@ -72,4 +72,36 @@ describe('Request Password Reset', () => {
     expect(resetToken?.userId).not.toBeDefined();
     expect(resetToken?.token).not.toBeDefined();
   });
+
+  it('should expire all users existing password reset requests when a new one is requested', async () => {
+    const [resetRequestOne, resetRequestTwo] = await Promise.all([
+      testPasswordResetTokenService.create({ userId: user.id }),
+      testPasswordResetTokenService.create({ userId: user.id }),
+    ]);
+
+    const response = await request(app.getHttpServer())
+      .put(URL)
+      .send({
+        email: user.email,
+      });
+
+    expect(response.statusCode).toEqual(200);
+
+    const resetTokens = await testPasswordResetTokenService.findAllForUserId(user.id);
+    expect(resetTokens).toHaveLength(3);
+
+    const resetTokenIds = resetTokens.map(({ id }) => id);
+    expect(resetTokenIds.includes(resetRequestOne.id)).toBeTruthy();
+    expect(resetTokenIds.includes(resetRequestTwo.id)).toBeTruthy();
+
+    const dbTokenOne = resetTokens.find(({ id }) => id === resetRequestOne.id);
+    expect(Number(dbTokenOne.expiresAt)).toBeLessThan(Number(new Date));
+
+    const dbTokenTwp = resetTokens.find(({ id }) => id === resetRequestTwo.id);
+    expect(Number(dbTokenTwp.expiresAt)).toBeLessThan(Number(new Date));
+
+    // Ensure the third one hasnt expired
+    const newDbToken = resetTokens.find(({ id }) => id !== resetRequestOne.id && id !== resetRequestTwo.id);
+    expect(Number(newDbToken.expiresAt)).toBeGreaterThan(Number(new Date));
+  });
 });

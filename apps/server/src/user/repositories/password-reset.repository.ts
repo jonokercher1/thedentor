@@ -24,9 +24,33 @@ export class PasswordResetRepository {
     return this.entity.create({ data, select });
   }
 
+  public async update(id: string, data: Prisma.PasswordResetTokenUpdateInput, select = this.DEFAULT_FIELDS) {
+    return this.entity.update({
+      where: {
+        id,
+      },
+      data,
+      select,
+    });
+  }
+
+  public async updateMany(identifierKey: 'id' | 'token' | 'userId', identifierValue: string, data: Prisma.PasswordResetTokenUpdateManyMutationInput) {
+    return this.entity.updateMany({
+      where: {
+        [identifierKey]: identifierValue,
+      },
+      data,
+    });
+  }
+
   public async findByToken(token: string, select = this.DEFAULT_FIELDS) {
     return this.entity.findUniqueOrThrow({
-      where: { token },
+      where: {
+        token,
+        expiresAt: {
+          gt: new Date,
+        },
+      },
       select,
     });
   }

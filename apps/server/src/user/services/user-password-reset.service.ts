@@ -6,11 +6,10 @@ import { UserService } from './user.service';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
 import * as dayjs from 'dayjs';
 import { Prisma } from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class UserPasswordResetService {
-  private readonly TOKEN_WITH_USER_FIELDS: Prisma.PasswordResetTokenSelect<DefaultArgs> = {
+  private readonly TOKEN_WITH_USER_FIELDS: Prisma.PasswordResetTokenSelect = {
     ...this.passwordResetRepository.DEFAULT_FIELDS,
     user: {
       select: {
@@ -30,6 +29,8 @@ export class UserPasswordResetService {
   public async requestPasswordReset(email: string) {
     const token = this.generateResetToken();
     const user = await this.userService.getUserByEmail(email);
+
+    await this.invalidateAllExistingTokens(user.id);
 
     const request = await this.passwordResetRepository.create({
       token,
@@ -65,6 +66,16 @@ export class UserPasswordResetService {
     }
 
     return passwordResetRequest;
+  }
+
+  public async invalidateAllExistingTokens(userId: string) {
+    return this.passwordResetRepository.updateMany(
+      'userId',
+      userId,
+      {
+        expiresAt: dayjs().subtract(1, 'minute').toDate(),
+      },
+    );
   }
 
   private isResetRequestValid(expiresAt?: Date): boolean {
