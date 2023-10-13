@@ -9,6 +9,7 @@ import { CourseCategoryModule } from '@/course-category/course-category.module';
 import { CourseVideoModule } from '@/course-video/course-video.module';
 import { FileModule } from '@/file/file.module';
 import { NotificationModule } from '@/notification/notification.module';
+import { LoggingModule } from '@/logging/logging.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { NotificationModule } from '@/notification/notification.module';
     CourseVideoModule,
     FileModule,
     NotificationModule,
+    LoggingModule,
   ],
   controllers: [],
   providers: [
