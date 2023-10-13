@@ -3,16 +3,15 @@ import AxiomLogger from '@/logging/loggers/axiom-logger';
 import { ILogger } from '@/logging/types/Logger';
 
 const getLogger = (): ILogger => {
-  const env = process.env.NODE_ENV;
+  const logger = process.env.LOGGER ?? 'console';
 
-  switch (env) {
-    case 'test':
-    case 'development':
-    case 'local':
-      return new Logger;
-
-    default:
+  switch (logger) {
+    case 'axiom':
       return new AxiomLogger;
+
+    case 'console':
+    default:
+      return new Logger;
   }
 };
 
