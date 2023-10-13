@@ -21,7 +21,6 @@ import { NotificationModule } from '@/notification/notification.module';
     FileModule,
     NotificationModule,
   ],
-  controllers: [],
   providers: [
     {
       provide: APP_GUARD,

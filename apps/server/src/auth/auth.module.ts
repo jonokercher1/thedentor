@@ -9,6 +9,7 @@ import { UserModule } from '@/user/user.module';
 import { PaymentModule } from '@/payment/payment.module';
 import SessionManager from '@/auth/utils/session-manager';
 import { PasswordResetController } from '@/auth/controllers/password-reset.controller';
+import { LoggingModule } from '@/logging/logging.module';
 
 @Module({
   providers: [AuthService, SessionManager],
@@ -19,6 +20,7 @@ import { PasswordResetController } from '@/auth/controllers/password-reset.contr
     UserModule,
     CommonModule,
     PaymentModule,
+    LoggingModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
