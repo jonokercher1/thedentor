@@ -19,19 +19,19 @@ const EmailField: FC<EmailFieldProps> = ({ control, error, label, ...inputProps 
       name="email"
       control={control}
       defaultValue=""
-      // rules={{
-      //   required: {
-      //     value: true,
-      //     message: 'Email is required'
-      //   },
-      //   validate: (value) => {
-      //     if (!validateEmail(value)) {
-      //       return 'Email is invalid'
-      //     }
+      rules={{
+        required: {
+          value: true,
+          message: 'Email is required'
+        },
+        validate: (value) => {
+          if (!validateEmail(value)) {
+            return 'Email is invalid'
+          }
 
-      //     return undefined
-      //   }
-      // }}
+          return undefined
+        }
+      }}
       render={({ field }) => (
         <TextInput
           {...inputProps}

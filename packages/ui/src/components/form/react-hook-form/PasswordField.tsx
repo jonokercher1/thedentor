@@ -19,16 +19,16 @@ const PasswordField: FC<PasswordFieldProps> = ({ control, error, label, name, sh
       name={name ?? 'password'}
       defaultValue=""
       control={control}
-      // rules={{
-      //   required: {
-      //     value: true,
-      //     message: 'Password is required'
-      //   },
-      //   minLength: {
-      //     value: 8,
-      //     message: 'Password must be at least 8 characters'
-      //   }
-      // }}
+      rules={{
+        required: {
+          value: true,
+          message: 'Password is required'
+        },
+        minLength: {
+          value: 8,
+          message: 'Password must be at least 8 characters'
+        }
+      }}
       render={({ field }) => (
         <PasswordInput
           {...inputProps}
