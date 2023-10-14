@@ -4,17 +4,3 @@ export interface SearchClient {
   deleteObject: any
   search: (query: string) => Promise<any[]>
 }
-
-// createEntity -> algolia.initIndex
-// getEntity 
-// createObject -> algolia.index.saveObject
-
-
-
-// @Searchable(
-//   'course',
-//   ['name', 'description', 'category', 'dentorName'],
-// )
-// class CoursesRepository {
-
-// }
