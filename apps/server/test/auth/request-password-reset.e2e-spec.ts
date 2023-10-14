@@ -38,8 +38,8 @@ describe('Request Password Reset', () => {
       .expect(422)
       .expect({
         statusCode: 422,
-        error: 'Unprocessable Entity',
-        message: {
+        message: 'Unprocessable Entity',
+        error: {
           email: ['email must be an email'],
         },
       });

@@ -71,8 +71,8 @@ describe('Get Course Categories', () => {
       .expect(422)
       .expect({
         statusCode: 422,
-        error: 'Unprocessable Entity',
-        message: {
+        message: 'Unprocessable Entity',
+        error: {
           type: ['type must be one of the following values: Video, InPerson'],
         },
       });

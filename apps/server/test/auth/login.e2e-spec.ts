@@ -29,8 +29,8 @@ describe('Login', () => {
       .expect(422)
       .expect({
         statusCode: 422,
-        error: 'Unprocessable Entity',
-        message: {
+        message: 'Unprocessable Entity',
+        error: {
           email: ['email must be an email'],
           password: ['password must be longer than or equal to 8 characters'],
         },

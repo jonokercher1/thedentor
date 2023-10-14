@@ -30,9 +30,9 @@ export const useApiRequest = <Response extends HttpSuccessResponse<Response['dat
 
       if (response.statusCode > 299) {
         if (response.statusCode === 422 && args.setFieldError) {
-          const errorKeys = Object.keys(response.message)
+          const errorKeys = Object.keys((response as any).error)
           errorKeys.forEach((errorKey: any) => {
-            args.setFieldError!(errorKey, { message: response.message[errorKey] })
+            args.setFieldError!(errorKey, { message: (response as any).error[errorKey] })
           })
         }
 

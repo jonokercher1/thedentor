@@ -6,8 +6,8 @@ export class BodyValidationPipe extends ValidationPipe {
       exceptionFactory: (errors) => {
         return new UnprocessableEntityException({
           statusCode: 422,
-          error: 'Unprocessable Entity',
-          message: errors.reduce(
+          message: 'Unprocessable Entity',
+          error: errors.reduce(
             (acc, e) => ({
               ...acc,
               [e.property]: Object.values(e.constraints),
