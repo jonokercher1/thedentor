@@ -36,8 +36,8 @@ describe('Reset Password', () => {
       .expect(422)
       .expect({
         statusCode: 422,
-        error: 'Unprocessable Entity',
-        message: {
+        message: 'Unprocessable Entity',
+        error: {
           token: ['token must be a string'],
           password: ['password must be longer than or equal to 8 characters'],
           passwordConfirmation: ['"passwordConfirmation" does not match "password."'],
