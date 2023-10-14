@@ -1,4 +1,4 @@
 export const algoliaConfig = {
-  appId: 'U3XNC2YBMI',
-  apiKey: '149289065ef77295b622842e91b857b6',
+  appId: process.env.ALGOLIA_APP_ID,
+  apiKey: process.env.ALGOLIA_API_KEY,
 };
