@@ -34,6 +34,7 @@ export class TestCourseService {
         type,
         price: dataOverrides?.price ?? faker.number.float(),
         cpdValue: dataOverrides?.cpdValue ?? faker.number.int(),
+        name: dataOverrides?.name ?? faker.string.sample(),
         description: dataOverrides?.description ?? faker.string.sample(),
         dentor: {
           connect: {
