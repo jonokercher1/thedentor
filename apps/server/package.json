@@ -6,6 +6,7 @@
     "build": "nest build",
     "db:generate": "prisma generate",
     "db:migrate:create": "prisma migrate dev --name ",
+    "db:migrate:reset": "prisma migrate reset --force",
     "db:seed": "ts-node prisma/seed.ts",
     "db:reset": "npm run db:migrate init_db && npm run db:generate",
     "email:dev": "open https://mjml.io/try-it-live",

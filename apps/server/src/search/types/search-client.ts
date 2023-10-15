@@ -1,6 +1,16 @@
+export interface SearchOptions {
+  index?: string;
+}
+
+export interface SearchObject {
+  objectID: string
+  [key: string]: string | number | JSON
+}
+
 export interface SearchClient {
-  createObject: (name: string, searchableFields: string[], object: any) => void
-  updateObject: any
-  deleteObject: any
-  search: (query: string) => Promise<any[]>
+  initIndex: (indexName: string, searchableFields: string[]) => void
+  createObject: (object: SearchObject) => void;
+  updateObject: (object: SearchObject) => void;
+  deleteObject: (objectID: string) => void;
+  search: <Result>(query: string, options?: SearchOptions) => Promise<Result[]>;
 }

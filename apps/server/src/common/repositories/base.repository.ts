@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 abstract class BaseRepository {
   constructor(
-    protected readonly database: PrismaService,
+    protected readonly database?: PrismaService,
   ) { }
 }
 

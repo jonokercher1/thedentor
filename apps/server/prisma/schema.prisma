@@ -78,6 +78,7 @@ model Course {
   type        CourseType
   price       Int
   cpdValue    Float
+  name        String
   description String
   dentorId    String
   startDate   DateTime?
