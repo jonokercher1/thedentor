@@ -1,3 +1,5 @@
+import { PaginationInput } from '@/common/types/pagination';
+
 export interface SearchOptions {
   index?: string;
 }
@@ -12,5 +14,5 @@ export interface SearchClient {
   createObject: (object: SearchObject) => void;
   updateObject: (object: SearchObject) => void;
   deleteObject: (objectID: string) => void;
-  search: <Result>(query: string, options?: SearchOptions) => Promise<Result[]>;
+  search: <Result>(query: string, pagination?: PaginationInput) => Promise<Result[]>;
 }

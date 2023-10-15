@@ -3,12 +3,15 @@ import { PrismaService } from '@/database/prisma.service';
 import { Injectable, Inject } from '@nestjs/common';
 import { ISearchProvider } from '@/search/search.provider';
 import { SearchClient, SearchObject } from '@/search/types/search-client';
+import { PaginationInput } from '@/common/types/pagination';
 
 @Injectable()
 abstract class SearchableRepository extends BaseRepository {
   public abstract indexName: string;
 
   public abstract searchableFields: string[];
+
+  public abstract search<Result>(query: string, paginationInput: PaginationInput): Promise<Result[]>
 
   constructor(
     protected readonly database: PrismaService,
@@ -35,9 +38,6 @@ abstract class SearchableRepository extends BaseRepository {
   public deleteSearchableObject(objectID: string) {
     return this.searchClient.deleteObject(objectID);
   }
-
-
-  // public async search(query: string, paginationInput: PaginationInput) {}
 }
 
 export default SearchableRepository;

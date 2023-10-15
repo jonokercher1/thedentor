@@ -4,6 +4,7 @@ import { algoliaConfig } from '@/search/config/algolia.config';
 import { Inject, Injectable } from '@nestjs/common';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
+import { PaginationInput } from '@/common/types/pagination';
 
 @Injectable()
 export default class AlgoliaSearchClient implements SearchClient {
@@ -45,10 +46,20 @@ export default class AlgoliaSearchClient implements SearchClient {
   }
 
   // TODO: this will need a pagination input - it should be in the same format as we use internally
-  public async search<Result>(query: string): Promise<Result[]> {
-    // TODO: implement this
-    // https://www.algolia.com/doc/api-reference/api-methods/search/#examples
-    return [];
+  public async search<Result>(query: string, pagination: PaginationInput): Promise<Result[]> {
+    this.logger.log('AlgoliaSearchClient.search', 'Searching in Algolia', { query, pagination });
+    // TODO: implement sorting for algolia search results
+    // https://www.algolia.com/doc/guides/managing-results/refine-results/sorting/#sorting-by-attribute
+
+
+    const { hits } = await this.index.search<Result>(query, {
+      page: pagination.page,
+      hitsPerPage: pagination.perPage,
+    });
+
+    this.logger.log('AlgoliaSearchClient.search', 'Searched in algolia', { resultCount: hits.length });
+
+    return hits;
   }
 
   public initIndex(indexName: string, searchableFields: string[]): void {

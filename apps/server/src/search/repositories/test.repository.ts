@@ -3,6 +3,7 @@ import SearchableRepository from './searchable.repository';
 import { PrismaService } from '@/database/prisma.service';
 import { ISearchProvider } from '@/search/search.provider';
 import { SearchClient } from '@/search/types/search-client';
+import { PaginationInput } from '@/common/types/pagination';
 
 // TODO: remove this - this is just to show how searching can be implemented for ANY entity in the database
 @Injectable()
@@ -23,5 +24,9 @@ export class TestRepository extends SearchableRepository {
 
   public async test() {
     await this.deleteSearchableObject('1234');
+  }
+
+  public search<Result>(query: string, paginationInput: PaginationInput): Promise<Result[]> {
+    throw new Error('Method not implemented.');
   }
 }
