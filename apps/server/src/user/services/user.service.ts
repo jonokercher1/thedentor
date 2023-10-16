@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RoleName, User, Prisma } from '@prisma/client';
 import { HashingService } from '@/user/hashing.service';
 import { UserRepository } from '@/user/repositories/user.repository';
+import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
 
 @Injectable()
 export class UserService {
@@ -23,7 +24,7 @@ export class UserService {
     const existingUser = await this.checkUserExists(input.email, input.gdcNumber);
 
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new DuplicateEntityError('User');
     }
 
     return this.userRepository.create({

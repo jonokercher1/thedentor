@@ -13,6 +13,7 @@ import SessionManager from '@/auth/utils/session-manager';
 import AuthenticatedRequest from '@/common/types/authenticated-request';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
+import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
 
 @Controller('auth')
 export class AuthController {
@@ -63,7 +64,7 @@ export class AuthController {
     } catch (e) {
       this.logger.error('register', 'Unable to register', e?.message, { body });
 
-      if (e.message === 'User already exists') {
+      if (e instanceof DuplicateEntityError) {
         throw new BadRequestException(e.message);
       }
 
