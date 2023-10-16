@@ -46,7 +46,6 @@ export class AuthController {
     }
   }
 
-  // TODO: handle any internal errors thrown -> we should have logging from day 0
   @Post('register')
   @HttpCode(200)
   @Public()
@@ -72,7 +71,6 @@ export class AuthController {
     }
   }
 
-  // TODO: handle any internal errors thrown -> we should have logging from day 0
   @Get('me')
   @HttpCode(200)
   public async getSelf(@Req() request: AuthenticatedRequest, @Res({ passthrough: true }) response: Response): Promise<CurrentUserResponse> {
