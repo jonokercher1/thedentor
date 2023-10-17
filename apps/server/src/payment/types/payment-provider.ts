@@ -1,4 +1,5 @@
-import { SubscriptionTier, User } from '@prisma/client';
+import { SubscriptionTier } from '@/database/types/subscription-tier';
+import { User } from '@/database/types/user';
 
 export interface PaymentProvider {
   createCustomer: (email: string) => Promise<any>

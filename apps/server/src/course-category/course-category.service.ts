@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CourseCategoryRepository } from '@/course-category/course-category.repository';
-import { CourseType } from '@prisma/client';
+import { CourseType } from '@/database/types/course-type';
 
 @Injectable()
 export class CourseCategoryService {

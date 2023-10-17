@@ -1,6 +1,6 @@
-import { Category } from '@prisma/client';
 import { Expose } from 'class-transformer';
 import HttpSuccessResponse from '../../common/responses/http-success.response';
+import { Category } from '@/database/types/category';
 
 type ICourseCategoryData = Partial<Category>;
 

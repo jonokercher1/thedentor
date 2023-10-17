@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { RoleName, User, Prisma } from '@prisma/client';
 import { HashingService } from '@/user/hashing.service';
 import { UserRepository } from '@/user/repositories/user.repository';
 import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
+import { type CreateUserInput, type UpdateUserInput, type User } from '@/database/types/user';
+import { Role } from '@/database/types/role';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
     return this.userRepository.findUnique('email', email);
   }
 
-  public async createUser(input: Prisma.UserCreateInput): Promise<User> {
+  public async createUser(input: CreateUserInput): Promise<User> {
     const password = input?.password ? await this.hashingService.hashString(input.password) : null;
     const existingUser = await this.checkUserExists(input.email, input.gdcNumber);
 
@@ -35,13 +36,13 @@ export class UserService {
       password,
       role: {
         connect: {
-          name: RoleName.Dentist,
+          name: Role.Dentist,
         },
       },
     });
   }
 
-  public async updateUser(id: string, input: Prisma.UserUpdateInput): Promise<User> {
+  public async updateUser(id: string, input: UpdateUserInput): Promise<User> {
     const data = { ...input };
 
     // TODO: handle the Prisma.NullableStringFieldUpdateOperationsInput
