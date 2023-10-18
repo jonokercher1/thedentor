@@ -1,5 +1,5 @@
+import { User } from '@/database/types/user';
 import Notification, { EmailConfig } from '@/notification/notifications/notification';
-import { User } from '@prisma/client';
 
 interface PasswordResetRequestData {
   user: User

@@ -1,4 +1,4 @@
-import { CourseType } from '@prisma/client';
+import { CourseType } from '@/database/types/course-type';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class GetCourseCategoriesForTypeInput {

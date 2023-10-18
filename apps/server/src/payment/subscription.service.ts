@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IPaymentProvider, PaymentProvider } from '@/payment/types/payment-provider';
-import { SubscriptionTierName, User } from '@prisma/client';
 import { UserService } from '@/user/services/user.service';
 import { SubscriptionTierRepository } from '@/payment/repositories/subscription-tier.repository';
+import { User } from '@/database/types/user';
+import { SubscriptionTierName } from '@/database/types/subscription-tier';
 
 @Injectable()
 export class SubscriptionService {

@@ -2,7 +2,6 @@ import { BadRequestException, Body, Controller, Get, HttpCode, Inject, Post, Req
 import { RegisterRequest } from '@/auth/requests/register.request';
 import { SubscriptionService } from '@/payment/subscription.service';
 import { UserService } from '@/user/services/user.service';
-import { RoleName } from '@prisma/client';
 import { CurrentUserResponse } from '@/auth/responses/current-user.response';
 import { AuthService } from '@/auth/auth.service';
 import { LoginRequest } from '@/auth/requests/login.request';
@@ -13,6 +12,8 @@ import SessionManager from '@/auth/utils/session-manager';
 import AuthenticatedRequest from '@/common/types/authenticated-request';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
+import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
+import { Role } from '@/database/types/role';
 
 @Controller('auth')
 export class AuthController {
@@ -45,13 +46,12 @@ export class AuthController {
     }
   }
 
-  // TODO: handle any internal errors thrown -> we should have logging from day 0
   @Post('register')
   @HttpCode(200)
   @Public()
   public async register(@Body() body: RegisterRequest, @Res({ passthrough: true }) response: Response): Promise<CurrentUserResponse> {
     try {
-      const role = RoleName.Dentist;
+      const role = Role.Dentist;
       const user = await this.userService.createUser({ ...body, role: { connect: { name: role } } });
 
       await this.subscriptionService.createCustomerWithPremiumSubscription(user);
@@ -63,7 +63,7 @@ export class AuthController {
     } catch (e) {
       this.logger.error('register', 'Unable to register', e?.message, { body });
 
-      if (e.message === 'User already exists') {
+      if (e instanceof DuplicateEntityError) {
         throw new BadRequestException(e.message);
       }
 
@@ -71,7 +71,6 @@ export class AuthController {
     }
   }
 
-  // TODO: handle any internal errors thrown -> we should have logging from day 0
   @Get('me')
   @HttpCode(200)
   public async getSelf(@Req() request: AuthenticatedRequest, @Res({ passthrough: true }) response: Response): Promise<CurrentUserResponse> {

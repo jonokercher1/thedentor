@@ -1,8 +1,10 @@
-import { CourseVideo, Video } from '@prisma/client';
 import { Expose } from 'class-transformer';
 import HttpSuccessResponse from '../../common/responses/http-success.response';
 import { ImageResponse } from '@/file/responses/image-response';
+import { Video } from '@/database/types/video';
+import { CourseVideo } from '@/database/types/course-video';
 
+// TODO: add better typing for thumbnails
 type ICourseVideoData = Partial<CourseVideo> & Partial<Video & { thumbnail: any }>;
 
 class CourseVideoResponseData {

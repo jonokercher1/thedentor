@@ -5,11 +5,12 @@ import PasswordResetRequest from '@/notification/notifications/password-reset-re
 import { UserService } from './user.service';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
 import * as dayjs from 'dayjs';
-import { Prisma } from '@prisma/client';
+import InvalidPasswordResetRequest from '@/common/errors/auth/invalid-password-reset-request';
+import { PasswordResetTokenFields } from '@/database/types/password-reset-token';
 
 @Injectable()
 export class UserPasswordResetService {
-  private readonly TOKEN_WITH_USER_FIELDS: Prisma.PasswordResetTokenSelect = {
+  private readonly TOKEN_WITH_USER_FIELDS: PasswordResetTokenFields = {
     ...this.passwordResetRepository.DEFAULT_FIELDS,
     user: {
       select: {
@@ -61,8 +62,7 @@ export class UserPasswordResetService {
     const isValid = await this.isResetRequestValid(passwordResetRequest.expiresAt);
 
     if (!isValid) {
-      // TODO: we should have some internal errors being thrown with better metadata and logging attached
-      throw new Error(`Passsword reset request invalid. Token: ${token}`);
+      throw new InvalidPasswordResetRequest(`Token: ${token}`);
     }
 
     return passwordResetRequest;

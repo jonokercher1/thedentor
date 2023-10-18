@@ -1,3 +1,4 @@
+import InvalidHashError from '@/common/errors/auth/invalid-hash-error';
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
@@ -13,7 +14,7 @@ export class HashingService {
     const matches = await bcrypt.compare(unhashed, hashed);
 
     if (!matches) {
-      throw new Error('Hashes don\'t match');
+      throw new InvalidHashError();
     }
 
     return true;

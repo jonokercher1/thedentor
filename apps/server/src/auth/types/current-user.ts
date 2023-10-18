@@ -1,7 +1,6 @@
-import { RoleName } from '@prisma/client';
-
+import { Role } from '@/database/types/role';
 export interface CurrentUser {
   id: string;
   email: string;
-  role: RoleName
+  role: Role
 }
