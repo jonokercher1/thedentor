@@ -2,12 +2,15 @@ import { PropsWithChildren, type FC } from 'react'
 import BackgroundImage from '../../public/auth-background.png'
 import Image from 'next/image'
 import { Logo } from '@dentor/ui'
+import Link from 'next/link'
 
 const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <main className="grid lg:grid-cols-2 w-full">
       <aside className="hidden lg:block bg-neutral-900 relative p-20">
-        <Logo className="text-white absolute z-30" />
+        <Link href="/">
+          <Logo className="text-white absolute z-30" />
+        </Link>
         <Image
           src={BackgroundImage}
           alt=""
@@ -22,7 +25,7 @@ const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
         </div>
 
         <footer className="py-6 text-center mt-auto">
-          <p className="font-light text-neutral-300">The Dentor &copy; 2023</p>
+          <p className="font-light text-neutral-300">The Dentor &copy; {new Date().getFullYear()}</p>
         </footer>
       </section>
     </main>
