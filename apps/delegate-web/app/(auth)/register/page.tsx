@@ -1,9 +1,9 @@
 'use client'
 
 import { type FC, useState } from 'react'
-import RegisterAccountDetailsForm from '@/components/auth/RegisterAccountDetailsForm'
+import RegisterAccountDetailsForm from '@/app/(auth)/register/components/RegisterAccountDetailsForm'
 import { FormProvider, useForm } from 'react-hook-form'
-import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
+import RegisterPasswordForm from '@/app/(auth)/register/components/RegisterPasswordForm'
 import Link from 'next/link'
 import register from '@/api/auth/register'
 import { useQueryState } from '@dentor/ui'

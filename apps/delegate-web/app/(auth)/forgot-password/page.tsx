@@ -1,8 +1,8 @@
 'use client'
 
 import requestPasswordReset from '@/api/auth/request-password-reset'
-import RequestPasswordResetForm from '@/components/auth/RequestPasswordResetForm'
-import ResetPasswordRequestSuccess from '@/components/auth/ResetPasswordRequestSuccess'
+import RequestPasswordResetForm from '@/app/(auth)/forgot-password/components/RequestPasswordResetForm'
+import ResetPasswordRequestSuccess from '@/app/(auth)/forgot-password/components/RequestPasswordResetSuccess'
 import { Button, ButtonVariant, EmailField, Icon, IconName, useApiRequest, useToast } from '@dentor/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

@@ -1,7 +1,7 @@
 'use client'
 
 import login, { type LoginBody, type LoginResponse } from '@/api/auth/login'
-import LoginForm from '@/components/auth/LoginForm'
+import LoginForm from '@/app/(auth)/login/components/LoginForm'
 import { useApiRequest, useToast } from '@dentor/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
