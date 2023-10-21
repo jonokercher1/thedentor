@@ -6,3 +6,6 @@ export * from './Icon'
 
 export { default as LoadingSpinner } from './LoadingSpinner'
 export * from './LoadingSpinner'
+
+export { default as Container } from './Container'
+export * from './Container'

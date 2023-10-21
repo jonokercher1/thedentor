@@ -23,6 +23,11 @@ const config: Config = {
             dark: '#6C7FF5',
           },
         },
+        complementary: {
+          primary: {
+            DEFAULT: '#051729',
+          }
+        },
         state: {
           success: '#59AF5E',
           warning: '#FCEFD4',
