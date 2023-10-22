@@ -25,7 +25,9 @@ const config: Config = {
         },
         complementary: {
           primary: {
-            DEFAULT: '#051729',
+            100: '#41546E',
+            300: '#11243E',
+            500: '#091728',
           }
         },
         state: {

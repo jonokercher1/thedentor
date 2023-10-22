@@ -21,7 +21,7 @@ const Footer: FC<FooterProps> = () => {
   return (
     <footer className="text-white">
       <Container>
-        <section className="flex items-center justify-between gap-12">
+        <section className="flex items-center justify-between gap-6 flex-col md:flex-row md:gap-12">
           <Link href="/">
             <Logo />
           </Link>
@@ -30,24 +30,24 @@ const Footer: FC<FooterProps> = () => {
             {socialLinks.map((link, index) => (
               <div
                 key={`footer-social-links-${index}`}
-                className="rounded-full bg-accent-primary  h-8 w-8 flex items-center justify-center"
+                className="rounded-full bg-neutral-700 h-8 w-8 flex items-center justify-center"
               >
-                <Icon name={link.icon} />
+                <Icon name={link.icon} className="h-5 w-5" />
               </div>
             ))}
           </div>
         </section>
 
-        <section className="flex items-center justify-between gap-12 mt-20">
+        <section className="flex items-center flex-col md:flex-row md:justify-between gap-12 mt-20">
           <nav>
-            <ul className="list-none flex items-center">
+            <ul className="list-none flex items-center flex-col md:flex-row gap-4 md:gap-0">
               {footerNavItems.map((item, index) => (
                 <li
                   key={`footer-nav-item-${index}`}
                   className={
                     classNames({
-                      ['pr-3 border-r border-white']: index < footerNavItems.length - 1,
-                      ['pl-3']: index > 0
+                      ['md:pr-3 md:border-r border-white']: index < footerNavItems.length - 1,
+                      ['md:pl-3']: index > 0
                     })
                   }
                 >
