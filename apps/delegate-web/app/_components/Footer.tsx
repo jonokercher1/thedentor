@@ -52,7 +52,7 @@ const Footer: FC<FooterProps> = () => {
                   }
                 >
                   <Link href={item.route as any}>
-                    <p className->{item.label}</p>
+                    <p>{item.label}</p>
                   </Link>
                 </li>
               ))}

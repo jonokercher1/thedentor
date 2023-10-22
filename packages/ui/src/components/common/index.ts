@@ -9,3 +9,9 @@ export * from './LoadingSpinner'
 
 export { default as Container } from './Container'
 export * from './Container'
+
+export { default as Tabs } from './Tabs'
+export * from './Tabs'
+
+export { default as Chip } from './Chip'
+export * from './Chip'

@@ -23,13 +23,6 @@ const config: Config = {
             dark: '#6C7FF5',
           },
         },
-        complementary: {
-          primary: {
-            100: '#41546E',
-            300: '#11243E',
-            500: '#091728',
-          }
-        },
         state: {
           success: '#59AF5E',
           warning: '#FCEFD4',
@@ -40,7 +33,9 @@ const config: Config = {
           200: '#F7F9FC',
           300: '#CBCFD5',
           500: '#41546E',
+          600: '#3D4D63',
           700: '#162D4C',
+          800: '#11243E',
           900: '#091728'
         }
       },

@@ -1,5 +1,5 @@
 import 'server-only'
-import { CurrentUser } from '@/types/api/current-user'
+import { CurrentUser } from '@/types/api/auth/current-user'
 import { ServerApiClient } from '../server-api-client'
 import { HttpSuccessResponse } from '@/types/api/http-success-response'
 

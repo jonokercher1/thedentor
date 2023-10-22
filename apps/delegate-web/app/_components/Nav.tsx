@@ -10,8 +10,8 @@ interface NavProps extends AtomProps { }
 
 const navItems = [
   { label: 'Home', route: '/' },
-  { label: 'Courses', route: '/courses/in-person/discover' },
-  { label: 'Videos', route: '/courses/video/discover' },
+  { label: 'Courses', route: '/courses/in-person' },
+  { label: 'Videos', route: '/courses/video' },
   { label: 'Dentors', route: '/404' },
 ];
 
@@ -27,9 +27,8 @@ const Nav: FC<NavProps> = ({ className, id }) => {
               <p
                 className={
                   classNames('uppercase', {
-                    ['text-accent-primary']: pathname === item.route
-                  }
-                  )
+                    ['text-accent-primary']: (pathname.startsWith(item.route) && item.route !== '/') || (item.route === '/' && pathname === '/'),
+                  })
                 }
               >
                 {item.label}

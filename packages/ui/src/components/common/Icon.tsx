@@ -9,20 +9,22 @@ import {
   LockOutlined,
   NotificationsNoneOutlined,
   Instagram,
-  Facebook
+  Facebook,
+  ChevronRight
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
 export enum IconName {
-  Visibility,
-  VisibilityOff,
-  Key,
   ChevronLeft,
+  ChevronRight,
   EnvelopeOpen,
+  Facebook,
+  Instagram,
+  Key,
   Lock,
   NotificationBell,
-  Instagram,
-  Facebook
+  Visibility,
+  VisibilityOff,
 }
 
 interface IconProps {
@@ -31,15 +33,16 @@ interface IconProps {
 }
 
 const icons = {
-  [IconName.Visibility]: Visibility,
-  [IconName.VisibilityOff]: VisibilityOff,
-  [IconName.Key]: KeyOutlined,
   [IconName.ChevronLeft]: ChevronLeft,
+  [IconName.ChevronRight]: ChevronRight,
   [IconName.EnvelopeOpen]: DraftsOutlined,
+  [IconName.Facebook]: Facebook,
+  [IconName.Instagram]: Instagram,
+  [IconName.Key]: KeyOutlined,
   [IconName.Lock]: LockOutlined,
   [IconName.NotificationBell]: NotificationsNoneOutlined,
-  [IconName.Instagram]: Instagram,
-  [IconName.Facebook]: Facebook,
+  [IconName.Visibility]: Visibility,
+  [IconName.VisibilityOff]: VisibilityOff,
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {
