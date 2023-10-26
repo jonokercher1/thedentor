@@ -17,7 +17,7 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
   }
 
   return (
-    <section className="py-20">
+    <section className="py-12">
       <h2 className="text-white text-3xl mb-6">Browse Categories</h2>
 
       <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

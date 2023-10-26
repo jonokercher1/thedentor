@@ -3,6 +3,7 @@ import CourseCard from './CourseCard'
 import dayjs from 'dayjs'
 import TheDentorPremiumCard from '@/app/_components/TheDentorPremiumCard'
 
+// TODO: get from api
 const upcomingCourses = [
   {
     id: '123',
@@ -11,11 +12,16 @@ const upcomingCourses = [
     cpdValue: 12,
     startDate: new Date(),
     endDate: dayjs().add(2, 'days').toDate(),
+    owned: false,
     dentor: {
       name: 'Jason Smithson'
     },
     categories: [
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' }
+      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
+      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
+      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
+      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
+      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
     ]
   },
   {
@@ -25,6 +31,7 @@ const upcomingCourses = [
     cpdValue: 12,
     startDate: new Date(),
     endDate: dayjs().add(2, 'days').toDate(),
+    owned: true,
     dentor: {
       name: 'Jason Smithson'
     },
@@ -39,6 +46,7 @@ const upcomingCourses = [
     cpdValue: 12,
     startDate: new Date(),
     endDate: dayjs().add(2, 'days').toDate(),
+    owned: false,
     dentor: {
       name: 'Jason Smithson'
     },
@@ -53,6 +61,7 @@ const upcomingCourses = [
     cpdValue: 12,
     startDate: new Date(),
     endDate: dayjs().add(2, 'days').toDate(),
+    owned: true,
     dentor: {
       name: 'Jason Smithson'
     },
@@ -64,12 +73,12 @@ const upcomingCourses = [
 
 const UpcomingCourses: FC = () => {
   return (
-    <div className="py-20">
+    <section className="py-12">
       <header>
         <h2 className="text-white text-3xl mb-12">Upcoming Courses</h2>
       </header>
 
-      <div className="grid md:grid-cols-3 md:gap-20">
+      <div className="grid lg:grid-cols-3 lg:gap-20">
         <section className="col-span-2 flex flex-col gap-12">
           {upcomingCourses.map((course) => (
             <CourseCard
@@ -83,7 +92,7 @@ const UpcomingCourses: FC = () => {
           <TheDentorPremiumCard className="h-[800px] top-12 sticky" />
         </aside>
       </div>
-    </div>
+    </section>
   )
 }
 

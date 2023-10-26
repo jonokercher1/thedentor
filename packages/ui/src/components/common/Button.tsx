@@ -17,9 +17,10 @@ interface ButtonProps extends AtomWithChildrenProps {
   type?: HTMLButtonElement['type']
   loading?: boolean
   disabled?: boolean
+  outlined?: boolean
 }
 
-const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, disabled, loading, variant = ButtonVariant.Primary }) => {
+const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, disabled, loading, outlined, variant = ButtonVariant.Primary }) => {
   const isDisabled = disabled || loading
   const buttonClasses = classNames(
     'bg-accent-primary text-neutral-100 rounded-full px-6 py-4 transition-colors duration-200',
@@ -31,6 +32,8 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
       'bg-opacity-50 cursor-not-allowed hover:bg-opacity-50': isDisabled,
       'hover:bg-accent-primary hover:bg-opacity-50': isDisabled && variant === ButtonVariant.Primary,
       'hover:bg-accent-secondary hover:bg-opacity-50': isDisabled && variant === ButtonVariant.Secondary,
+      'border-accent-primary border-2 bg-transparent text-white hover:bg-accent-primary box-border': outlined && variant === ButtonVariant.Primary,
+      'border-accent-secondary border-2 bg-transparent hover:bg-accent-secondary box-border': outlined && variant === ButtonVariant.Secondary,
       // 'bg-accent-primary-light hover:bg-accent-primary-light': variant === ButtonVariant.Primary && loading,
       // 'bg-accent-secondary-light hover:bg-accent-secondary-light': variant === ButtonVariant.Secondary && loading,
     }

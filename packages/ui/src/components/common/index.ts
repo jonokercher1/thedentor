@@ -15,3 +15,6 @@ export * from './Tabs'
 
 export { default as Chip } from './Chip'
 export * from './Chip'
+
+export { default as Carousel } from './Carousel'
+export * from './Carousel'

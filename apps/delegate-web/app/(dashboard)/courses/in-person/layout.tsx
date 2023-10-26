@@ -2,12 +2,12 @@
 
 import { Tabs, type Tab } from '@dentor/ui'
 import { Container } from '@dentor/ui'
-import { useParams, usePathname, useRouter } from 'next/navigation'
-import { type PropsWithChildren, type FC, useState, useMemo } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { type PropsWithChildren, type FC, useMemo } from 'react'
 
 const inPersonCourseTabs: Tab[] = [
-  { label: 'Discover Courses', id: 'discover', onClick: console.log },
-  { label: 'My Courses', id: 'owned', onClick: console.log },
+  { label: 'Discover Courses', id: 'discover' },
+  { label: 'My Courses', id: 'owned' },
 ]
 
 const InPersonCoursesLayout: FC<PropsWithChildren> = ({ children }) => {
@@ -21,6 +21,7 @@ const InPersonCoursesLayout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <Container>
+      {/* TODO: hide this on individual course page */}
       <section className="text-center">
         <Tabs
           tabs={inPersonCourseTabs}

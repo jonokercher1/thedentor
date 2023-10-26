@@ -19,7 +19,7 @@ const footerNavItems = [
 
 const Footer: FC<FooterProps> = () => {
   return (
-    <footer className="text-white">
+    <footer className="text-white pb-12">
       <Container>
         <section className="flex items-center justify-between gap-6 flex-col md:flex-row md:gap-12">
           <Link href="/">
@@ -62,7 +62,7 @@ const Footer: FC<FooterProps> = () => {
           <p>The Dentor &copy; {new Date().getFullYear()}</p>
         </section>
       </Container>
-    </footer >
+    </footer>
   )
 }
 

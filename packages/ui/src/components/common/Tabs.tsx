@@ -7,7 +7,6 @@ import { type FC } from 'react'
 export interface Tab {
   id: string
   label: string
-  onClick: (tabId: string) => void
 }
 
 interface TabsProps extends AtomProps {

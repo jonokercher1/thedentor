@@ -10,7 +10,8 @@ import {
   NotificationsNoneOutlined,
   Instagram,
   Facebook,
-  ChevronRight
+  ChevronRight,
+  QrCodeScanner
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
@@ -25,6 +26,7 @@ export enum IconName {
   NotificationBell,
   Visibility,
   VisibilityOff,
+  QrCode,
 }
 
 interface IconProps {
@@ -43,6 +45,7 @@ const icons = {
   [IconName.NotificationBell]: NotificationsNoneOutlined,
   [IconName.Visibility]: Visibility,
   [IconName.VisibilityOff]: VisibilityOff,
+  [IconName.QrCode]: QrCodeScanner
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {
