@@ -7,18 +7,16 @@ import { PaginationInput } from '@/common/types/pagination';
 
 // TODO: remove this - this is just to show how searching can be implemented for ANY entity in the database
 @Injectable()
-export class TestRepository extends SearchableRepository {
+export class TestRepository extends SearchableRepository<any> {
   public indexName = 'course';
 
   public searchableFields = ['name', 'description', 'dentorName'];
-
-  private readonly entity = this.database.course;
 
   constructor(
     protected readonly database: PrismaService,
     @Inject(ISearchProvider) protected readonly searchClient?: SearchClient,
   ) {
-    super(database);
+    super(database, database.course);
     this.initIndex();
   }
 

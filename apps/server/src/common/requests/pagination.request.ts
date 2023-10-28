@@ -1,14 +1,22 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsInt, IsOptional } from 'class-validator';
+import { Order } from '@/common/types/filtering';
 
 export class PaginationRequest {
-  @IsNotEmpty()
+  @IsOptional()
   @IsInt()
   @Type(() => Number)
-  public readonly pageSize: number;
+  public readonly perPage: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsInt()
   @Type(() => Number)
   public readonly page: number;
+
+  @IsOptional()
+  public readonly orderBy?: string;
+
+  @IsOptional()
+  @IsEnum(Order)
+  public readonly order?: 'asc' | 'desc';
 }

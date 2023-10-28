@@ -7,6 +7,7 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css';
+import { AutoplayOptions, PaginationOptions } from 'swiper/types';
 
 interface CarouselProps {
   items: JSX.Element[]
@@ -19,13 +20,15 @@ interface CarouselProps {
 
 const Carousel: FC<CarouselProps> = ({ items, slidesPerView = 1, gap, loop, navigation, pagination }) => {
   const sliderRef = useRef<SwiperRef>(null);
-  const paginationOptions = pagination ? { clickable: true, el: '.coursel-pagination' } : undefined
+  const paginationOptions: PaginationOptions | undefined = pagination ? { clickable: true, el: '.coursel-pagination' } : undefined
 
+  // For the future when we add in navigation option
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slidePrev();
   }, []);
 
+  // For the future when we add in navigation option
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slideNext();

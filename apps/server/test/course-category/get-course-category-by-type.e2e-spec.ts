@@ -51,7 +51,7 @@ describe('Get Course Categories', () => {
 
     const response = await request(app.getHttpServer())
       .get(URL)
-      .set('Cookie', ['Authorization', `authSession=${accessToken}`]);
+      .set('Cookie', [`authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
     expect(response.body.message).toEqual('success');
@@ -67,7 +67,7 @@ describe('Get Course Categories', () => {
 
     return request(app.getHttpServer())
       .get(`${URL}?type=invalidtype`)
-      .set('Cookie', ['Authorization', `authSession=${accessToken}`])
+      .set('Cookie', [`authSession=${accessToken}`])
       .expect(422)
       .expect({
         statusCode: 422,
@@ -88,7 +88,7 @@ describe('Get Course Categories', () => {
 
     const response = await request(app.getHttpServer())
       .get(`${URL}?type=${CourseType.Video}`)
-      .set('Cookie', ['Authorization', `authSession=${accessToken}`]);
+      .set('Cookie', [`authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
     expect(response.body.message).toEqual('success');
@@ -106,7 +106,7 @@ describe('Get Course Categories', () => {
 
     const response = await request(app.getHttpServer())
       .get(`${URL}?type=${CourseType.InPerson}`)
-      .set('Cookie', ['Authorization', `authSession=${accessToken}`]);
+      .set('Cookie', [`authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
     expect(response.body.message).toEqual('success');

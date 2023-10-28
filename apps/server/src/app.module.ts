@@ -10,6 +10,7 @@ import { CourseVideoModule } from '@/course-video/course-video.module';
 import { FileModule } from '@/file/file.module';
 import { NotificationModule } from '@/notification/notification.module';
 import { SearchModule } from './search/search.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SearchModule } from './search/search.module';
     FileModule,
     NotificationModule,
     SearchModule,
+    CourseModule,
   ],
   providers: [
     {
