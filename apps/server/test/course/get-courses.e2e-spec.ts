@@ -1,7 +1,6 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import TestDatabaseService from '@test/utils/test-database-service';
-import { faker } from '@faker-js/faker/locale/en_GB';
 import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
 import { TestCourseService } from '@test/utils/test-course-service';
@@ -10,7 +9,7 @@ import TestApp from '@test/utils/test-app';
 import * as dayjs from 'dayjs';
 import { TestHelpers } from '@test/utils/test-helpers';
 
-describe('Get Upcoming In Person Courses', () => {
+describe('Get Courses', () => {
   const URL = '/course';
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;

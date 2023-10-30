@@ -4,13 +4,12 @@ import TestDatabaseService from '@test/utils/test-database-service';
 import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
 import { TestCourseService } from '@test/utils/test-course-service';
-import { CourseType } from '@prisma/client';
 import TestApp from '@test/utils/test-app';
 import * as dayjs from 'dayjs';
 import { TestHelpers } from '@test/utils/test-helpers';
 
-describe('Get Featured Courses By Type', () => {
-  const URL = '/course/featured';
+describe('Get Upcoming In Person Courses', () => {
+  const URL = '/course/in-person/upcoming';
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
   let testCategoryService: TestCategoryService;
@@ -35,7 +34,7 @@ describe('Get Featured Courses By Type', () => {
 
   it('should error if the user is unauthenticated', async () => {
     return request(app.getHttpServer())
-      .get(`${URL}/${CourseType.InPerson}`)
+      .get(URL)
       .expect(401)
       .expect({
         statusCode: 401,
@@ -43,90 +42,81 @@ describe('Get Featured Courses By Type', () => {
       });
   });
 
-  it('should error if the course type is invalid', async () => {
-    const accessToken = await testJwtService.generateAccessToken();
-
-    return request(app.getHttpServer())
-      .get(`${URL}/invalidtype`)
-      .set('Cookie', [`authSession=${accessToken}`])
-      .expect(400)
-      .expect({
-        statusCode: 400,
-        message: 'Validation failed (enum string is expected)',
-        error: 'Bad Request',
-      });
-  });
-
-  it('should only return courses that match the specified type', async () => {
-    const featuredUntil = dayjs().add(1, 'day').toDate();
-    const videoCourse = await testCourseService.createVideoCourse([], { featuredUntil });
-    await testCourseService.createInPersonCourse([], { featuredUntil });
+  it('should paginate the upcoming course results', async () => {
+    const inPersonCourseOne = await testCourseService.createInPersonCourse([], { startDate: dayjs().add(1, 'day').toDate() });
+    const inPersonCourseTwo = await testCourseService.createInPersonCourse([], { startDate: dayjs().add(2, 'day').toDate() });
     const accessToken = await testJwtService.generateAccessToken();
 
     const response = await request(app.getHttpServer())
-      .get(`${URL}/${CourseType.Video}`)
+      .get(`${URL}?page=1&perPage=1`)
       .set('Cookie', [`authSession=${accessToken}`]);
 
     expect(response.status).toEqual(200);
     expect(response.body.message).toEqual('success');
     expect(response.body.data).toHaveLength(1);
 
-    expect(response.body.data[0].id).toEqual(videoCourse.id);
-  });
-
-  it('should only return courses that are currently featured', async () => {
-    const featuredVideoCourse = await testCourseService.createVideoCourse([], { featuredUntil: dayjs().add(1, 'day').toDate() });
-    await testCourseService.createVideoCourse([], { featuredUntil: dayjs().subtract(1, 'day').toDate() });
-    const accessToken = await testJwtService.generateAccessToken();
-
-    const response = await request(app.getHttpServer())
-      .get(`${URL}/${CourseType.Video}`)
-      .set('Cookie', [`authSession=${accessToken}`]);
-
-    expect(response.status).toEqual(200);
-    expect(response.body.message).toEqual('success');
-    expect(response.body.data).toHaveLength(1);
-
-    expect(response.body.data[0].id).toEqual(featuredVideoCourse.id);
-  });
-
-  it('should paginate the course results', async () => {
-    const featuredVideoCourseOne = await testCourseService.createVideoCourse([], { featuredUntil: dayjs().add(1, 'day').toDate() });
-    const featuredVideoCourseTwo = await testCourseService.createVideoCourse([], { featuredUntil: dayjs().add(1, 'day').toDate() });
-    const accessToken = await testJwtService.generateAccessToken();
-
-    const response = await request(app.getHttpServer())
-      .get(`${URL}/${CourseType.Video}?page=1&perPage=1`)
-      .set('Cookie', [`authSession=${accessToken}`]);
-
-    expect(response.status).toEqual(200);
-    expect(response.body.message).toEqual('success');
-    expect(response.body.data).toHaveLength(1);
-
-    expect(response.body.data[0].id).toEqual(featuredVideoCourseTwo.id);
+    expect(response.body.data[0].id).toEqual(inPersonCourseOne.id);
     expect(response.body.page).toEqual(1);
     expect(response.body.total).toEqual(2);
 
     const responseTwo = await request(app.getHttpServer())
-      .get(`${URL}/${CourseType.Video}?page=2&perPage=1`)
+      .get(`${URL}?page=2&perPage=1`)
       .set('Cookie', [`authSession=${accessToken}`]);
 
     expect(responseTwo.status).toEqual(200);
     expect(responseTwo.body.message).toEqual('success');
     expect(responseTwo.body.data).toHaveLength(1);
 
-    expect(responseTwo.body.data[0].id).toEqual(featuredVideoCourseOne.id);
+    expect(responseTwo.body.data[0].id).toEqual(inPersonCourseTwo.id);
     expect(responseTwo.body.page).toEqual(2);
     expect(responseTwo.body.total).toEqual(2);
   });
 
-  it('should return courses in the correct format', async () => {
-    const courseCategory = await testCategoryService.createCategory();
-    await testCourseService.createVideoCourse([courseCategory.slug], { featuredUntil: dayjs().add(1, 'day').toDate() });
+  it('should not return courses that start in the past', async () => {
+    // Create a course that started yesterday
+    await testCourseService.createInPersonCourse([], { startDate: dayjs().subtract(1, 'day').toDate() });
     const accessToken = await testJwtService.generateAccessToken();
 
     const response = await request(app.getHttpServer())
-      .get(`${URL}/${CourseType.Video}`)
+      .get(URL)
+      .set('Cookie', [`authSession=${accessToken}`]);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.message).toEqual('success');
+    expect(response.body.data).toHaveLength(0);
+
+  });
+
+  it('should return the courses that happen soonist, first', async () => {
+    const firstCourse = await testCourseService.createInPersonCourse([], {
+      startDate: dayjs().add(1, 'day').toDate(),
+      createdAt: dayjs().subtract(1, 'day').toDate(), // was only created yesterday
+    });
+    const secondCourse = await testCourseService.createInPersonCourse([], {
+      startDate: dayjs().add(2, 'day').toDate(),
+      createdAt: dayjs().subtract(1, 'week').toDate(), // was created last week but starts in 2 days
+    });
+    const accessToken = await testJwtService.generateAccessToken();
+
+    const response = await request(app.getHttpServer())
+      .get(URL)
+      .set('Cookie', [`authSession=${accessToken}`]);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.message).toEqual('success');
+    expect(response.body.data).toHaveLength(2);
+
+    expect(response.body.data[0].id).toEqual(firstCourse.id);
+    expect(response.body.data[1].id).toEqual(secondCourse.id);
+  });
+
+  it('should return courses in the correct format', async () => {
+    const courseCategory = await testCategoryService.createCategory();
+    await testCourseService.createInPersonCourse([courseCategory.slug], { startDate: dayjs().add(1, 'day').toDate() });
+    const accessToken = await testJwtService.generateAccessToken();
+
+    const response = await request(app.getHttpServer())
+      .get(URL)
       .set('Cookie', [`authSession=${accessToken}`]);
 
     const responseObjectKeys = testHelpers.convertResponseKeysToFlatArray(response.body.data[0]);
