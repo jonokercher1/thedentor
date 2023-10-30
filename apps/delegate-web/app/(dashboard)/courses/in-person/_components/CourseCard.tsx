@@ -2,11 +2,8 @@
 
 import { Button, ButtonVariant, Chip, Icon, IconName } from '@dentor/ui'
 import { type FC } from 'react'
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
 import DentorChip from '@/app/(dashboard)/courses/_components/DentorChip'
-
-dayjs.extend(advancedFormat)
+import CourseDateTag from '@/app/(dashboard)/courses/in-person/_components//CourseDateTag'
 
 interface CourseCardProps {
   course: any // TODO: add type from api 
@@ -21,9 +18,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
       <section className="flex gap-3 my-5 flex-wrap">
         {course.startDate && course.endDate && (
-          <Chip
-            label={`${dayjs(course.startDate).format('Do MMM')} - ${dayjs(course.endDate).format('Do MMM')}`}
-            className="flex-shrink-0"
+          <CourseDateTag
+            startDate={course.startDate}
+            endDate={course.endDate}
           />
         )}
 
@@ -54,7 +51,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
               <Icon name={IconName.QrCode} />
               <p>View Ticket</p>
             </Button>
-            <Button variant={ButtonVariant.Primary}>
+            {/* TODO: need to support /video too */}
+            <Button variant={ButtonVariant.Primary} className="text-center" href={`/courses/in-person/${course.id}`}>
               <p>View Course</p>
             </Button>
           </div>

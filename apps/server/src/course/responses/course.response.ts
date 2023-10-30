@@ -1,4 +1,5 @@
 import HttpSuccessResponse, { HttpPaginatedResponse } from '@/common/responses/http-success.response';
+import { CourseCategoryResponse, CourseCategoryResponseData, ICourseCategoryData } from '@/course-category/responses/course-category.response';
 import { Category } from '@/database/types/category';
 import { Course } from '@/database/types/course';
 import { User } from '@/database/types/user';
@@ -20,21 +21,8 @@ import { Expose, Type } from 'class-transformer';
 //   ]
 // },
 
-type ICourseCategoryData = Partial<Category>;
 type ICourseDentorData = Partial<User>;
 type ICourseData = Partial<Course> & { dentor: ICourseDentorData; category: ICourseCategoryData[] };
-
-class CourseCategoryData {
-  @Expose()
-  public readonly slug: string;
-
-  @Expose()
-  public readonly label: string;
-
-  constructor(data?: ICourseCategoryData) {
-    Object.assign(this, data);
-  }
-}
 
 class CourseDentorData {
   @Expose()
@@ -72,24 +60,26 @@ class CourseData {
   public readonly dentor: CourseDentorData;
 
   @Expose()
-  @Type(() => CourseCategoryData)
-  public readonly categories: CourseCategoryData[];
+  @Type(() => CourseCategoryResponseData)
+  public readonly categories: CourseCategoryResponseData[];
 
   constructor(courseData?: ICourseData) {
     Object.assign(this, courseData);
-    this.dentor = new CourseDentorData(courseData.dentor);
-    this.categories = courseData.category.map(category => new CourseCategoryData(category));
+    this.dentor = new CourseDentorData(courseData.dentor); // TODO: move this to a dentor module when one exists
+    this.categories = courseData.category.map(category => new CourseCategoryResponseData(category));
   }
 }
 
 export class CourseResponse extends HttpSuccessResponse<CourseData> {
+  private static readonly transformerClass = CourseData;
+
   constructor(data?: ICourseData) {
-    super(new CourseData(data));
+    super(new CourseResponse.transformerClass(data));
   }
 
   // TOOD: work out how to make this generic
   public static paginate(data: ICourseData[], total: number, page: number) {
-    const dataResponse = data.map((item) => new CourseData(item));
+    const dataResponse = data.map((item) => new CourseResponse.transformerClass(item));
 
     return new HttpPaginatedResponse(dataResponse, total, page);
   }

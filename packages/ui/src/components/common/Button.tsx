@@ -4,6 +4,7 @@ import { type FC } from 'react'
 import classNames from 'classnames'
 import LoadingSpinner from './LoadingSpinner'
 import { AtomWithChildrenProps } from '../../types/Component'
+import Link from 'next/link'
 
 export enum ButtonVariant {
   Primary = 'Primary',
@@ -18,9 +19,10 @@ interface ButtonProps extends AtomWithChildrenProps {
   loading?: boolean
   disabled?: boolean
   outlined?: boolean
+  href?: string
 }
 
-const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, disabled, loading, outlined, variant = ButtonVariant.Primary }) => {
+const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, disabled, loading, outlined, href, variant = ButtonVariant.Primary }) => {
   const isDisabled = disabled || loading
   const buttonClasses = classNames(
     'bg-accent-primary text-neutral-100 rounded-full px-6 py-4 transition-colors duration-200',
@@ -39,6 +41,27 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
     }
   )
 
+  const ButtonInner = () => (
+    <>
+      {children}
+      {loading && (
+        <LoadingSpinner className="ml-3" />
+      )}
+    </>
+  )
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        id={id}
+        className={buttonClasses}
+      >
+        <ButtonInner />
+      </Link>
+    )
+  }
+
   return (
     <button
       className={buttonClasses}
@@ -47,10 +70,7 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
       disabled={isDisabled}
       id={id}
     >
-      {children}
-      {loading && (
-        <LoadingSpinner className="ml-3" />
-      )}
+      <ButtonInner />
     </button>
   )
 }

@@ -80,15 +80,34 @@ const UpcomingCourses: FC = () => {
 
       <div className="grid lg:grid-cols-3 lg:gap-20">
         <section className="col-span-2 flex flex-col gap-12">
-          {upcomingCourses.map((course) => (
-            <CourseCard
-              key={`upcoming-courses-course-${course.id}`}
-              course={course}
-            />
-          ))}
+          {upcomingCourses.map((course, index) => {
+            if (index === 2) {
+              return (
+                <>
+                  <div className="lg:hidden">
+                    <TheDentorPremiumCard className="h-[400px]" />
+                  </div>
+
+                  <CourseCard
+                    key={`upcoming-courses-course-${course.id}`}
+                    course={course}
+                  />
+                </>
+
+              )
+            } else {
+              return (
+                <CourseCard
+                  key={`upcoming-courses-course-${course.id}`}
+                  course={course}
+                />
+              )
+            }
+
+          })}
         </section>
 
-        <aside>
+        <aside className="hidden lg:block">
           <TheDentorPremiumCard className="h-[800px] top-12 sticky" />
         </aside>
       </div>

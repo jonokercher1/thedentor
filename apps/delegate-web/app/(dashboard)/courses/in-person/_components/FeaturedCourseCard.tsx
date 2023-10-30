@@ -1,12 +1,8 @@
 'use client'
 
-import { Button, ButtonVariant, Chip, Icon, IconName } from '@dentor/ui'
+import { Button, ButtonVariant, Chip } from '@dentor/ui'
 import { type FC } from 'react'
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import Link from 'next/link'
-
-dayjs.extend(advancedFormat)
+import CourseDateTag from '@/app/(dashboard)/courses/in-person/_components/CourseDateTag'
 
 interface FeaturedCourseCard {
   course: any // TODO: add type from api 
@@ -32,9 +28,9 @@ const FeaturedCourseCard: FC<FeaturedCourseCard> = ({ course }) => {
 
         <section className="flex gap-3 my-5 flex-wrap">
           {course.startDate && course.endDate && (
-            <Chip
-              label={`${dayjs(course.startDate).format('Do MMM')} - ${dayjs(course.endDate).format('Do MMM')}`}
-              className="flex-shrink-0"
+            <CourseDateTag
+              startDate={course.startDate}
+              endDate={course.endDate}
             />
           )}
 
@@ -57,10 +53,8 @@ const FeaturedCourseCard: FC<FeaturedCourseCard> = ({ course }) => {
         </section>
 
         <footer className="flex items-start md:items-center gap-4 mt-12 lg:mt-24 flex-col-reverse md:flex-row">
-          <Button variant={ButtonVariant.Primary}>
-            <Link href={`/courses/in-person/${course.id}`}>
-              <p>View Course</p>
-            </Link>
+          <Button variant={ButtonVariant.Primary} href={`/courses/in-person/${course.id}`}>
+            <p>View Course</p>
           </Button>
 
           <Chip

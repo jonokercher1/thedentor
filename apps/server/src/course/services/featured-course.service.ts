@@ -18,16 +18,17 @@ export class FeaturedCourseService {
     } : undefined;
 
     const filters = {
+      type,
       featuredUntil: {
         gt: new Date(),
       },
     };
 
-    return this.courseRepository.getByType(
-      type,
+    return this.courseRepository.getMany(
       filters,
       pagination,
       {
+        ...CourseRepository.DEFAULT_FIELDS,
         dentor: {
           select: {
             name: true,
