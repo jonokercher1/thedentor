@@ -84,6 +84,7 @@ model Course {
   startDate     DateTime?
   endDate       DateTime?
   featuredUntil DateTime?
+  rating        Int           @default(0)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
   dentor        User          @relation(fields: [dentorId], references: [id])

@@ -23,13 +23,13 @@ abstract class BaseRepository<T> {
     });
   }
 
-  protected getPaginationParams(pagination: PaginationInput) {
-    const paginationInput = pagination.page && pagination.perPage ? {
+  protected getPaginationParams(pagination?: PaginationInput) {
+    const paginationInput = pagination?.page && pagination?.perPage ? {
       take: pagination.perPage,
       skip: (pagination.page * pagination.perPage) - pagination.perPage,
     } : undefined;
 
-    const orderBy: any = pagination.orderBy && pagination.order ? {
+    const orderBy: any = pagination?.orderBy && pagination?.order ? {
       [pagination.orderBy]: pagination.order,
     } : undefined;
 

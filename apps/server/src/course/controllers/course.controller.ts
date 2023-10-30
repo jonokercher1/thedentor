@@ -1,10 +1,10 @@
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import { BadRequestException, Controller, Get, Inject, Query } from '@nestjs/common';
-import { CourseResponse } from '../responses/course.response';
-import { CourseService } from '../services/course.service';
-import { GetCoursesRequest } from '../requests/get-courses.request';
-import { GetUpcomingCoursesRequest } from '../requests/get-upcoming-courses.request';
+import { CourseResponse } from '@/course/responses/course.response';
+import { CourseService } from '@/course/services/course.service';
+import { GetCoursesRequest } from '@/course/requests/get-courses.request';
+import { GetUpcomingCoursesRequest } from '@/course/requests/get-upcoming-courses.request';
 import { CourseType } from '@prisma/client';
 import { CourseFilters } from '@/database/types/course';
 import { PaginationInput } from '@/common/types/pagination';
@@ -29,7 +29,7 @@ export class CourseController {
       // TODO: fix as any type
       return CourseResponse.paginate(courses as any, coursesCount, getCoursesInput.page);
     } catch (e) {
-      this.logger.error('UpcomingCourseController.getByType', 'Error getting courses', {
+      this.logger.error('CourseController.getMany', 'Error getting courses', {
         error: e.message,
         getCoursesInput,
       });
@@ -50,7 +50,7 @@ export class CourseController {
       // TODO: fix as any type
       return CourseResponse.paginate(courses as any, coursesCount, pagination.page);
     } catch (e) {
-      this.logger.error('UpcomingCourseController.getUpcoming', 'Error getting upcoming courses', {
+      this.logger.error('CourseController.getUpcoming', 'Error getting upcoming courses', {
         error: e.message,
         getUpcomingCoursesInput,
       });

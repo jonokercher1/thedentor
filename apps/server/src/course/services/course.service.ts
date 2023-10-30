@@ -3,6 +3,7 @@ import { CourseRepository } from '@/course/repositories/course.repository';
 import { PaginationInput } from '@/common/types/pagination';
 import { CourseFilters } from '@/database/types/course';
 import { CourseCategoryRepository } from '@/course-category/course-category.repository';
+import { CourseType } from '@/database/types/course-type';
 
 @Injectable()
 export class CourseService {
