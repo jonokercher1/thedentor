@@ -8,6 +8,7 @@
     "db:migrate:create": "prisma migrate dev --name ",
     "db:migrate:reset": "prisma migrate reset --force",
     "db:migrate:apply": "prisma migrate deploy",
+    "db:admin": "npx prisma studio",
     "db:seed": "ts-node prisma/seed.ts",
     "db:reset": "npm run db:migrate init_db && npm run db:generate",
     "email:dev": "open https://mjml.io/try-it-live",

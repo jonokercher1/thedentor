@@ -1,77 +1,17 @@
 import { type FC } from 'react'
-import CourseCard from './CourseCard'
-import dayjs from 'dayjs'
+import CourseCard from '@/app/(dashboard)/courses/in-person/_components/CourseCard'
 import TheDentorPremiumCard from '@/app/_components/TheDentorPremiumCard'
+import getUpcomingInPersonCourses from '@/api/course/get-upcoming-in-person-courses'
 
-// TODO: get from api
-const upcomingCourses = [
-  {
-    id: '123',
-    name: 'Polishing The Anterior Composite Restoration',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat id aperiam perferendis cum recusandae non dignissimos tempora doloremque accusantium ullam iusto, harum expedita doloribus cupiditate saepe exercitationem consequuntur sint, earum labore quae distinctio quasi nobis! Aliquid vel eum fugit. Ab!',
-    cpdValue: 12,
-    startDate: new Date(),
-    endDate: dayjs().add(2, 'days').toDate(),
-    owned: false,
-    dentor: {
-      name: 'Jason Smithson'
-    },
-    categories: [
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
-    ]
-  },
-  {
-    id: '1234',
-    name: 'Polishing The Anterior Composite Restoration',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat id aperiam perferendis cum recusandae non dignissimos tempora doloremque accusantium ullam iusto, harum expedita doloribus cupiditate saepe exercitationem consequuntur sint, earum labore quae distinctio quasi nobis! Aliquid vel eum fugit. Ab!',
-    cpdValue: 12,
-    startDate: new Date(),
-    endDate: dayjs().add(2, 'days').toDate(),
-    owned: true,
-    dentor: {
-      name: 'Jason Smithson'
-    },
-    categories: [
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' }
-    ]
-  },
-  {
-    id: '12345',
-    name: 'Polishing The Anterior Composite Restoration',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat id aperiam perferendis cum recusandae non dignissimos tempora doloremque accusantium ullam iusto, harum expedita doloribus cupiditate saepe exercitationem consequuntur sint, earum labore quae distinctio quasi nobis! Aliquid vel eum fugit. Ab!',
-    cpdValue: 12,
-    startDate: new Date(),
-    endDate: dayjs().add(2, 'days').toDate(),
-    owned: false,
-    dentor: {
-      name: 'Jason Smithson'
-    },
-    categories: [
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' }
-    ]
-  },
-  {
-    id: '123456',
-    name: 'Polishing The Anterior Composite Restoration',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat id aperiam perferendis cum recusandae non dignissimos tempora doloremque accusantium ullam iusto, harum expedita doloribus cupiditate saepe exercitationem consequuntur sint, earum labore quae distinctio quasi nobis! Aliquid vel eum fugit. Ab!',
-    cpdValue: 12,
-    startDate: new Date(),
-    endDate: dayjs().add(2, 'days').toDate(),
-    owned: true,
-    dentor: {
-      name: 'Jason Smithson'
-    },
-    categories: [
-      { slug: 'restorative-dentistry', value: 'Restorative Dentistry' }
-    ]
-  },
-]
+const UpcomingCourses: FC = async () => {
+  const { data: upcomingCourses } = await getUpcomingInPersonCourses()
 
-const UpcomingCourses: FC = () => {
+  if (!upcomingCourses) {
+    // TODO: what do we want to do here?
+    return <></>
+  }
+
+
   return (
     <section className="py-12">
       <header>
@@ -93,7 +33,6 @@ const UpcomingCourses: FC = () => {
                     course={course}
                   />
                 </>
-
               )
             } else {
               return (

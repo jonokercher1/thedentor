@@ -3,9 +3,11 @@
 import { Button, ButtonVariant, Chip } from '@dentor/ui'
 import { type FC } from 'react'
 import CourseDateTag from '@/app/(dashboard)/courses/in-person/_components/CourseDateTag'
+import { CourseCategory } from '@/types/api/course/category/course-category'
+import { Course } from '@/types/api/course/course'
 
 interface FeaturedCourseCard {
-  course: any // TODO: add type from api 
+  course: Course
 }
 
 const FeaturedCourseCard: FC<FeaturedCourseCard> = ({ course }) => {
@@ -13,7 +15,8 @@ const FeaturedCourseCard: FC<FeaturedCourseCard> = ({ course }) => {
     <article
       className="bg-neutral-700 relative rounded-2xl p-8 md:p-12 lg:p-20 bg-center bg-no-repeat bg-cover"
       style={{
-        backgroundImage: `url(${course.previewImage})`
+        // TODO: add this to the api
+        backgroundImage: 'url(https://source.unsplash.com/random)'
       }}
     >
       <div
@@ -39,9 +42,9 @@ const FeaturedCourseCard: FC<FeaturedCourseCard> = ({ course }) => {
             className="flex-shrink-0"
           />
 
-          {!!course.categories?.length && course.categories.map((category: any) => (
+          {!!course.categories?.length && course.categories.map((category: CourseCategory) => (
             <Chip
-              label={`${category.value}`}
+              label={`${category.label}`}
               className="flex-shrink-0"
               key={`featured-course-${course.id}-category-${category.slug}`}
             />

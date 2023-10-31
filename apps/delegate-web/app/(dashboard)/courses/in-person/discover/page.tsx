@@ -6,11 +6,12 @@ import UpcomingCourses from '../_components/UpcomingCourses'
 import FeaturedCourses from '../_components/FeaturedCourses'
 
 const DiscoverInPersonCoursesPage: FC = async () => {
-  const categories = await getCourseCategoriesByType(CourseType.InPerson)
+  const courseType = CourseType.InPerson
+  const categories = await getCourseCategoriesByType(courseType)
 
   return (
     <main>
-      <FeaturedCourses />
+      <FeaturedCourses courseType={courseType} />
       <Categories categories={categories.data!} />
       <UpcomingCourses />
     </main>

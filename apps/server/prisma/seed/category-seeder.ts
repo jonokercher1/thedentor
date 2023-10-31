@@ -4,6 +4,8 @@ export default class CategorySeeder {
   constructor(private readonly database: PrismaClient) { }
 
   public async run() {
+    console.log('Running category seeder');
+
     const now = new Date();
 
     await this.database.category.createMany({
