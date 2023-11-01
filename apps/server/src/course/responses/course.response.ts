@@ -2,22 +2,11 @@ import HttpSuccessResponse, { HttpPaginatedResponse } from '@/common/responses/h
 import { CourseCategoryResponseData, ICourseCategoryData } from '@/course-category/responses/course-category.response';
 import { Course } from '@/database/types/course';
 import { User } from '@/database/types/user';
+import { DentorData } from '@/dentor/responses/dentor.response';
 import { Expose, Type } from 'class-transformer';
 
 type ICourseDentorData = Partial<User>;
 type ICourseData = Partial<Course> & { dentor: ICourseDentorData; category: ICourseCategoryData[] };
-
-class CourseDentorData {
-  @Expose()
-  public readonly id: string;
-
-  @Expose()
-  public readonly name: string;
-
-  constructor(data?: ICourseDentorData) {
-    Object.assign(this, data);
-  }
-}
 
 class CourseData {
   @Expose()
@@ -39,8 +28,8 @@ class CourseData {
   public readonly endDate: string;
 
   @Expose()
-  @Type(() => CourseDentorData)
-  public readonly dentor: CourseDentorData;
+  @Type(() => DentorData)
+  public readonly dentor: DentorData;
 
   @Expose()
   @Type(() => CourseCategoryResponseData)
@@ -48,7 +37,7 @@ class CourseData {
 
   constructor(courseData?: ICourseData) {
     Object.assign(this, courseData);
-    this.dentor = new CourseDentorData(courseData.dentor); // TODO: move this to a dentor module when one exists
+    this.dentor = new DentorData(courseData.dentor);
     this.categories = courseData.category.map(category => new CourseCategoryResponseData(category));
   }
 }

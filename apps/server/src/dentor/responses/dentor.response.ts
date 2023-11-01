@@ -4,7 +4,7 @@ import { Expose } from 'class-transformer';
 
 type IDentorData = Partial<User>;
 
-class DentorData {
+export class DentorData {
   @Expose()
   public readonly id: string;
 

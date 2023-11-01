@@ -3,6 +3,7 @@ import { CourseRepository } from '@/course/repositories/course.repository';
 import { PaginationInput } from '@/common/types/pagination';
 import { CourseFilters } from '@/database/types/course';
 import { CourseCategoryRepository } from '@/course-category/course-category.repository';
+import { UserRepository } from '@/user/repositories/user.repository';
 
 @Injectable()
 export class CourseService {
@@ -24,9 +25,7 @@ export class CourseService {
       { // TOOD: use a dentor/user repository default fields for consistent selects
         ...CourseRepository.DEFAULT_FIELDS,
         dentor: {
-          select: {
-            name: true,
-          },
+          select: UserRepository.DEFAULT_FIELDS,
         },
         category: {
           select: CourseCategoryRepository.DEFAULT_FIELDS,

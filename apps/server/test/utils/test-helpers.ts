@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 
 export class TestHelpers {
   public convertResponseKeysToFlatArray(response: object): string[] {
@@ -19,5 +20,9 @@ export class TestHelpers {
     getKeys(response);
 
     return [...keys];
+  }
+
+  public async clearAllDataFromTable(prisma: PrismaClient, table: string) {
+    return prisma.$executeRawUnsafe(`TRUNCATE TABLE "${table}" CASCADE;`);
   }
 }

@@ -26,7 +26,7 @@ describe('Get Featured Dentors', () => {
   });
 
   beforeEach(async () => {
-    await testUserService.deleteAll();
+    await testHelpers.clearAllDataFromTable(testDatabaseService.database, 'User');
   });
 
   it('should error if the user is unauthenticated', async () => {

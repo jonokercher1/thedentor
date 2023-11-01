@@ -127,7 +127,9 @@ describe('Get Upcoming In Person Courses', () => {
       'cpdValue',
       'startDate',
       'endDate',
+      'dentor.id',
       'dentor.name',
+      'dentor.gdcNumber',
       'categories.0.slug',
       'categories.0.label',
     ]);

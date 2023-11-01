@@ -3,6 +3,7 @@ import { CourseRepository } from '@/course/repositories/course.repository';
 import { CourseType } from '@prisma/client';
 import { PaginationInput } from '@/common/types/pagination';
 import { CourseFilters } from '@/database/types/course';
+import { UserRepository } from '@/user/repositories/user.repository';
 
 @Injectable()
 export class FeaturedCourseService {
@@ -30,9 +31,7 @@ export class FeaturedCourseService {
       {
         ...CourseRepository.DEFAULT_FIELDS,
         dentor: {
-          select: {
-            name: true,
-          },
+          select: UserRepository.DEFAULT_FIELDS,
         },
         category: {
           select: {
