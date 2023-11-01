@@ -1,22 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '@/database/prisma.service';
+import BaseRepository from '@/common/repositories/base.repository';
 
 @Injectable()
-export class UserRepository {
-  private readonly entity: Prisma.UserDelegate;
+export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
+  public static readonly DEFAULT_FIELDS: Prisma.UserSelect = {
+    id: true,
+    name: true,
+    email: true,
+    phone: true,
+    gdcNumber: true,
+    roleName: true,
+    createdAt: true,
+    updatedAt: true,
+  };
 
-  // TODO: make a base repository that does this for us
   constructor(database: PrismaService) {
-    this.entity = database.user;
-  }
-
-  public async findUnique(key: keyof Prisma.UserWhereInput, value: string): Promise<User> {
-    return this.entity.findFirstOrThrow({
-      where: {
-        [key]: value,
-      },
-    });
+    super(database, database.user);
   }
 
   public async existsWithAnyUniqueKey(email: string, gdcNumber: string): Promise<boolean> {
@@ -39,8 +40,6 @@ export class UserRepository {
     });
   }
 
-  // TODO: we should break away from the database here and create our own input types
-  // This is more work as we have 2 types to maintain but it decouples us from prisma
   public async create(data: Prisma.UserCreateInput): Promise<User> {
     return this.entity.create({ data });
   }

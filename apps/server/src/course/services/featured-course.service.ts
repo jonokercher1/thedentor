@@ -24,7 +24,7 @@ export class FeaturedCourseService {
       },
     };
 
-    return this.courseRepository.getMany(
+    return this.courseRepository.findMany(
       filters,
       pagination,
       {

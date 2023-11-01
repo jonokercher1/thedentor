@@ -19,12 +19,15 @@ model User {
   subscriptionId            String?              @unique
   subscription              UserSubscription?
   paymentProviderCustomerId String?
+  rating                    Float?
   createdAt                 DateTime             @default(now())
   updatedAt                 DateTime             @default(now())
   courses                   Course[]
   images                    Image[]
   videos                    Video[]
   passwordResetTokens       PasswordResetToken[]
+  reviewsLeft               Review[]
+  dentorReviews             DentorReviews[]
 }
 
 model Role {
@@ -84,7 +87,7 @@ model Course {
   startDate     DateTime?
   endDate       DateTime?
   featuredUntil DateTime?
-  rating        Int           @default(0)
+  rating        Float         @default(0)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
   dentor        User          @relation(fields: [dentorId], references: [id])
@@ -136,6 +139,25 @@ model CourseVideo {
   updatedAt  DateTime @default(now())
   video      Video    @relation(fields: [videoId], references: [id])
   course     Course   @relation(fields: [courseId], references: [id])
+}
+
+model Review {
+  id            String          @id @default(uuid())
+  title         String
+  content       String
+  rating        Float
+  authorId      String
+  author        User            @relation(fields: [authorId], references: [id])
+  dentorReviews DentorReviews[]
+}
+
+model DentorReviews {
+  dentorId String
+  dentor   User   @relation(fields: [dentorId], references: [id])
+  reviewId String
+  review   Review @relation(fields: [reviewId], references: [id])
+
+  @@id([dentorId, reviewId])
 }
 
 enum RoleName {

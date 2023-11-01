@@ -11,6 +11,7 @@ import { FileModule } from '@/file/file.module';
 import { NotificationModule } from '@/notification/notification.module';
 import { SearchModule } from './search/search.module';
 import { CourseModule } from './course/course.module';
+import { DentorModule } from './dentor/dentor.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CourseModule } from './course/course.module';
     NotificationModule,
     SearchModule,
     CourseModule,
+    DentorModule,
   ],
   providers: [
     {

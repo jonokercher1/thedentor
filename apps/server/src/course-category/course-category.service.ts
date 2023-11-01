@@ -11,10 +11,10 @@ export class CourseCategoryService {
   public async getActiveCourseCategories(type?: CourseType) {
     if (!type) {
       // TODO: implement this with pagination/filters
-      return this.courseCategoryRepository.getMany();
+      return this.courseCategoryRepository.findMany({});
     }
 
-    return this.courseCategoryRepository.getMany({
+    return this.courseCategoryRepository.findMany({
       courses: {
         some: {
           type,

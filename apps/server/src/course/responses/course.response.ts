@@ -1,25 +1,8 @@
 import HttpSuccessResponse, { HttpPaginatedResponse } from '@/common/responses/http-success.response';
-import { CourseCategoryResponse, CourseCategoryResponseData, ICourseCategoryData } from '@/course-category/responses/course-category.response';
-import { Category } from '@/database/types/category';
+import { CourseCategoryResponseData, ICourseCategoryData } from '@/course-category/responses/course-category.response';
 import { Course } from '@/database/types/course';
 import { User } from '@/database/types/user';
 import { Expose, Type } from 'class-transformer';
-
-// {
-//   id: '123',
-//   name: 'Polishing The Anterior Composite Restoration',
-//   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat id aperiam perferendis cum recusandae non dignissimos tempora doloremque accusantium ullam iusto, harum expedita doloribus cupiditate saepe exercitationem consequuntur sint, earum labore quae distinctio quasi nobis! Aliquid vel eum fugit. Ab!',
-//   cpdValue: 12,
-//   startDate: new Date(),
-//   endDate: dayjs().add(2, 'days').toDate(),
-//   previewImage: 'https://images.unsplash.com/photo-1468493858157-0da44aaf1d13',
-//   dentor: {
-//     name: 'Jason Smithson'
-//   },
-//   categories: [
-//     { slug: 'restorative-dentistry', value: 'Restorative Dentistry' },
-//   ]
-// },
 
 type ICourseDentorData = Partial<User>;
 type ICourseData = Partial<Course> & { dentor: ICourseDentorData; category: ICourseCategoryData[] };
