@@ -1,7 +1,7 @@
 import 'server-only'
 
-import { ServerApiClient } from '../server-api-client'
 import { HttpSuccessResponse } from '@/types/api/http-success-response'
+import { ServerApiClient } from '@/api/server-api-client'
 
 export interface GetPasswordResetTokenResponse extends HttpSuccessResponse<{}> { }
 

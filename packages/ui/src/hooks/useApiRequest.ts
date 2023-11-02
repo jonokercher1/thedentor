@@ -20,7 +20,7 @@ interface UseApiRequestResponse<Body> {
   sendApiRequest: (body?: Body) => void
 }
 
-export const useApiRequest = <Response extends HttpSuccessResponse<Response['data']>, Body>(args: UseApiRequestArgs<Response, Body>): UseApiRequestResponse<Body> => {
+export const useApiRequest = <Response extends HttpSuccessResponse<Response['data']>, Body = undefined>(args: UseApiRequestArgs<Response, Body>): UseApiRequestResponse<Body> => {
   const { isLoading, isSuccess, error, setQueryError, queryLoading, querySuccessful } = useQueryState()
 
   const sendApiRequest = async (body?: Body): Promise<void> => {

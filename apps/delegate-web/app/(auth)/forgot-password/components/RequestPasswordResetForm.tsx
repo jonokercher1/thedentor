@@ -4,7 +4,6 @@ import requestPasswordReset from '@/api/auth/request-password-reset'
 import { ForgotPasswordFormData } from '@/app/(auth)/forgot-password/page'
 import { Button, ButtonVariant, EmailField, Icon, IconName, useApiRequest, useToast } from '@dentor/ui'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
 import { useForm } from 'react-hook-form'
 

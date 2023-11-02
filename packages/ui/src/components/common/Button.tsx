@@ -9,6 +9,7 @@ import Link from 'next/link'
 export enum ButtonVariant {
   Primary = 'Primary',
   Secondary = 'Secondary',
+  Tertiary = 'Tertiary'
 }
 
 interface ButtonProps extends AtomWithChildrenProps {
@@ -36,8 +37,7 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
       'hover:bg-accent-secondary hover:bg-opacity-50': isDisabled && variant === ButtonVariant.Secondary,
       'border-accent-primary border-2 bg-transparent text-white hover:bg-accent-primary box-border': outlined && variant === ButtonVariant.Primary,
       'border-accent-secondary border-2 bg-transparent hover:bg-accent-secondary box-border': outlined && variant === ButtonVariant.Secondary,
-      // 'bg-accent-primary-light hover:bg-accent-primary-light': variant === ButtonVariant.Primary && loading,
-      // 'bg-accent-secondary-light hover:bg-accent-secondary-light': variant === ButtonVariant.Secondary && loading,
+      'bg-neutral-700 text-white hover:bg-opacity-50': variant === ButtonVariant.Tertiary
     }
   )
 
