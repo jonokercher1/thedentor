@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation"
+
 export type RequestOptions = Exclude<RequestInit, 'body'>
 
 export class ApiClient {
@@ -32,6 +34,12 @@ export class ApiClient {
     }
 
     const response = await fetch(`${this.BASE_URL}/${resource}`, requestOptions)
+
+    if (response.status) {
+      // TOOD: test if this works on a client call
+      redirect('/login')
+    }
+
     const data = await response.json()
 
     return data as Response
