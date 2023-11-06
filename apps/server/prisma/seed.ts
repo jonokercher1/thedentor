@@ -3,6 +3,7 @@ import CategorySeeder from './seed/category-seeder';
 import RoleSeeder from './seed/role-seeder';
 import UserSeeder from './seed/user-seeder';
 import CourseSeeder from './seed/course-seeder';
+import DentorSeeder from './seed/dentor-seeder';
 
 const prisma = new PrismaClient();
 
@@ -27,6 +28,7 @@ async function main() {
   await new CategorySeeder(prisma).run();
   await new UserSeeder(prisma).run();
   await new CourseSeeder(prisma).run();
+  await new DentorSeeder(prisma).run();
 }
 
 main()

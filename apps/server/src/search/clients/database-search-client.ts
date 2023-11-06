@@ -21,15 +21,15 @@ export default class DatabaseSearchClient implements SearchClient {
     return this.database.course;
   }
 
-  public createObject(object: any) {
+  public async createObject(object: any) {
     this.logger.log('createObject', 'Called searchClient.createObject', { object });
   }
 
-  public updateObject(object: any) {
+  public async updateObject(object: any) {
     this.logger.log('updateObject', 'Called searchClient.updateObject', { object });
   }
 
-  public deleteObject(objectID: string) {
+  public async deleteObject(objectID: string) {
     this.logger.log('deleteObject', 'Called searchClient.deleteObject', { objectID });
   }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useRef, type FC } from 'react'
+import { useCallback, useRef, type FC, useId } from 'react'
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
@@ -19,6 +19,7 @@ interface CarouselProps {
 }
 
 const Carousel: FC<CarouselProps> = ({ items, slidesPerView = 1, gap, loop, navigation, pagination }) => {
+  const carouselId = useId()
   const sliderRef = useRef<SwiperRef>(null);
   const paginationOptions: PaginationOptions | undefined = pagination ? { clickable: true, el: '.coursel-pagination' } : undefined
 
@@ -50,8 +51,8 @@ const Carousel: FC<CarouselProps> = ({ items, slidesPerView = 1, gap, loop, navi
           "--swiper-pagination-bullet-size": "12px",
         } as any}
       >
-        {items.map((item) => (
-          <SwiperSlide>
+        {items.map((item, index) => (
+          <SwiperSlide key={`carousel-${carouselId}-slide-${index}`}>
             {item}
           </SwiperSlide>
         ))}

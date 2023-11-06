@@ -9,7 +9,8 @@ import Link from 'next/link'
 export enum ButtonVariant {
   Primary = 'Primary',
   Secondary = 'Secondary',
-  Tertiary = 'Tertiary'
+  Tertiary = 'Tertiary',
+  Transparent = 'Transparent',
 }
 
 interface ButtonProps extends AtomWithChildrenProps {
@@ -26,7 +27,7 @@ interface ButtonProps extends AtomWithChildrenProps {
 const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type, disabled, loading, outlined, href, variant = ButtonVariant.Primary }) => {
   const isDisabled = disabled || loading
   const buttonClasses = classNames(
-    'bg-accent-primary text-neutral-100 rounded-full px-6 py-4 transition-colors duration-200',
+    'bg-accent-primary text-neutral-100 rounded-full px-6 py-4 transition-colors duration-200 flex items-center justify-center',
     className,
     {
       'w-full': fluid,
@@ -37,7 +38,8 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
       'hover:bg-accent-secondary hover:bg-opacity-50': isDisabled && variant === ButtonVariant.Secondary,
       'border-accent-primary border-2 bg-transparent text-white hover:bg-accent-primary box-border': outlined && variant === ButtonVariant.Primary,
       'border-accent-secondary border-2 bg-transparent hover:bg-accent-secondary box-border': outlined && variant === ButtonVariant.Secondary,
-      'bg-neutral-700 text-white hover:bg-opacity-50': variant === ButtonVariant.Tertiary
+      'bg-neutral-700 text-white hover:bg-opacity-50': variant === ButtonVariant.Tertiary,
+      'bg-transparent': variant === ButtonVariant.Transparent
     }
   )
 

@@ -12,10 +12,10 @@ import { PaginationInput } from '@/types/api/pagination'
 interface UpcomingCoursesGridProps {
   initialCourses: Course[]
   totalCourses: number
+  perPage: number
 }
 
-const perPage = 3
-const UpcomingCoursesGrid: FC<UpcomingCoursesGridProps> = ({ initialCourses, totalCourses }) => {
+const UpcomingCoursesGrid: FC<UpcomingCoursesGridProps> = ({ initialCourses, totalCourses, perPage }) => {
   const [upcomingCourses, setUpcomingCourses] = useState(initialCourses)
   const [page, setPage] = useState(1)
   const { isLoading, sendApiRequest } = useApiRequest<GetUpcomingInPersonCoursesResponse, PaginationInput>({
@@ -43,27 +43,27 @@ const UpcomingCoursesGrid: FC<UpcomingCoursesGridProps> = ({ initialCourses, tot
       <section className="col-span-2 flex items-center flex-col">
         <div className="flex flex-col gap-12">
           {upcomingCourses.map((course, index) => {
+            const key = `upcoming-courses-course-${course.id}`
             if (index === 2) {
               return (
-                <>
+                <div key={key}>
                   <div className="lg:hidden">
                     <TheDentorPremiumCard className="h-[400px]" />
                   </div>
 
                   <CourseCard
-                    key={`upcoming-courses-course-${course.id}`}
                     course={course}
                   />
-                </>
-              )
-            } else {
-              return (
-                <CourseCard
-                  key={`upcoming-courses-course-${course.id}`}
-                  course={course}
-                />
+                </div>
               )
             }
+
+            return (
+              <CourseCard
+                key={key}
+                course={course}
+              />
+            )
           })}
         </div>
 

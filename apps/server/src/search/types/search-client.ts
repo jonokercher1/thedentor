@@ -11,8 +11,8 @@ export interface SearchObject {
 
 export interface SearchClient {
   initIndex: (indexName: string, searchableFields: string[]) => void
-  createObject: (object: SearchObject) => void;
-  updateObject: (object: SearchObject) => void;
-  deleteObject: (objectID: string) => void;
+  createObject: (object: SearchObject) => Promise<any>;
+  updateObject: (object: SearchObject) => Promise<any>;
+  deleteObject: (objectID: string) => Promise<any>;
   search: <Result>(query: string, pagination?: PaginationInput) => Promise<Result[]>;
 }

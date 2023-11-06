@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { Order } from '@/common/types/filtering';
 
 export class PaginationRequest {
@@ -14,6 +14,7 @@ export class PaginationRequest {
   public readonly page: number;
 
   @IsOptional()
+  @IsString()
   public readonly orderBy?: string;
 
   @IsOptional()

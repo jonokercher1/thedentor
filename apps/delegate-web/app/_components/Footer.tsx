@@ -19,7 +19,7 @@ const footerNavItems = [
 
 const Footer: FC<FooterProps> = () => {
   return (
-    <footer className="text-white pb-12">
+    <footer className="text-white py-12">
       <Container>
         <section className="flex items-center justify-between gap-6 flex-col md:flex-row md:gap-12">
           <Link href="/">

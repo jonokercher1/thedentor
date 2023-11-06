@@ -2,8 +2,9 @@ import { type FC } from 'react'
 import UpcomingCoursesGrid from './UpcomingCoursesGrid'
 import { getUpcomingInPersonCourses } from '@/api/course/get-upcoming-in-person-courses/server'
 
+const perPage = 5
 const UpcomingCourses: FC = async () => {
-  const { data: upcomingCourses, total } = await getUpcomingInPersonCourses({ page: 1, perPage: 3 })
+  const { data: upcomingCourses, total } = await getUpcomingInPersonCourses({ page: 1, perPage })
 
   if (!upcomingCourses) {
     // TODO: what do we want to do here?
@@ -20,6 +21,7 @@ const UpcomingCourses: FC = async () => {
       <UpcomingCoursesGrid
         initialCourses={upcomingCourses}
         totalCourses={total}
+        perPage={perPage}
       />
     </section>
   )

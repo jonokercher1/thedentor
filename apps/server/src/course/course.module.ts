@@ -5,10 +5,11 @@ import { FeaturedCourseController } from '@/course/controllers/featured-course.c
 import { FeaturedCourseService } from '@/course/services/featured-course.service';
 import { CourseRepository } from '@/course/repositories/course.repository';
 import { DatabaseModule } from '@/database/database.module';
+import { SearchModule } from '@/search/search.module';
 
 @Module({
   controllers: [CourseController, FeaturedCourseController],
   providers: [CourseService, FeaturedCourseService, CourseRepository],
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, SearchModule],
 })
 export class CourseModule { }

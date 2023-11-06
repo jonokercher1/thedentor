@@ -1,14 +1,9 @@
 import { CourseCategory } from '@/types/api/course/category/course-category'
+import { Dentor } from '@/types/api/dentor/dentor'
 
 export enum CourseType {
   Video = 'Video',
   InPerson = 'InPerson'
-}
-
-// TODO: replace with full dentor object when api is implemented
-interface CourseDentor {
-  id: string
-  name: string
 }
 
 export interface Course {
@@ -18,6 +13,6 @@ export interface Course {
   cpdValue: number
   startDate: string
   endDate: string
-  dentor: CourseDentor
+  dentor: Dentor
   categories: CourseCategory[]
 }

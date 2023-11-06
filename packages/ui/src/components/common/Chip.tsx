@@ -13,9 +13,9 @@ interface ChipProps extends AtomProps {
 
 const Chip: FC<ChipProps> = ({ id, className, label, onClick, leadingIcon, trailingIcon }) => {
   const chipClasses = classNames(
-    'flex items-center justify-between bg-neutral-600 py-2 px-3 gap-3 rounded-full cursor-default',
+    'flex items-center justify-between bg-neutral-600 py-2 px-3 gap-3 rounded-full cursor-default transition-colors duration-200',
     {
-      ['!cursor-pointer']: !!onClick
+      ['!cursor-pointer hover:bg-opacity-80']: !!onClick
     },
     className
   )
@@ -34,7 +34,7 @@ const Chip: FC<ChipProps> = ({ id, className, label, onClick, leadingIcon, trail
       id={id}
     >
       {leadingIcon}
-      <p className="text-white">{label}</p>
+      <p className="text-white mx-auto">{label}</p>
       {trailingIcon}
     </span>
   )

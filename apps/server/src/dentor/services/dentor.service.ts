@@ -39,9 +39,9 @@ export class DentorService {
   private getFeaturedFilters(): UserFilters {
     return {
       ...this.getDefaultFilters(),
-      rating: {
-        gte: 4.5,
-      },
+      // rating: {
+      //   gte: 4.5,
+      // },
     };
   }
 }

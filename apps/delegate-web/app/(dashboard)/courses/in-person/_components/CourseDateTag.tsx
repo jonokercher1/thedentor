@@ -6,8 +6,8 @@ import { type FC } from 'react'
 dayjs.extend(advancedFormat)
 
 interface CourseDateTagProps {
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
 }
 
 const CourseDateTag: FC<CourseDateTagProps> = ({ startDate, endDate }) => (

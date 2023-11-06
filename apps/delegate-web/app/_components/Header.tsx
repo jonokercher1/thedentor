@@ -1,6 +1,6 @@
 'use client'
 
-import { Container, Icon, IconName, Logo } from '@dentor/ui'
+import { Container, Logo } from '@dentor/ui'
 import Link from 'next/link'
 import { type FC } from 'react'
 import Nav from './Nav'
@@ -21,7 +21,6 @@ const Header: FC<HeaderProps> = () => {
         </section>
 
         <section className="flex items-center justify-center gap-12">
-          <Icon name={IconName.NotificationBell} />
           <Avatar />
         </section>
       </Container>
