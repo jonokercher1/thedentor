@@ -6,9 +6,18 @@ import { CourseCategoryRepository } from '@/course-category/course-category.repo
 import { UserRepository } from '@/user/repositories/user.repository';
 import { ISearchProvider } from '@/search/search.provider';
 import { SearchClient } from '@/search/types/search-client';
+import { AlgoliaCourse } from '@/search/types/algolia';
 
 @Injectable()
 export class CourseService {
+  // TODO: this probably doesnt live here
+  private readonly defaultPagation: PaginationInput = {
+    page: 1,
+    perPage: 5,
+    order: 'desc',
+    orderBy: 'createdAt',
+  };
+
   constructor(
     private readonly courseRepository: CourseRepository,
     @Inject(ISearchProvider)
@@ -16,24 +25,27 @@ export class CourseService {
   ) { }
 
   public async getManyWithSearchTerm(term: string, filters?: Omit<CourseFilters, 'id'>, paginationInput?: PaginationInput) {
-    // Send term and pagination to algolia
-    // Get back IDs 
-    // Call getMany with an id IN filter (...algoliaReturnedIds)
-    // return result of getMany
+    const pagination = this.getPaginationFromInput(paginationInput);
+
+    // TODO Send filters to algolia
+    const matchingCourses = await this.searchClient.search<AlgoliaCourse>(term, pagination);
+    const matchingCourseIds = matchingCourses.map(({ objectID }) => objectID);
+
+    return this.getMany({
+      ...filters,
+      id: {
+        in: matchingCourseIds,
+      },
+    }, paginationInput);
   }
 
   public async getMany(filters?: CourseFilters, paginationInput?: PaginationInput) {
-    const pagination: PaginationInput = {
-      page: paginationInput.page,
-      perPage: paginationInput.perPage,
-      order: paginationInput?.order ?? 'desc',
-      orderBy: paginationInput?.orderBy ?? 'createdAt',
-    };
+    const pagination = this.getPaginationFromInput(paginationInput);
 
     return this.courseRepository.findMany(
       filters,
       pagination,
-      { // TOOD: use a dentor/user repository default fields for consistent selects
+      {
         ...CourseRepository.DEFAULT_FIELDS,
         dentor: {
           select: UserRepository.DEFAULT_FIELDS,
@@ -47,5 +59,13 @@ export class CourseService {
 
   public async count(filters?: CourseFilters) {
     return this.courseRepository.count(filters);
+  }
+
+  // TODO: this probably doesnt live here
+  private getPaginationFromInput(paginationInput?: PaginationInput): PaginationInput {
+    return {
+      ...this.defaultPagation,
+      ...paginationInput,
+    };
   }
 }

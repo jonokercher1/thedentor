@@ -18,12 +18,22 @@ export class CourseController {
   ) { }
 
   @Get('/')
-  public async getMany(@Query() getCoursesInput: GetCoursesRequest) {
+  public async getMany(@Query() getCoursesInput: GetCoursesRequest): Promise<CourseResponse> {
     try {
+      let courses;
+      const courseFilters: CourseFilters = { type: getCoursesInput.type };
+
+      if (getCoursesInput.search) {
+        courses = await this.courseService.getManyWithSearchTerm(getCoursesInput.search, courseFilters, getCoursesInput);
+      } else {
+        courses = await this.courseService.getMany(courseFilters, getCoursesInput);
+      }
+
+      console.log('🚀 ~ file: course.controller.ts:25 ~ CourseController ~ getMany ~ courses:', courses);
       // TODO: When a search is sent, we need to pass the request to algolia and then map in the IDs returned to our
       // service so we can return full objects
-      const courseFilters: CourseFilters = { type: getCoursesInput.type };
-      const courses = await this.courseService.getMany(courseFilters, getCoursesInput);
+
+      // TOOD: need to workout how to do this with search term
       const coursesCount = await this.courseService.count(courseFilters);
 
       // TODO: fix as any type
@@ -39,7 +49,7 @@ export class CourseController {
   }
 
   @Get('/in-person/upcoming')
-  public async getUpcoming(@Query() getUpcomingCoursesInput: GetUpcomingCoursesRequest) {
+  public async getUpcoming(@Query() getUpcomingCoursesInput: GetUpcomingCoursesRequest): Promise<CourseResponse> {
     try {
       const courseFilters: CourseFilters = { type: CourseType.InPerson, startDate: { gte: new Date } };
       const pagination: PaginationInput = { ...getUpcomingCoursesInput, order: 'asc', orderBy: 'startDate' };
