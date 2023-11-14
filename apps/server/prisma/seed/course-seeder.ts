@@ -1,7 +1,7 @@
 import { CourseType, PrismaClient, RoleName } from '@prisma/client';
 import { faker } from '@faker-js/faker/locale/en_GB';
 import * as dayjs from 'dayjs';
-import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch';
+import algoliasearch, { SearchIndex } from 'algoliasearch';
 
 export default class CourseSeeder {
   private readonly algolia: SearchIndex;
@@ -11,6 +11,12 @@ export default class CourseSeeder {
   ) {
     const algolia = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY);
     this.algolia = algolia.initIndex('course');
+    this.algolia.setSettings({
+      attributesForFaceting: [
+        'startDate',
+        'endDate',
+      ],
+    });
   }
 
   public async run() {
@@ -32,6 +38,7 @@ export default class CourseSeeder {
   private async createInPersonCourses(count = 10) {
     return Promise.allSettled([...Array(count)].map(async i => {
       const startDate = faker.date.between({ from: dayjs().subtract(5, 'weeks').toDate(), to: dayjs().add(5, 'weeks').toDate() });
+      const endDate = faker.date.between({ from: startDate, to: dayjs().add(6, 'weeks').toDate() });
       const dentorData = {
         name: faker.person.fullName(),
         email: faker.internet.email(),
@@ -52,7 +59,7 @@ export default class CourseSeeder {
           name: faker.company.name(),
           description: faker.lorem.sentences({ min: 1, max: 4 }),
           startDate,
-          endDate: faker.date.between({ from: startDate, to: dayjs().add(6, 'weeks').toDate() }),
+          endDate,
           featuredUntil: i % 3 === 0 ? faker.date.between({ from: dayjs().subtract(1, 'day').toDate(), to: dayjs().add(3, 'weeks').toDate() }) : undefined,
           category: {
             create: {
@@ -72,6 +79,8 @@ export default class CourseSeeder {
         name: course.name,
         description: course.description,
         dentorName: dentorData.name,
+        startDate: dayjs(startDate).unix(),
+        endDate: dayjs(endDate).unix(),
       }).catch((e) => {
         console.error(`Error creating course index: ${e.message}`);
       });

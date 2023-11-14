@@ -33,8 +33,11 @@ const Chip: FC<ChipProps> = ({ id, className, label, onClick, leadingIcon, trail
       className={chipClasses}
       id={id}
     >
-      {leadingIcon}
-      <p className="text-white mx-auto">{label}</p>
+      <div className="gap-2 flex items-center justify-center">
+        {leadingIcon}
+        <p className="text-white">{label}</p>
+      </div>
+
       {trailingIcon}
     </span>
   )

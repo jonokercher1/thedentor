@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CourseRepository } from '@/course/repositories/course.repository';
 import { PaginationInput } from '@/common/types/pagination';
-import { CourseFilters } from '@/database/types/course';
+import { Course, CourseFilters } from '@/database/types/course';
 import { CourseCategoryRepository } from '@/course-category/course-category.repository';
 import { UserRepository } from '@/user/repositories/user.repository';
 import { ISearchProvider } from '@/search/search.provider';
@@ -24,22 +24,37 @@ export class CourseService {
     protected readonly searchClient?: SearchClient,
   ) { }
 
-  public async getManyWithSearchTerm(term: string, filters?: Omit<CourseFilters, 'id'>, paginationInput?: PaginationInput) {
+  public async getAndCountManyWithSearchTerm(
+    term: string,
+    filters?: Omit<CourseFilters, 'id'>,
+    paginationInput?: PaginationInput,
+  ): Promise<{ courses: Course[], count: number }> {
     const pagination = this.getPaginationFromInput(paginationInput);
 
-    // TODO Send filters to algolia
-    const matchingCourses = await this.searchClient.search<AlgoliaCourse>(term, pagination);
-    const matchingCourseIds = matchingCourses.map(({ objectID }) => objectID);
+    // Need to map over filters to get them into a single string eg "startDate > 1699520753 AND endDate < 1699520753"
 
-    return this.getMany({
+    // TODO Send filters to algolia
+    const { results, count } = await this.searchClient.search<AlgoliaCourse>(
+      term,
+      pagination,
+      'startDate > 1699520753',
+    );
+    const matchingCourseIds = results.map(({ objectID }) => objectID);
+
+    const courses = await this.getMany({
       ...filters,
       id: {
         in: matchingCourseIds,
       },
     }, paginationInput);
+
+    return {
+      courses,
+      count,
+    };
   }
 
-  public async getMany(filters?: CourseFilters, paginationInput?: PaginationInput) {
+  public async getMany(filters?: CourseFilters, paginationInput?: PaginationInput): Promise<Course[]> {
     const pagination = this.getPaginationFromInput(paginationInput);
 
     return this.courseRepository.findMany(

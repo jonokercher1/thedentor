@@ -1,3 +1,4 @@
+import { PaginationInput } from '@/common/types/pagination';
 import { PrismaService } from '@/database/prisma.service';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
@@ -33,17 +34,30 @@ export default class DatabaseSearchClient implements SearchClient {
     this.logger.log('deleteObject', 'Called searchClient.deleteObject', { objectID });
   }
 
-  public async search(query: string): Promise<any[]> {
+  // TODO: implement pagination for tests
+  public async search(query: string, pagination: PaginationInput) {
     this.logger.log('search', 'Called searchClient.search');
 
+    const entity = this.database[this.index] as any;
+    const filters = {
+      OR: [
+        { name: { contains: query } },
+        { description: { contains: query } },
+      ],
+    };
+
     // TODO: refactor to use dynamic index name in options
-    return (this.database[this.index] as any).findMany({
-      where: {
-        OR: [
-          { name: { contains: query } },
-          { description: { contains: query } },
-        ],
-      },
+    const results = await entity.findMany({
+      where: filters,
     });
+
+    const count = await entity.count({
+      where: filters,
+    });
+
+    return {
+      results,
+      count,
+    };
   }
 }

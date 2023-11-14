@@ -6,7 +6,7 @@ import { CourseService } from '@/course/services/course.service';
 import { GetCoursesRequest } from '@/course/requests/get-courses.request';
 import { GetUpcomingCoursesRequest } from '@/course/requests/get-upcoming-courses.request';
 import { CourseType } from '@prisma/client';
-import { CourseFilters } from '@/database/types/course';
+import { Course, CourseFilters } from '@/database/types/course';
 import { PaginationInput } from '@/common/types/pagination';
 
 @Controller('course')
@@ -20,21 +20,18 @@ export class CourseController {
   @Get('/')
   public async getMany(@Query() getCoursesInput: GetCoursesRequest): Promise<CourseResponse> {
     try {
-      let courses;
+      let courses: Course[];
+      let coursesCount: number;
       const courseFilters: CourseFilters = { type: getCoursesInput.type };
 
       if (getCoursesInput.search) {
-        courses = await this.courseService.getManyWithSearchTerm(getCoursesInput.search, courseFilters, getCoursesInput);
+        const searchResult = await this.courseService.getAndCountManyWithSearchTerm(getCoursesInput.search, courseFilters, getCoursesInput);
+        courses = searchResult.courses;
+        coursesCount = searchResult.count;
       } else {
         courses = await this.courseService.getMany(courseFilters, getCoursesInput);
+        coursesCount = await this.courseService.count(courseFilters);
       }
-
-      console.log('🚀 ~ file: course.controller.ts:25 ~ CourseController ~ getMany ~ courses:', courses);
-      // TODO: When a search is sent, we need to pass the request to algolia and then map in the IDs returned to our
-      // service so we can return full objects
-
-      // TOOD: need to workout how to do this with search term
-      const coursesCount = await this.courseService.count(courseFilters);
 
       // TODO: fix as any type
       return CourseResponse.paginate(courses as any, coursesCount, getCoursesInput.page);

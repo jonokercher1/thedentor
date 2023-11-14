@@ -30,32 +30,27 @@ const SearchHeader: FC<SearchHeaderProps> = ({ searchPathname, search, setSearch
   }, [pathname])
 
   return (
-    <section className="">
-      <div>
-        {searchActive && (
-          <Button
-            variant={ButtonVariant.Tertiary}
-            className="!py-2 !pl-4 absolute left-0"
-            onClick={onGoBack}
-          >
-            <Icon
-              name={IconName.ChevronLeft}
-              className="text-white"
-            />
+    <section className="flex items-center justify-center">
+      {searchActive && (
+        <Button
+          variant={ButtonVariant.Tertiary}
+          className="!py-2 !pl-4 absolute left-0"
+          onClick={onGoBack}
+        >
+          <Icon
+            name={IconName.ChevronLeft}
+            className="text-white"
+          />
 
-            <p className="text-white">Back</p>
-          </Button>
-        )}
+          <p className="text-white">Back</p>
+        </Button>
+      )}
 
-        <SearchInput
-          active={searchActive}
-          value={search}
-          onChange={setSearch}
-        />
-      </div>
-
-      {/* Filters */}
-      <div></div>
+      <SearchInput
+        active={searchActive}
+        value={search}
+        onChange={setSearch}
+      />
     </section>
   )
 }

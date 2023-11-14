@@ -13,13 +13,20 @@ import {
   ChevronRight,
   QrCodeScanner,
   Star,
-  Search
+  Search,
+  ExpandMore,
+  CalendarMonth,
+  LocationOnOutlined,
+  Tune,
+  ImportExport,
+  Check
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
 export enum IconName {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   EnvelopeOpen,
   Facebook,
   Instagram,
@@ -31,6 +38,11 @@ export enum IconName {
   QrCode,
   Star,
   Search,
+  Calendar,
+  Location,
+  Filters,
+  Reorder,
+  Tick
 }
 
 interface IconProps {
@@ -41,6 +53,7 @@ interface IconProps {
 const icons = {
   [IconName.ChevronLeft]: ChevronLeft,
   [IconName.ChevronRight]: ChevronRight,
+  [IconName.ChevronDown]: ExpandMore,
   [IconName.EnvelopeOpen]: DraftsOutlined,
   [IconName.Facebook]: Facebook,
   [IconName.Instagram]: Instagram,
@@ -52,6 +65,11 @@ const icons = {
   [IconName.QrCode]: QrCodeScanner,
   [IconName.Star]: Star,
   [IconName.Search]: Search,
+  [IconName.Calendar]: CalendarMonth,
+  [IconName.Location]: LocationOnOutlined,
+  [IconName.Filters]: Tune,
+  [IconName.Reorder]: ImportExport,
+  [IconName.Tick]: Check,
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {

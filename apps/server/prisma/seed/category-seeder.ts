@@ -6,6 +6,10 @@ export default class CategorySeeder {
   public async run() {
     console.log('Running category seeder');
 
+    console.log('Deleting existing categories...');
+    await this.deleteAll();
+    console.log('Cleared Categories ✅');
+
     const now = new Date();
 
     await this.database.category.createMany({
@@ -17,5 +21,9 @@ export default class CategorySeeder {
       ],
       skipDuplicates: true,
     });
+  }
+
+  private async deleteAll() {
+    await this.database.category.deleteMany({});
   }
 }

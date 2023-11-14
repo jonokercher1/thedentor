@@ -18,3 +18,6 @@ export * from './Chip'
 
 export { default as Carousel } from './Carousel'
 export * from './Carousel'
+
+export { default as Dropdown } from './Dropdown'
+export * from './Dropdown'

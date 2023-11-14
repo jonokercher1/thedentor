@@ -36,7 +36,7 @@ const SearchInput: FC<SearchInputProps> = ({ active, value, onChange }) => {
   const iconClasses = classNames(
     'text-white h-8 w-8 transition-colors duration-200',
     {
-      'text-neutral-800': active
+      '!text-neutral-800': active
     }
   )
 

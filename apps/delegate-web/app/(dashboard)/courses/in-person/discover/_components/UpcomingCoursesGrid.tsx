@@ -8,6 +8,7 @@ import { Button, ButtonVariant, useApiRequest } from '@dentor/ui'
 import { getUpcomingInPersonCourses } from '@/api/course/get-upcoming-in-person-courses/client'
 import { type GetUpcomingInPersonCoursesResponse } from '@/api/course/get-upcoming-in-person-courses'
 import { PaginationInput } from '@/types/api/pagination'
+import CoursesGrid from '../../_components/CoursesGrid'
 
 interface UpcomingCoursesGridProps {
   initialCourses: Course[]
@@ -39,50 +40,12 @@ const UpcomingCoursesGrid: FC<UpcomingCoursesGridProps> = ({ initialCourses, tot
   }
 
   return (
-    <div className="grid lg:grid-cols-3 lg:gap-20">
-      <section className="col-span-2 flex items-center flex-col">
-        <div className="flex flex-col gap-12">
-          {upcomingCourses.map((course, index) => {
-            const key = `upcoming-courses-course-${course.id}`
-            if (index === 2) {
-              return (
-                <div key={key}>
-                  <div className="lg:hidden">
-                    <TheDentorPremiumCard className="h-[400px]" />
-                  </div>
-
-                  <CourseCard
-                    course={course}
-                  />
-                </div>
-              )
-            }
-
-            return (
-              <CourseCard
-                key={key}
-                course={course}
-              />
-            )
-          })}
-        </div>
-
-        {moreToFetch && (
-          <Button
-            className="mx-auto w-80 mt-20"
-            variant={ButtonVariant.Tertiary}
-            onClick={onFetchMore}
-            loading={isLoading}
-          >
-            <p>Load More</p>
-          </Button>
-        )}
-      </section>
-
-      <aside className="hidden lg:block">
-        <TheDentorPremiumCard className="h-[800px] top-12 sticky" />
-      </aside>
-    </div>
+    <CoursesGrid
+      courses={upcomingCourses}
+      isFetching={isLoading}
+      onFetchMore={onFetchMore}
+      moreToFetch={moreToFetch}
+    />
   )
 }
 

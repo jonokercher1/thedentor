@@ -14,5 +14,5 @@ export interface SearchClient {
   createObject: (object: SearchObject) => Promise<any>;
   updateObject: (object: SearchObject) => Promise<any>;
   deleteObject: (objectID: string) => Promise<any>;
-  search: <Result>(query: string, pagination: PaginationInput) => Promise<Result[]>;
+  search: <Result>(query: string, pagination: PaginationInput, filters?: string) => Promise<{ results: Result[], count: number }>
 }

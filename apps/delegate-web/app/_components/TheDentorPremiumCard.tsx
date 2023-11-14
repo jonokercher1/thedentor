@@ -2,9 +2,9 @@ import { AtomProps } from '@/types/component';
 import classNames from 'classnames';
 import { type FC } from 'react'
 
-interface TheDentorPremiumCard extends AtomProps { }
+interface TheDentorPremiumCardProps extends AtomProps { }
 
-const TheDentorPremiumCard: FC<TheDentorPremiumCard> = ({ id, className }) => {
+const TheDentorPremiumCard: FC<TheDentorPremiumCardProps> = ({ id, className }) => {
   const containerClasses = classNames('flex flex-1 bg-neutral-700 items-center justify-center rounded-2xl', className)
 
   return (
