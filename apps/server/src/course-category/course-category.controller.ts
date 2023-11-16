@@ -9,10 +9,9 @@ export class CourseCategoryController {
     private readonly courseCategoryService: CourseCategoryService,
   ) { }
 
-
   @Get()
-  public async getCourseCategories(@Query() { type }: GetCourseCategoriesForTypeInput) {
-    const categories = await this.courseCategoryService.getActiveCourseCategories(type);
+  public async getCourseCategories(@Query() getCourseCategoriesForTypeInpu: GetCourseCategoriesForTypeInput) {
+    const categories = await this.courseCategoryService.getActiveCourseCategories(getCourseCategoriesForTypeInpu.type);
 
     return new CourseCategoryResponse(categories);
   }

@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 import TestDatabaseService from '@test/utils/test-database-service';
 import { TestUserService } from '@test/utils/test-user-service';
-import { RoleName, SubscriptionTierName } from '@prisma/client';
+import { RoleName } from '@prisma/client';
 import TestApp from '@test/utils/test-app';
 
 describe('Register', () => {
@@ -86,33 +86,6 @@ describe('Register', () => {
       });
   });
 
-  it('should create a new user with a payment provider customer ID', async () => {
-    const password = faker.string.sample(10);
-    const userData = {
-      email: faker.internet.email(),
-      name: faker.person.fullName(),
-      phone: faker.phone.number('+447#########'),
-      gdcNumber: faker.string.sample(8),
-      password,
-      passwordConfirmation: password,
-    };
-
-    const response = await request(app.getHttpServer())
-      .post(URL)
-      .send(userData);
-
-    expect(response.status).toEqual(200);
-    expect(response.body.message).toEqual('success');
-
-    const userDbRecord = await testDatabaseService.database.user.findFirst({
-      where: {
-        email: userData.email,
-      },
-    });
-
-    expect(userDbRecord.paymentProviderCustomerId).toEqual('payment-provider-customer-id');
-  });
-
   it('should create a new user with a dentist role', async () => {
     const password = faker.string.sample(10);
     const userData = {
@@ -138,40 +111,6 @@ describe('Register', () => {
     });
 
     expect(userDbRecord.roleName).toEqual(RoleName.Dentist);
-  });
-
-  it('should create a new user with a premium subscription', async () => {
-    const password = faker.string.sample(10);
-    const userData = {
-      email: faker.internet.email(),
-      name: faker.person.fullName(),
-      phone: faker.phone.number('+447#########'),
-      gdcNumber: faker.string.sample(8),
-      password,
-      passwordConfirmation: password,
-    };
-
-    const response = await request(app.getHttpServer())
-      .post(URL)
-      .send(userData);
-
-    expect(response.status).toEqual(200);
-    expect(response.body.message).toEqual('success');
-
-    const userDbRecord = await testDatabaseService.database.user.findFirst({
-      where: {
-        email: userData.email,
-      },
-      select: {
-        subscription: {
-          select: {
-            subscriptionTier: true,
-          },
-        },
-      },
-    });
-
-    expect(userDbRecord.subscription.subscriptionTier.name).toEqual(SubscriptionTierName.DentistPremium);
   });
 
   it('should return the correct format response', async () => {

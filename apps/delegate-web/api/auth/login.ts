@@ -1,7 +1,6 @@
-import { CurrentUser } from '@/types/api/current-user'
-import { ClientApiClient } from '@/api/client-api-client'
+import { CurrentUser } from '@/types/api/auth/current-user'
 import { HttpSuccessResponse } from '@/types/api/http-success-response'
-
+import { ClientApiClient } from '@/api/client-api-client'
 
 export interface LoginBody {
   email: string

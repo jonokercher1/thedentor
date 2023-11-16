@@ -1,5 +1,5 @@
-import { ClientApiClient } from '@/api/client-api-client'
 import { HttpSuccessResponse } from '@/types/api/http-success-response'
+import { ClientApiClient } from '@/api/client-api-client'
 
 export interface ResetPasswordBody {
   token: string

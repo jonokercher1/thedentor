@@ -6,3 +6,18 @@ export * from './Icon'
 
 export { default as LoadingSpinner } from './LoadingSpinner'
 export * from './LoadingSpinner'
+
+export { default as Container } from './Container'
+export * from './Container'
+
+export { default as Tabs } from './Tabs'
+export * from './Tabs'
+
+export { default as Chip } from './Chip'
+export * from './Chip'
+
+export { default as Carousel } from './Carousel'
+export * from './Carousel'
+
+export { default as Dropdown } from './Dropdown'
+export * from './Dropdown'

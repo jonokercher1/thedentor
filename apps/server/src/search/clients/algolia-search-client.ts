@@ -46,20 +46,23 @@ export default class AlgoliaSearchClient implements SearchClient {
   }
 
   // TODO: this will need a pagination input - it should be in the same format as we use internally
-  public async search<Result>(query: string, pagination: PaginationInput): Promise<Result[]> {
+  public async search<Result>(query: string, pagination: PaginationInput, filters?: string): Promise<{ results: Result[], count: number }> {
     this.logger.log('AlgoliaSearchClient.search', 'Searching in Algolia', { query, pagination });
+
     // TODO: implement sorting for algolia search results
     // https://www.algolia.com/doc/guides/managing-results/refine-results/sorting/#sorting-by-attribute
-
-
-    const { hits } = await this.index.search<Result>(query, {
-      page: pagination.page,
+    const { hits, nbHits } = await this.index.search<Result>(query, {
+      page: pagination.page - 1, // ALGOLIA STARTS AT PAGE 0 FOR SOME UNKNOWN REASON
       hitsPerPage: pagination.perPage,
+      filters,
     });
 
     this.logger.log('AlgoliaSearchClient.search', 'Searched in algolia', { resultCount: hits.length });
 
-    return hits;
+    return {
+      results: hits,
+      count: nbHits,
+    };
   }
 
   public initIndex(indexName: string, searchableFields: string[]): void {

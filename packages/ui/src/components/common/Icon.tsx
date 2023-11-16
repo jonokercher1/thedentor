@@ -1,15 +1,48 @@
 'use client'
 
-import { Visibility, VisibilityOff, KeyOutlined, ChevronLeft, DraftsOutlined, LockOutlined } from '@mui/icons-material'
+import {
+  Visibility,
+  VisibilityOff,
+  KeyOutlined,
+  ChevronLeft,
+  DraftsOutlined,
+  LockOutlined,
+  NotificationsNoneOutlined,
+  Instagram,
+  Facebook,
+  ChevronRight,
+  QrCodeScanner,
+  Star,
+  Search,
+  ExpandMore,
+  CalendarMonth,
+  LocationOnOutlined,
+  Tune,
+  ImportExport,
+  Check
+} from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
 export enum IconName {
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  EnvelopeOpen,
+  Facebook,
+  Instagram,
+  Key,
+  Lock,
+  NotificationBell,
   Visibility,
   VisibilityOff,
-  Key,
-  ChevronLeft,
-  EnvelopeOpen,
-  Lock
+  QrCode,
+  Star,
+  Search,
+  Calendar,
+  Location,
+  Filters,
+  Reorder,
+  Tick
 }
 
 interface IconProps {
@@ -18,12 +51,25 @@ interface IconProps {
 }
 
 const icons = {
+  [IconName.ChevronLeft]: ChevronLeft,
+  [IconName.ChevronRight]: ChevronRight,
+  [IconName.ChevronDown]: ExpandMore,
+  [IconName.EnvelopeOpen]: DraftsOutlined,
+  [IconName.Facebook]: Facebook,
+  [IconName.Instagram]: Instagram,
+  [IconName.Key]: KeyOutlined,
+  [IconName.Lock]: LockOutlined,
+  [IconName.NotificationBell]: NotificationsNoneOutlined,
   [IconName.Visibility]: Visibility,
   [IconName.VisibilityOff]: VisibilityOff,
-  [IconName.Key]: KeyOutlined,
-  [IconName.ChevronLeft]: ChevronLeft,
-  [IconName.EnvelopeOpen]: DraftsOutlined,
-  [IconName.Lock]: LockOutlined,
+  [IconName.QrCode]: QrCodeScanner,
+  [IconName.Star]: Star,
+  [IconName.Search]: Search,
+  [IconName.Calendar]: CalendarMonth,
+  [IconName.Location]: LocationOnOutlined,
+  [IconName.Filters]: Tune,
+  [IconName.Reorder]: ImportExport,
+  [IconName.Tick]: Check,
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {

@@ -2,9 +2,9 @@ import { Expose } from 'class-transformer';
 import HttpSuccessResponse from '../../common/responses/http-success.response';
 import { Category } from '@/database/types/category';
 
-type ICourseCategoryData = Partial<Category>;
+export type ICourseCategoryData = Partial<Category>;
 
-class CourseCategoryResponseData {
+export class CourseCategoryResponseData {
   @Expose()
   public readonly slug: string;
 
@@ -16,6 +16,7 @@ class CourseCategoryResponseData {
   }
 }
 
+// TODO: this should support a single course category and a paginated list too
 export class CourseCategoryResponse extends HttpSuccessResponse<CourseCategoryResponseData> {
   constructor(data?: ICourseCategoryData[]) {
     const formattedData = data.map(category => new CourseCategoryResponseData(category));

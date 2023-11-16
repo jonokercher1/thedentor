@@ -1,14 +1,13 @@
 'use client'
 
 import { type FC, useState } from 'react'
-import RegisterAccountDetailsForm from '@/components/auth/RegisterAccountDetailsForm'
+import RegisterAccountDetailsForm from '@/app/(auth)/register/components/RegisterAccountDetailsForm'
 import { FormProvider, useForm } from 'react-hook-form'
-import RegisterPasswordForm from '@/components/auth/RegisterPasswordForm'
+import RegisterPasswordForm from '@/app/(auth)/register/components/RegisterPasswordForm'
 import Link from 'next/link'
 import register from '@/api/auth/register'
-import { useQueryState } from '@dentor/ui'
+import { useQueryState, useToast } from '@dentor/ui'
 import { useRouter } from 'next/navigation'
-import { errorToast, successToast } from '@/utils/toast'
 import { Button, ButtonVariant } from '@dentor/ui'
 
 export interface RegisterFormData {
@@ -33,6 +32,7 @@ const viewConfig = [
 
 const Register: FC = () => {
   const router = useRouter()
+  const { errorToast, successToast } = useToast()
   const form = useForm<RegisterFormData>()
   const [currentView, setCurrentView] = useState(viewConfig[0]) // TODO: replace with reducer
   const { isLoading, queryLoading, querySuccessful, setQueryError } = useQueryState()

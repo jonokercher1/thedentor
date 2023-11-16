@@ -1,5 +1,5 @@
 import getPasswordResetToken from '@/api/auth/get-password-reset-token'
-import ResetPasswordForm from '@/components/auth/ResetPasswordForm'
+import ResetPasswordForm from '@/app/(auth)/reset-password/[token]/components/ResetPasswordForm'
 import { redirect } from 'next/navigation'
 import { type FC } from 'react'
 

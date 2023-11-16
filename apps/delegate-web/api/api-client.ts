@@ -1,6 +1,9 @@
+
+import { redirect } from 'next/navigation'
+
 export type RequestOptions = Exclude<RequestInit, 'body'>
 
-export class ApiClient {
+export abstract class ApiClient {
   private readonly BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
   public async GET<Response>(resource: string, options?: RequestOptions) {
@@ -32,6 +35,12 @@ export class ApiClient {
     }
 
     const response = await fetch(`${this.BASE_URL}/${resource}`, requestOptions)
+
+    if (response.status === 401) {
+      // TOOD: test if this works on a client call
+      redirect('/login')
+    }
+
     const data = await response.json()
 
     return data as Response

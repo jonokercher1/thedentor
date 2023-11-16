@@ -9,11 +9,8 @@ const Home: FC = async () => {
     redirect('/login')
   }
 
-  return (
-    <main>
-
-    </main>
-  )
+  // TODO: add in home page here and remove redirect from next config
+  return null
 }
 
 export default Home

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'The ultimate education platform for dental professionals',
 }
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
   const rootClasses = classNames('min-h-screen', roboto.variable)
   const bodyClasses = classNames('min-h-screen flex font-body')
 

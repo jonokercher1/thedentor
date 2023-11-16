@@ -1,6 +1,5 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, Inject, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { RegisterRequest } from '@/auth/requests/register.request';
-import { SubscriptionService } from '@/payment/subscription.service';
 import { UserService } from '@/user/services/user.service';
 import { CurrentUserResponse } from '@/auth/responses/current-user.response';
 import { AuthService } from '@/auth/auth.service';
@@ -19,7 +18,6 @@ import { Role } from '@/database/types/role';
 export class AuthController {
   constructor(
     private readonly userService: UserService,
-    private readonly subscriptionService: SubscriptionService,
     private readonly authService: AuthService,
     private readonly hashingService: HashingService,
     private readonly sessionManager: SessionManager,
@@ -53,8 +51,6 @@ export class AuthController {
     try {
       const role = Role.Dentist;
       const user = await this.userService.createUser({ ...body, role: { connect: { name: role } } });
-
-      await this.subscriptionService.createCustomerWithPremiumSubscription(user);
 
       const accessToken = await this.authService.getAccessToken(body.email);
       this.sessionManager.setSessionCookieInResponse(response, accessToken);

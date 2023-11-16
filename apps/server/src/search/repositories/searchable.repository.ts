@@ -6,7 +6,7 @@ import { SearchClient, SearchObject } from '@/search/types/search-client';
 import { PaginationInput } from '@/common/types/pagination';
 
 @Injectable()
-abstract class SearchableRepository extends BaseRepository {
+abstract class SearchableRepository<T> extends BaseRepository<T> {
   public abstract indexName: string;
 
   public abstract searchableFields: string[];
@@ -15,9 +15,10 @@ abstract class SearchableRepository extends BaseRepository {
 
   constructor(
     protected readonly database: PrismaService,
+    protected readonly entity?: T,
     @Inject(ISearchProvider) protected readonly searchClient?: SearchClient,
   ) {
-    super(database);
+    super(database, entity);
   }
 
   // TODO: Ideally this would be called here in the constructor

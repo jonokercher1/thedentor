@@ -10,6 +10,8 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
+    "@dentor/config": "*",
+    "@dentor/ui": "*",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.11",
@@ -20,9 +22,11 @@
     "autoprefixer": "10.4.14",
     "check-password-strength": "^2.0.7",
     "classnames": "^2.3.2",
+    "dayjs": "^1.11.10",
     "email-validator": "^2.0.4",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "framer-motion": "^10.16.4",
     "next": "13.4.10",
     "postcss": "8.4.26",
     "react": "18.2.0",
@@ -32,7 +36,6 @@
     "server-only": "^0.0.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
-    "@dentor/ui": "*",
-    "@dentor/config": "*"
+    "usehooks-ts": "^2.9.1"
   }
 }

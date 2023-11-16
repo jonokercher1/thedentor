@@ -23,8 +23,9 @@ export class HttpPaginatedResponse<Data> extends HttpSuccessResponse<Data> {
   @Expose()
   public readonly page: number;
 
-  constructor(data?: Data[], total?: number) {
+  constructor(data?: Data[], total?: number, page?: number) {
     super(data);
     this.total = total;
+    this.page = page;
   }
 }

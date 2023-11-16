@@ -14,7 +14,6 @@ export class SubscriptionService {
     private readonly subscriptionTierRepository: SubscriptionTierRepository,
   ) { }
 
-  // TODO: refactor to return internal type rather than passing DB type around codebase
   public async createCustomerWithPremiumSubscription(user: User): Promise<User> {
     const customer = await this.paymentProvider.createCustomer(user.email);
 

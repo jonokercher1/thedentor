@@ -36,6 +36,11 @@ export class TestCourseService {
         cpdValue: dataOverrides?.cpdValue ?? faker.number.int(),
         name: dataOverrides?.name ?? faker.string.sample(),
         description: dataOverrides?.description ?? faker.string.sample(),
+        featuredUntil: dataOverrides?.featuredUntil,
+        startDate: dataOverrides?.startDate,
+        endDate: dataOverrides?.endDate,
+        createdAt: dataOverrides?.createdAt,
+        updatedAt: dataOverrides?.updatedAt,
         dentor: {
           connect: {
             id: dentorId,

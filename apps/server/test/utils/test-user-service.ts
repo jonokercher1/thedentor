@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 export class TestUserService {
   private readonly entity: Prisma.UserDelegate;
 
-  constructor(databaseService: TestDatabaseService) {
+  constructor(private readonly databaseService: TestDatabaseService) {
     this.entity = databaseService.database.user;
   }
 
@@ -32,5 +32,10 @@ export class TestUserService {
         password,
       },
     });
+  }
+
+  public async deleteAll(): Promise<void> {
+    await this.databaseService.database.course.deleteMany();
+    await this.entity.deleteMany();
   }
 }
