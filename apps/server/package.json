@@ -5,7 +5,7 @@
   "scripts": {
     "build": "nest build",
     "db:generate": "prisma generate",
-    "db:migrate:create": "prisma migrate dev --name ",
+    "db:migrate:create": "prisma migrate dev --create-only --name ",
     "db:migrate:reset": "prisma migrate reset --force",
     "db:migrate:apply": "prisma migrate deploy",
     "db:admin": "npx prisma studio",
@@ -17,7 +17,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "start": "nest start",
-    "test:setup": "dotenv -e .env.test prisma migrate deploy && dotenv -e .env.test prisma generate && dotenv -e .env.test -- npm run db:seed",
+    "test:setup": "dotenv -e .env.test prisma migrate reset --force && dotenv -e .env.test prisma migrate deploy && dotenv -e .env.test prisma generate && dotenv -e .env.test -- npm run db:seed",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "npx dotenv -e .env.test -- jest -i --config ./test/jest-e2e.json",
@@ -43,7 +43,7 @@
     "mjml": "^4.14.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "stripe": "^12.14.0",
+    "stripe": "^14.4.0",
     "winston": "^3.11.0"
   },
   "devDependencies": {

@@ -36,6 +36,7 @@ export class TestCourseService {
         cpdValue: dataOverrides?.cpdValue ?? faker.number.int(),
         name: dataOverrides?.name ?? faker.string.sample(),
         description: dataOverrides?.description ?? faker.string.sample(),
+        availablePlaces: dataOverrides?.availablePlaces ?? faker.number.int({ max: 100 }),
         featuredUntil: dataOverrides?.featuredUntil,
         startDate: dataOverrides?.startDate,
         endDate: dataOverrides?.endDate,

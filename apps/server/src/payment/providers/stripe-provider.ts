@@ -6,7 +6,7 @@ export class StripeProvider implements PaymentProvider {
   public readonly client: Stripe;
 
   constructor() {
-    this.client = new Stripe(process.env.STRIPE_SECRET, { apiVersion: '2022-11-15' });
+    this.client = new Stripe(process.env.STRIPE_SECRET, { apiVersion: '2023-10-16' });
   }
 
   public async createCustomer(email: string): Promise<Stripe.Customer> {
@@ -31,5 +31,27 @@ export class StripeProvider implements PaymentProvider {
         },
       },
     });
+  }
+
+  public async createCheckoutUrl(priceInLowestDenomination: number, currency = 'gbp'): Promise<string> {
+    const session = await this.client.checkout.sessions.create({
+      // ui_mode: 'embedded',
+      payment_method_types: ['card', 'klarna'],
+      line_items: [
+        {
+          price_data: {
+            currency,
+            unit_amount: priceInLowestDenomination,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: '',
+      redirect_on_completion: 'if_required',
+      return_url: '',
+      mode: 'payment',
+    });
+
+    return session.client_secret;
   }
 }

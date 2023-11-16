@@ -20,6 +20,7 @@ import { SubscriptionTierRepository } from '@/payment/repositories/subscription-
   exports: [
     PaymentService,
     SubscriptionService,
+    IPaymentProvider,
   ],
   imports: [DatabaseModule, UserModule],
 })
