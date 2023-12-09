@@ -33,10 +33,14 @@ export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
     return usersWithProperties > 0;
   }
 
-  public async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+  public async update(id: string, data: Prisma.UserUpdateInput, select?: Prisma.UserSelect): Promise<User> {
     return this.entity.update({
       where: { id },
       data: data,
+      select: {
+        ...UserRepository.DEFAULT_FIELDS,
+        ...select,
+      },
     });
   }
 

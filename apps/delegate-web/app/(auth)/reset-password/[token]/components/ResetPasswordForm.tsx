@@ -39,7 +39,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = () => {
   }
 
   return (
-    <div className="p-8 lg:p-20 w-full">
+    <div className="w-full">
       <header className="mb-10">
         <Icon
           name={IconName.Lock}

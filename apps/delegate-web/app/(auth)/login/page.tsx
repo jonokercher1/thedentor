@@ -27,7 +27,7 @@ const Login: FC = () => {
   })
 
   return (
-    <div className="p-8 lg:p-20 w-full">
+    <div className="w-full">
       <header className="mb-10">
         <LoginNextIcon className="text-neutral-900 mb-10" />
         <h1 className="text-neutral-900 font-bold text-4xl mb-2 font-body">Welcome Back!</h1>

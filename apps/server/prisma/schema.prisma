@@ -16,8 +16,6 @@ model User {
   password                  String?
   roleName                  RoleName
   role                      Role                 @relation(fields: [roleName], references: [name])
-  subscriptionId            String?              @unique
-  subscription              UserSubscription?
   paymentProviderCustomerId String?
   rating                    Float?
   createdAt                 DateTime             @default(now())
@@ -35,27 +33,6 @@ model Role {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   users     User[]
-}
-
-model SubscriptionTier {
-  id        String               @id @default(uuid())
-  name      SubscriptionTierName @unique @default(DentistFree)
-  productId String?
-  priceId   String?
-  createdAt DateTime             @default(now())
-  updatedAt DateTime             @default(now())
-  users     UserSubscription[]
-}
-
-model UserSubscription {
-  subscriptionTier   SubscriptionTier @relation(fields: [subscriptionTierId], references: [id])
-  user               User             @relation(fields: [userId], references: [id])
-  subscriptionTierId String
-  userId             String           @unique
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now())
-
-  @@id([subscriptionTierId, userId])
 }
 
 model PasswordResetToken {
@@ -164,11 +141,6 @@ model DentorReviews {
 enum RoleName {
   Dentist
   Dentor
-}
-
-enum SubscriptionTierName {
-  DentistPremium
-  DentistFree
 }
 
 enum CourseType {

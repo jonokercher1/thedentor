@@ -1,7 +1,6 @@
 'use client'
 
-import { Container, Logo } from '@dentor/ui'
-import Link from 'next/link'
+import { Container, LinkableLogo } from '@dentor/ui'
 import { type FC } from 'react'
 import Nav from './Nav'
 import Avatar from './Avatar'
@@ -13,10 +12,7 @@ const Header: FC<HeaderProps> = () => {
     <header className="text-neutral-100 py-12">
       <Container className="flex items-center justify-between">
         <section className="flex items-center gap-20">
-          <Link href="/">
-            <Logo />
-          </Link>
-
+          <LinkableLogo className="relative" />
           <Nav />
         </section>
 

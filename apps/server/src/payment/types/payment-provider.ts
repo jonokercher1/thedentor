@@ -1,10 +1,14 @@
-import { SubscriptionTier } from '@/database/types/subscription-tier';
 import { User } from '@/database/types/user';
 
+export interface ProductData {
+  id: string
+  price: number
+  name: string
+}
+
 export interface PaymentProvider {
-  createCustomer: (email: string) => Promise<any>
-  createSubscription: (customer: User, subscriptionTier: SubscriptionTier) => Promise<any>
-  createCheckoutUrl: (priceInLowestDenomination: number, currency?: string) => Promise<string>
+  createPaymentIntent: (customer: User, product: ProductData) => Promise<string>
+  handlePaymentWebhook: (body: any, headers: any) => Promise<void>
 }
 
 export const IPaymentProvider = Symbol('IPaymentProvider');

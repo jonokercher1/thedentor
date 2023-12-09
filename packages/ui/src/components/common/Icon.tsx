@@ -19,7 +19,9 @@ import {
   LocationOnOutlined,
   Tune,
   ImportExport,
-  Check
+  Check,
+  CreditScore,
+  CheckCircleOutline
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
@@ -42,7 +44,9 @@ export enum IconName {
   Location,
   Filters,
   Reorder,
-  Tick
+  Tick,
+  PaymentApproved,
+  CircleCheck,
 }
 
 interface IconProps {
@@ -70,6 +74,8 @@ const icons = {
   [IconName.Filters]: Tune,
   [IconName.Reorder]: ImportExport,
   [IconName.Tick]: Check,
+  [IconName.PaymentApproved]: CreditScore,
+  [IconName.CircleCheck]: CheckCircleOutline
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {

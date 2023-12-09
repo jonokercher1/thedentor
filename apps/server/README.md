@@ -1,3 +1,15 @@
+## Setup Guide & Prerequisists
+## Commands
+Here are some of the useful commands setup to improve local devex
+- `npm run dev:setup`: Will reset an existing database state, run the migrations from scratch, apply seed files and trigger a stripe login
+  > This requires stripe cli to be installed (see below)
+
+- `npm run start:dev`: Will startup the api (4000), delegate web (3000) and provider dashboard (3001) - all of the apps in this monorepo
+
+### Stripe CLI
+This should be bundled as a docker dependency. However, for speed, you need to install the stripe CLI following these steps:
+1. `brew install stripe/stripe-cli/stripe`
+2. `stripe login` - there is a 90 day session time so you will need to run this every 90 days
 
 ## General Structure/Practices
 ### File naming conventions
@@ -10,7 +22,7 @@
 - `*.service.ts`: Handles all business logic for the given subject/area
 - `*.response.ts`: Shapes the response object, enforces what data is sent over the wire
 - `*.request.ts`: Handles any incoming data and ensures it is ok to process
-- `*.repository.ts`: Handles ***ALL*** data layer interaction (no where else should ***EVER*** access to the data layer)
+- `*.repository.ts`: Handles ***ALL*** data layer interaction (no where else should ***EVER*** access the data layer)
 - `*.guard.ts`: Determins if a request is safe to be passed to the route handler (controller)
 - `*.exception.ts`: Any custom exception that can be raised (internal or public facing)
 
