@@ -23,7 +23,10 @@ const CourseCheckout: FC<CourseCheckoutProps> = ({ clientSecret }) => {
         <h1 className="text-neutral-900 font-bold text-4xl mb-2 font-body">Make a Payment</h1>
         <p className="text-base font-light text-neutral-900">Please provide your details to complete your booking.</p>
       </header>
-      <Elements options={{ clientSecret }} stripe={stripePromise}>
+      <Elements
+        options={{ clientSecret }}
+        stripe={stripePromise}
+      >
         <CoursePaymentForm />
       </Elements>
     </div>

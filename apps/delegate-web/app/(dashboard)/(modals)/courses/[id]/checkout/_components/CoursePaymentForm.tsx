@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, ButtonVariant, Icon, IconName, useToast } from '@dentor/ui';
-import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useParams, useRouter } from 'next/navigation';
 import { type FC, FormEvent, useState, useEffect } from 'react'
 
@@ -44,6 +44,10 @@ const CoursePaymentForm: FC<CoursePaymentFormProps> = () => {
   return (
     <form onSubmit={onHandleSubmit}>
       <PaymentElement />
+      {/* TODO: only show this if there is no logged in user */}
+      {/* <section className="mt-4">
+        <LinkAuthenticationElement />
+      </section> */}
 
       <Button
         className="mt-8"
