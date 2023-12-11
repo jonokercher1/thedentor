@@ -10,7 +10,7 @@ const CourseCheckoutError: FC = () => {
   }
 
   return (
-    <section>
+    <section className="w-full px-8 lg:px-20">
       <header className="mb-10">
         <Icon
           className="text-neutral-900 mb-7 !text-4xl"

@@ -1,9 +1,9 @@
 'use client'
 
 import { Button, ButtonVariant, Icon, IconName, useToast } from '@dentor/ui';
-import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { useParams, useRouter } from 'next/navigation';
-import { type FC, FormEvent, useState, useEffect } from 'react'
+import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { useParams } from 'next/navigation';
+import { type FC, FormEvent, useState } from 'react'
 
 interface CoursePaymentFormProps {
 
@@ -29,11 +29,10 @@ const CoursePaymentForm: FC<CoursePaymentFormProps> = () => {
     const res = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // TODO: append success page to current url
         return_url: `${window.location.href}/success`,
       },
     });
-    // TODO: handle res.error
+
     if (res.error) {
       errorToast(res.error.message ?? 'Payment failed, please check your details and try again')
     }
@@ -44,10 +43,6 @@ const CoursePaymentForm: FC<CoursePaymentFormProps> = () => {
   return (
     <form onSubmit={onHandleSubmit}>
       <PaymentElement />
-      {/* TODO: only show this if there is no logged in user */}
-      {/* <section className="mt-4">
-        <LinkAuthenticationElement />
-      </section> */}
 
       <Button
         className="mt-8"

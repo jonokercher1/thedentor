@@ -22,7 +22,8 @@ import {
   Check,
   CreditScore,
   CheckCircleOutline,
-  Error
+  Error,
+  PersonOutline
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
@@ -48,7 +49,8 @@ export enum IconName {
   Tick,
   PaymentApproved,
   CircleCheck,
-  Error
+  Error,
+  User
 }
 
 interface IconProps {
@@ -79,6 +81,7 @@ const icons = {
   [IconName.PaymentApproved]: CreditScore,
   [IconName.CircleCheck]: CheckCircleOutline,
   [IconName.Error]: Error,
+  [IconName.User]: PersonOutline,
 }
 
 const Icon: FC<IconProps> = ({ name, className }) => {
