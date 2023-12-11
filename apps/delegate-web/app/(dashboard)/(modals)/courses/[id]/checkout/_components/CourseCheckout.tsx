@@ -14,10 +14,10 @@ const stripePromise = loadStripe('pk_test_51NWcqdFoWbJ9SEsuEEKDkHB6VqtUlohyzXdZy
 
 const CourseCheckout: FC<CourseCheckoutProps> = ({ clientSecret }) => {
   return (
-    <div>
+    <section>
       <header className="mb-10">
         <Icon
-          className="text-neutral-900 mb-7 text-4xl"
+          className="text-neutral-900 mb-7 !text-4xl"
           name={IconName.PaymentApproved}
         />
         <h1 className="text-neutral-900 font-bold text-4xl mb-2 font-body">Make a Payment</h1>
@@ -29,7 +29,7 @@ const CourseCheckout: FC<CourseCheckoutProps> = ({ clientSecret }) => {
       >
         <CoursePaymentForm />
       </Elements>
-    </div>
+    </section>
   )
 }
 

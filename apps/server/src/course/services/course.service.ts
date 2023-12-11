@@ -7,7 +7,7 @@ import { UserRepository } from '@/user/repositories/user.repository';
 import { ISearchProvider } from '@/search/search.provider';
 import { SearchClient } from '@/search/types/search-client';
 import { AlgoliaCourse } from '@/search/types/algolia';
-import CourseSoldOutError from '@/common/errors/course/CourseSoldOutError';
+import CourseSoldOutError from '@/common/errors/course/course-sold-out-error';
 
 @Injectable()
 export class CourseService {
