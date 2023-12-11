@@ -21,3 +21,6 @@ export * from './Carousel'
 
 export { default as Dropdown } from './Dropdown'
 export * from './Dropdown'
+
+export { default as LinkableLogo } from './LinkableLogo'
+export * from './LinkableLogo'

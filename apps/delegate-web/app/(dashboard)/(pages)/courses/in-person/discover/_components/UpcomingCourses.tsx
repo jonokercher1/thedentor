@@ -5,6 +5,7 @@ import { getUpcomingInPersonCourses } from '@/api/course/get-upcoming-in-person-
 const perPage = 5
 const UpcomingCourses: FC = async () => {
   const { data: upcomingCourses, total } = await getUpcomingInPersonCourses({ page: 1, perPage })
+  console.log("🚀 ~ file: UpcomingCourses.tsx:8 ~ constUpcomingCourses:FC= ~ upcomingCourses:", upcomingCourses)
 
   if (!upcomingCourses) {
     // TODO: what do we want to do here?

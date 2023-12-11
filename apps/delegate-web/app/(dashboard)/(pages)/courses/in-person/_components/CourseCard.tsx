@@ -2,8 +2,8 @@
 
 import { Button, ButtonVariant, Chip, Icon, IconName } from '@dentor/ui'
 import { type FC } from 'react'
-import DentorChip from '@/app/(dashboard)/courses/_components/DentorChip'
-import CourseDateTag from '@/app/(dashboard)/courses/in-person/_components//CourseDateTag'
+import DentorChip from '@/app/(dashboard)/(pages)/courses/_components/DentorChip'
+import CourseDateTag from '@/app/(dashboard)/(pages)/courses/in-person/_components/CourseDateTag'
 
 interface CourseCardProps {
   course: any // TODO: add type from api 

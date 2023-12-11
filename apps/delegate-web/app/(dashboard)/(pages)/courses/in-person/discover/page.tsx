@@ -1,5 +1,5 @@
 import { type FC } from 'react'
-import Categories from '@/app/(dashboard)/courses/in-person/discover/_components/Categories'
+import Categories from '@/app/(dashboard)/(pages)/courses/in-person/discover/_components/Categories'
 import getCourseCategoriesByType from '@/api/course/category/get-course-categories-by-type'
 import { CourseType } from '@/types/api/course/course'
 import UpcomingCourses from './_components/UpcomingCourses'

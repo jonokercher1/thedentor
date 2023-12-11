@@ -7,6 +7,7 @@ import { UserRepository } from '@/user/repositories/user.repository';
 import { ISearchProvider } from '@/search/search.provider';
 import { SearchClient } from '@/search/types/search-client';
 import { AlgoliaCourse } from '@/search/types/algolia';
+import CourseSoldOutError from '@/common/errors/course/CourseSoldOutError';
 
 @Injectable()
 export class CourseService {
@@ -74,6 +75,20 @@ export class CourseService {
 
   public async count(filters?: CourseFilters) {
     return this.courseRepository.count(filters);
+  }
+
+  public async findById(courseId: string): Promise<Course> {
+    return this.courseRepository.findUnique('id', courseId);
+  }
+
+  public async getCourseByIdToPurchase(courseId: string): Promise<Course> {
+    const course = await this.findById(courseId);
+
+    if (!course.availablePlaces) {
+      throw new CourseSoldOutError();
+    }
+
+    return course;
   }
 
   // TODO: this probably doesnt live here

@@ -2,7 +2,7 @@
 
 import { Button, ButtonVariant, Chip } from '@dentor/ui'
 import { type FC } from 'react'
-import CourseDateTag from '@/app/(dashboard)/courses/in-person/_components/CourseDateTag'
+import CourseDateTag from '@/app/(dashboard)/(pages)/courses/in-person/_components/CourseDateTag'
 import { CourseCategory } from '@/types/api/course/category/course-category'
 import { Course } from '@/types/api/course/course'
 

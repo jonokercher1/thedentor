@@ -7,10 +7,19 @@ import { NotificationModule } from '@/notification/notification.module';
 import { UserPasswordResetService } from '@/user/services/user-password-reset.service';
 import { PasswordResetRepository } from '@/user/repositories/password-reset.repository';
 import { NotificationService } from '@/notification/notification.service';
+import { UserCourseService } from './services/user-course.service';
 
 @Module({
-  providers: [UserRepository, UserService, HashingService, NotificationService, UserPasswordResetService, PasswordResetRepository],
-  exports: [UserService, HashingService, UserPasswordResetService],
+  providers: [
+    UserRepository,
+    UserService,
+    HashingService,
+    NotificationService,
+    UserPasswordResetService,
+    PasswordResetRepository,
+    UserCourseService,
+  ],
+  exports: [UserService, HashingService, UserPasswordResetService, UserCourseService],
   imports: [DatabaseModule, NotificationModule],
 })
 export class UserModule { }

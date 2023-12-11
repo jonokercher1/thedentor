@@ -58,6 +58,7 @@ export default class CourseSeeder {
           cpdValue: faker.number.int({ min: 1, max: 25 }),
           name: faker.company.name(),
           description: faker.lorem.sentences({ min: 1, max: 4 }),
+          availablePlaces: faker.number.int({ max: 100 }),
           startDate,
           endDate,
           featuredUntil: i % 3 === 0 ? faker.date.between({ from: dayjs().subtract(1, 'day').toDate(), to: dayjs().add(3, 'weeks').toDate() }) : undefined,

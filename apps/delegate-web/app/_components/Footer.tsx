@@ -1,6 +1,6 @@
 'use client'
 
-import { Container, Icon, IconName, Logo } from '@dentor/ui'
+import { Container, Icon, IconName, LinkableLogo, Logo } from '@dentor/ui'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { type FC } from 'react'
@@ -22,9 +22,7 @@ const Footer: FC<FooterProps> = () => {
     <footer className="text-white py-12">
       <Container>
         <section className="flex items-center justify-between gap-6 flex-col md:flex-row md:gap-12">
-          <Link href="/">
-            <Logo />
-          </Link>
+          <LinkableLogo />
 
           <div className="flex gap-3 items-center justify-center">
             {socialLinks.map((link, index) => (

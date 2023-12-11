@@ -2,7 +2,7 @@
 
 import { Course } from '@/types/api/course/course'
 import { useState, type FC } from 'react'
-import CourseCard from '@/app/(dashboard)/courses/in-person/_components/CourseCard'
+import CourseCard from '@/app/(dashboard)/(pages)/courses/in-person/_components/CourseCard'
 import TheDentorPremiumCard from '@/app/_components/TheDentorPremiumCard'
 import { Button, ButtonVariant, useApiRequest } from '@dentor/ui'
 import { getUpcomingInPersonCourses } from '@/api/course/get-upcoming-in-person-courses/client'
