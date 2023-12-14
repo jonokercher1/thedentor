@@ -48,4 +48,20 @@ export class OneTimePasswordService {
 
     return oneTimePassword;
   }
+
+  public async verifyEmailAndOneTimePasswordCombination(email: string, oneTimePassword: string) {
+    const validOneTimePassword = await this.oneTimePasswordRepository.findFirst({
+      where: {
+        user: {
+          email,
+        },
+        token: oneTimePassword,
+        expiresAt: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    return !!validOneTimePassword;
+  }
 }

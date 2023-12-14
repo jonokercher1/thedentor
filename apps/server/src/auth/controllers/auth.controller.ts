@@ -16,7 +16,9 @@ import { Role } from '@/database/types/role';
 import { GetOneTimePasswordRequest } from '@/auth/requests/one-time-password.request';
 import { OneTimePasswordService } from '@/auth/services/one-time-password.service';
 import AlreadyHasOneTimePasswordError from '@/auth/errors/already-has-one-time-password-error';
-import OneTimePasswordResponse from '../responses/one-time-password.response';
+import OneTimePasswordResponse from '@/auth/responses/one-time-password.response';
+import InvalidEmailAndOneTimePasswordCombinationError from '@/auth/errors/invalid-email-and-one-time-password-combination.error';
+import { OneTimePasswordLoginRequest } from '@/auth/requests/one-time-password-login.request';
 
 @Controller('auth')
 export class AuthController {
@@ -28,7 +30,6 @@ export class AuthController {
     private readonly oneTimePasswordService: OneTimePasswordService,
     @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
-
 
   @Post('one-time-password')
   @HttpCode(200)
@@ -47,6 +48,24 @@ export class AuthController {
       });
     } catch (e) {
       this.logger.error('AuthController.generateOneTimePassword', 'Unable to generate one time password', e?.message, { body });
+
+      throw new UnauthorizedException();
+    }
+  }
+
+  public async validateOneTimePassword(@Body() body: OneTimePasswordLoginRequest, @Res({ passthrough: true }) response: Response) {
+    try {
+      const oneTimePassword = await this.oneTimePasswordService.verifyEmailAndOneTimePasswordCombination(body.email, body.oneTimePassword);
+
+      if (!oneTimePassword) throw new InvalidEmailAndOneTimePasswordCombinationError();
+
+      const user = await this.userService.getUserByEmail(body.email);
+      const accessToken = await this.authService.getAccessToken(user.email);
+      this.sessionManager.setSessionCookieInResponse(response, accessToken);
+
+      return new CurrentUserResponse(user);
+    } catch (e) {
+      this.logger.error('AuthController.validateOneTimePassword', 'Invalid one time password login attempt', e?.message, { body });
 
       throw new UnauthorizedException();
     }
