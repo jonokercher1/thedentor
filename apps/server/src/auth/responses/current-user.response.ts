@@ -12,13 +12,13 @@ class CurrentUserResponseData {
   public readonly email: string;
 
   @Expose()
-  public readonly name: string;
+  public readonly name?: string;
 
   @Expose()
-  public readonly phone: string;
+  public readonly phone?: string;
 
   @Expose()
-  public readonly gdcNumber: string;
+  public readonly gdcNumber?: string;
 
   @Expose()
   public readonly role: string;

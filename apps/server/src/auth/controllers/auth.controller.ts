@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Get, HttpCode, Inject, Post, Req
 import { RegisterRequest } from '@/auth/requests/register.request';
 import { UserService } from '@/user/services/user.service';
 import { CurrentUserResponse } from '@/auth/responses/current-user.response';
-import { AuthService } from '@/auth/auth.service';
+import { AuthService } from '@/auth/services/auth.service';
 import { LoginRequest } from '@/auth/requests/login.request';
 import { HashingService } from '@/user/hashing.service';
 import { Public } from '@/common/guards/public.guard';
@@ -13,6 +13,10 @@ import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
 import { Role } from '@/database/types/role';
+import { GetOneTimePasswordRequest } from '@/auth/requests/one-time-password.request';
+import { OneTimePasswordService } from '@/auth/services/one-time-password.service';
+import AlreadyHasOneTimePasswordError from '@/auth/errors/already-has-one-time-password-error';
+import OneTimePasswordResponse from '../responses/one-time-password.response';
 
 @Controller('auth')
 export class AuthController {
@@ -21,9 +25,32 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly hashingService: HashingService,
     private readonly sessionManager: SessionManager,
-    @Inject(ILoggingProvider)
-    private readonly logger: ILogger,
+    private readonly oneTimePasswordService: OneTimePasswordService,
+    @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
+
+
+  @Post('one-time-password')
+  @HttpCode(200)
+  @Public()
+  public async generateOneTimePassword(@Body() body: GetOneTimePasswordRequest) {
+    try {
+      const user = await this.userService.getOrCreateUserByEmail(body.email);
+      const canRequestOneTimePassword = await this.oneTimePasswordService.canUserRequestOneTimePassword(user);
+
+      if (!canRequestOneTimePassword) throw new AlreadyHasOneTimePasswordError();
+
+      const oneTimePassword = await this.oneTimePasswordService.requestNewOneTimePasswordForUser(user);
+
+      return new OneTimePasswordResponse({
+        createdAt: oneTimePassword.createdAt.toISOString(),
+      });
+    } catch (e) {
+      this.logger.error('AuthController.generateOneTimePassword', 'Unable to generate one time password', e?.message, { body });
+
+      throw new UnauthorizedException();
+    }
+  }
 
   @Post('login')
   @HttpCode(200)
@@ -38,7 +65,7 @@ export class AuthController {
 
       return new CurrentUserResponse(user);
     } catch (e) {
-      this.logger.error('login', 'Unable to login', e?.message, { body });
+      this.logger.error('AuthController.login', 'Unable to login', e?.message, { body });
 
       throw new UnauthorizedException();
     }
@@ -57,7 +84,7 @@ export class AuthController {
 
       return new CurrentUserResponse(user);
     } catch (e) {
-      this.logger.error('register', 'Unable to register', e?.message, { body });
+      this.logger.error('AuthController.register', 'Unable to register', e?.message, { body });
 
       if (e instanceof DuplicateEntityError) {
         throw new BadRequestException(e.message);
@@ -79,7 +106,7 @@ export class AuthController {
 
       return new CurrentUserResponse(user);
     } catch (e) {
-      this.logger.error('getSelf', 'Unable to get current user', e?.message, { user: request.user });
+      this.logger.error('AuthController.getSelf', 'Unable to get current user', e?.message, { user: request.user });
 
       throw new UnauthorizedException();
     }

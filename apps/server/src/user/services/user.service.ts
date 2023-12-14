@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HashingService } from '@/user/hashing.service';
 import { UserRepository } from '@/user/repositories/user.repository';
 import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
-import { type CreateUserInput, type UpdateUserInput, type User } from '@/database/types/user';
+import { UserFilters, type CreateUserInput, type UpdateUserInput, type User } from '@/database/types/user';
 import { Role } from '@/database/types/role';
 
 @Injectable()
@@ -55,5 +55,22 @@ export class UserService {
 
   public async checkUserExists(email: string, gdcNumber: string): Promise<boolean> {
     return this.userRepository.existsWithAnyUniqueKey(email, gdcNumber);
+  }
+
+  public async getOrCreateUserByEmail(email: string, role = Role.Dentist): Promise<User> {
+    const userExists = await this.userRepository.exists<UserFilters>({ email });
+
+    if (userExists) {
+      return this.getUserByEmail(email);
+    }
+
+    return this.createUser({
+      email,
+      role: {
+        connect: {
+          name: role,
+        },
+      },
+    });
   }
 }

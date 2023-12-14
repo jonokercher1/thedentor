@@ -32,6 +32,20 @@ abstract class BaseRepository<T> {
     });
   }
 
+  public async exists<Filters>(filters: Filters) {
+    const count = await this.count(filters);
+
+    return count > 0;
+  }
+
+  public async updateMany<Filters, Input, Select = void>(filters: Filters, input: Input, select?: Select): Promise<any> {
+    return this.entity.updateMany({
+      data: input,
+      where: filters,
+      select,
+    });
+  }
+
   protected getPaginationParams(pagination?: PaginationInput) {
     const paginationInput = pagination?.page && pagination?.perPage ? {
       take: Number(pagination.perPage),
