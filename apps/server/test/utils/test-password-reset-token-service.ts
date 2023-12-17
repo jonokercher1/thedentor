@@ -13,7 +13,6 @@ export class TestPasswordResetTokenService {
     this.testUserService = new TestUserService(databaseService);
   }
 
-
   public async findByToken(token: string): Promise<PasswordResetToken> {
     return this.entity.findUnique({ where: { token } });
   }

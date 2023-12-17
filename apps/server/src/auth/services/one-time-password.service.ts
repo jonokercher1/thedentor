@@ -4,6 +4,7 @@ import { OneTimePasswordRepository } from '@/auth/repositories/one-time-password
 import { NotificationService } from '@/notification/notification.service';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
 import OneTimePasswordNotification from '@/notification/notifications/one-time-password.notification';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class OneTimePasswordService {
@@ -15,11 +16,10 @@ export class OneTimePasswordService {
   ) { }
 
   public async canUserRequestOneTimePassword(user: User): Promise<boolean> {
-    const oneMinuteInMilliseconds = 60 * 1000; // 1 minute
-    const oneTimePasswordsFromLastMinute = await this.oneTimePasswordRepository.findMany({
+    const oneTimePasswordsFromLastMinute = await this.oneTimePasswordRepository.findFirst({
       userId: user.id,
       createdAt: {
-        gt: new Date(new Date().getTime() - oneMinuteInMilliseconds),
+        gt: dayjs().subtract(1, 'minute').toDate(),
       },
     });
 
@@ -51,14 +51,12 @@ export class OneTimePasswordService {
 
   public async verifyEmailAndOneTimePasswordCombination(email: string, oneTimePassword: string) {
     const validOneTimePassword = await this.oneTimePasswordRepository.findFirst({
-      where: {
-        user: {
-          email,
-        },
-        token: oneTimePassword,
-        expiresAt: {
-          gt: new Date(),
-        },
+      user: {
+        email,
+      },
+      token: oneTimePassword,
+      expiresAt: {
+        gt: new Date(),
       },
     });
 

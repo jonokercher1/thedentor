@@ -53,6 +53,9 @@ export class AuthController {
     }
   }
 
+  @Post('one-time-password/login')
+  @HttpCode(200)
+  @Public()
   public async validateOneTimePassword(@Body() body: OneTimePasswordLoginRequest, @Res({ passthrough: true }) response: Response) {
     try {
       const oneTimePassword = await this.oneTimePasswordService.verifyEmailAndOneTimePasswordCombination(body.email, body.oneTimePassword);
@@ -62,6 +65,8 @@ export class AuthController {
       const user = await this.userService.getUserByEmail(body.email);
       const accessToken = await this.authService.getAccessToken(user.email);
       this.sessionManager.setSessionCookieInResponse(response, accessToken);
+
+      await this.oneTimePasswordService.expireAllUsersOneTimePasswords(user);
 
       return new CurrentUserResponse(user);
     } catch (e) {

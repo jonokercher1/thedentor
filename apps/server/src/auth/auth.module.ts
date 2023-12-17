@@ -10,9 +10,19 @@ import { PaymentModule } from '@/payment/payment.module';
 import SessionManager from '@/auth/utils/session-manager';
 import { PasswordResetController } from '@/auth/controllers/password-reset.controller';
 import { LoggingModule } from '@/logging/logging.module';
+import { OneTimePasswordService } from '@/auth/services/one-time-password.service';
+import { OneTimePasswordRepository } from '@/auth/repositories/one-time-password.repository';
+import { NotificationModule } from '@/notification/notification.module';
+import { NotificationService } from '@/notification/notification.service';
 
 @Module({
-  providers: [AuthService, SessionManager],
+  providers: [
+    AuthService,
+    SessionManager,
+    OneTimePasswordService,
+    OneTimePasswordRepository,
+    NotificationService,
+  ],
   controllers: [AuthController, PasswordResetController],
   exports: [SessionManager],
   imports: [
@@ -21,6 +31,7 @@ import { LoggingModule } from '@/logging/logging.module';
     CommonModule,
     PaymentModule,
     LoggingModule,
+    NotificationModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

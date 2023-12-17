@@ -11,7 +11,7 @@ abstract class BaseRepository<T> {
   ) { }
 
   public async findFirst<Filters, Select = void>(filters: Filters, select?: Select): Promise<T> {
-    return this.entity.findFirstOrThrow({
+    return this.entity.findFirst({
       where: filters,
       select,
     });
@@ -19,7 +19,7 @@ abstract class BaseRepository<T> {
 
 
   public async findUnique<Entity>(key: keyof Prisma.UserWhereInput, value: string): Promise<Entity> {
-    return this.entity.findFirstOrThrow({
+    return this.entity.findFirst({
       where: {
         [key]: value,
       },

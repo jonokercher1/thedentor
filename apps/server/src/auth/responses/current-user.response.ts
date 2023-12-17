@@ -4,6 +4,8 @@ import { User } from '@/database/types/user';
 
 type ICurrentUserResponseData = Partial<User>;
 
+// TODO: May need to return a 'onboardingProgress' here to allow the frontend to show different screens based on their onboarding progress
+// onboardingProgress: 'requiredDetails', 'basicInfo', 'complete'
 class CurrentUserResponseData {
   @Expose()
   public readonly id: string;
