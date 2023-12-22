@@ -4,8 +4,6 @@ import { User } from '@/database/types/user';
 
 type ICurrentUserResponseData = Partial<User>;
 
-// TODO: May need to return a 'onboardingProgress' here to allow the frontend to show different screens based on their onboarding progress
-// onboardingProgress: 'requiredDetails', 'basicInfo', 'complete'
 class CurrentUserResponseData {
   @Expose()
   public readonly id: string;
@@ -24,6 +22,22 @@ class CurrentUserResponseData {
 
   @Expose()
   public readonly role: string;
+
+  @Expose({ name: 'onboardingState' })
+  public get onboardingState() {
+    if (!this.email) {
+      return 'not-started';
+    }
+
+    const requiredProfileFields = [this.gdcNumber, this.name, this.phone];
+    const requiredProfileFieldsWithValues = requiredProfileFields.filter(v => !!v && v !== undefined && v !== null);
+
+    if (requiredProfileFields.length === requiredProfileFieldsWithValues.length) {
+      return 'complete';
+    }
+
+    return 'incomplete';
+  }
 
   constructor(data?: ICurrentUserResponseData) {
     Object.assign(this, data);

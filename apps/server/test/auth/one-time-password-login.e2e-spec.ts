@@ -109,6 +109,7 @@ describe('One Time Password Login', () => {
       'phone',
       'gdcNumber',
       'role',
+      'onboardingState',
     ]);
   });
 

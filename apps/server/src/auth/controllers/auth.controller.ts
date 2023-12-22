@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, Inject, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { RegisterRequest } from '@/auth/requests/register.request';
 import { UserService } from '@/user/services/user.service';
-import { CurrentUserResponse } from '@/auth/responses/current-user.response';
+import { CurrentUserResponse } from '@/user/responses/current-user.response';
 import { AuthService } from '@/auth/services/auth.service';
 import { LoginRequest } from '@/auth/requests/login.request';
 import { HashingService } from '@/user/hashing.service';

@@ -8,6 +8,7 @@ import { UserPasswordResetService } from '@/user/services/user-password-reset.se
 import { PasswordResetRepository } from '@/user/repositories/password-reset.repository';
 import { NotificationService } from '@/notification/notification.service';
 import { UserCourseService } from './services/user-course.service';
+import { UserSelfController } from './controllers/user-self.controller';
 
 @Module({
   providers: [
@@ -19,6 +20,7 @@ import { UserCourseService } from './services/user-course.service';
     PasswordResetRepository,
     UserCourseService,
   ],
+  controllers: [UserSelfController],
   exports: [UserService, HashingService, UserPasswordResetService, UserCourseService],
   imports: [DatabaseModule, NotificationModule],
 })

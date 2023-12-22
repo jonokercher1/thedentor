@@ -15,6 +15,7 @@ export class RegisterRequest {
   public readonly phone: string;
 
   // TODO: add regex for GDC numbers
+  // @IsValidGDCNumber()
   @IsString()
   public readonly gdcNumber: string;
 

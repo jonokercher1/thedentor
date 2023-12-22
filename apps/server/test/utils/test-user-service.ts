@@ -42,6 +42,14 @@ export class TestUserService {
     });
   }
 
+  public async findUserById(id: string): Promise<User> {
+    return this.entity.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   public async deleteAll(): Promise<void> {
     await this.databaseService.database.course.deleteMany();
     await this.entity.deleteMany();

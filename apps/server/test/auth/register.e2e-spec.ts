@@ -140,6 +140,7 @@ describe('Register', () => {
       'phone',
       'gdcNumber',
       'role',
+      'onboardingState',
     ]);
   });
 

@@ -6,7 +6,7 @@ const Home: FC = async () => {
   const currentUser = await getSelf()
 
   if (currentUser.statusCode > 299) {
-    redirect('/login')
+    redirect('/auth/login')
   }
 
   // TODO: add in home page here and remove redirect from next config

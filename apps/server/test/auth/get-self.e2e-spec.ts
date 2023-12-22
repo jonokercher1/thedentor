@@ -71,6 +71,7 @@ describe('Get Self', () => {
       'phone',
       'gdcNumber',
       'role',
+      'onboardingState',
     ]);
   });
 });

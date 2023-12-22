@@ -84,6 +84,7 @@ describe('Login', () => {
       'phone',
       'gdcNumber',
       'role',
+      'onboardingState',
     ]);
   });
 
