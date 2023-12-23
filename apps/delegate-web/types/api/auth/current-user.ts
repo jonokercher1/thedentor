@@ -4,5 +4,6 @@ export interface CurrentUser {
   name: string
   phone: string
   gdcNumber: string
+  onboardingState: 'not-started' | 'incomplete' | 'complete'
   role: 'Dentist' | 'Dentor'
 }

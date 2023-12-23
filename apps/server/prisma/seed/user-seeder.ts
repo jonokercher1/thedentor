@@ -14,7 +14,6 @@ export default class UserSeeder {
           email: 'hello@thedentor.com',
           phone: '+4412345678910',
           gdcNumber: '123456',
-          password: '$2a$12$cnnR3jI1pM97fBANzjSOH.qDF9UmhX4yiRtCuMTUgz2bTI8CWSRHO', // password
           roleName: RoleName.Dentist,
           createdAt: now,
           updatedAt: now,

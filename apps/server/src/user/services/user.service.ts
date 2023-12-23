@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { HashingService } from '@/user/hashing.service';
 import { UserRepository } from '@/user/repositories/user.repository';
 import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
-import { type CreateUserInput, type UpdateUserInput, type User } from '@/database/types/user';
+import { UserFilters, type CreateUserInput, type UpdateUserInput, type User } from '@/database/types/user';
 import { Role } from '@/database/types/role';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly hashingService: HashingService,
   ) { }
 
   public async getUserById(id: string): Promise<User> {
@@ -21,7 +19,6 @@ export class UserService {
   }
 
   public async createUser(input: CreateUserInput): Promise<User> {
-    const password = input?.password ? await this.hashingService.hashString(input.password) : null;
     const existingUser = await this.checkUserExists(input.email, input.gdcNumber);
 
     if (existingUser) {
@@ -33,7 +30,6 @@ export class UserService {
       name: input.name,
       phone: input.phone,
       gdcNumber: input.gdcNumber,
-      password,
       role: {
         connect: {
           name: Role.Dentist,
@@ -43,17 +39,27 @@ export class UserService {
   }
 
   public async updateUser(id: string, input: UpdateUserInput): Promise<User> {
-    const data = { ...input };
-
-    // TODO: handle the Prisma.NullableStringFieldUpdateOperationsInput
-    if (input.password) {
-      data.password = await this.hashingService.hashString(input.password as string);
-    }
-
-    return this.userRepository.update(id, data);
+    return this.userRepository.update(id, input);
   }
 
   public async checkUserExists(email: string, gdcNumber: string): Promise<boolean> {
     return this.userRepository.existsWithAnyUniqueKey(email, gdcNumber);
+  }
+
+  public async getOrCreateUserByEmail(email: string, role = Role.Dentist): Promise<User> {
+    const userExists = await this.userRepository.exists<UserFilters>({ email });
+
+    if (userExists) {
+      return this.getUserByEmail(email);
+    }
+
+    return this.createUser({
+      email,
+      role: {
+        connect: {
+          name: role,
+        },
+      },
+    });
   }
 }

@@ -11,7 +11,7 @@ export interface TextInputProps {
   name?: string
   error?: string
   className?: string
-  type?: 'text' | 'email' | 'password'
+  type?: 'text' | 'email'
   value: string
   onChange: ChangeEventHandler<HTMLInputElement>
   endSlot?: ReactNode
