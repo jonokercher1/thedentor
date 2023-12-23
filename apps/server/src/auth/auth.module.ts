@@ -8,7 +8,6 @@ import { CommonModule } from '@/common/common.module';
 import { UserModule } from '@/user/user.module';
 import { PaymentModule } from '@/payment/payment.module';
 import SessionManager from '@/auth/utils/session-manager';
-import { PasswordResetController } from '@/auth/controllers/password-reset.controller';
 import { LoggingModule } from '@/logging/logging.module';
 import { OneTimePasswordService } from '@/auth/services/one-time-password.service';
 import { OneTimePasswordRepository } from '@/auth/repositories/one-time-password.repository';
@@ -23,7 +22,7 @@ import { NotificationService } from '@/notification/notification.service';
     OneTimePasswordRepository,
     NotificationService,
   ],
-  controllers: [AuthController, PasswordResetController],
+  controllers: [AuthController],
   exports: [SessionManager],
   imports: [
     DatabaseModule,
