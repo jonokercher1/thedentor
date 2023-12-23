@@ -33,6 +33,7 @@ export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
     return usersWithProperties > 0;
   }
 
+  // TODO: move to generic base repository
   public async update(id: string, data: Prisma.UserUpdateInput, select?: Prisma.UserSelect): Promise<User> {
     return this.entity.update({
       where: { id },
@@ -44,6 +45,7 @@ export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
     });
   }
 
+  // TODO: Move to generic base repository
   public async create(data: Prisma.UserCreateInput): Promise<User> {
     return this.entity.create({ data });
   }

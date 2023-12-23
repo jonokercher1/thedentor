@@ -15,7 +15,6 @@ export default class DentorSeeder {
           email: faker.internet.email(),
           phone: faker.phone.number('+44##########'),
           gdcNumber: faker.number.int({ min: 100000, max: 999999 }).toString(),
-          password: '$2a$12$cnnR3jI1pM97fBANzjSOH.qDF9UmhX4yiRtCuMTUgz2bTI8CWSRHO', // password
           roleName: RoleName.Dentor,
           rating: i % 2 === 0 ? 5 : 0,
           createdAt: now,

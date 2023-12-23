@@ -38,7 +38,7 @@ export abstract class ApiClient {
 
     if (response.status === 401) {
       // TOOD: test if this works on a client call
-      redirect('/login')
+      redirect('/auth/login')
     }
 
     const data = await response.json()

@@ -10,8 +10,16 @@ abstract class BaseRepository<T> {
     protected readonly entity?: any, // TODO: workout how to make T extend a base entity type -> probably have to write our own type for this
   ) { }
 
+  public async findFirst<Filters, Select = void>(filters: Filters, select?: Select): Promise<T> {
+    return this.entity.findFirst({
+      where: filters,
+      select,
+    });
+  }
+
+
   public async findUnique<Entity>(key: keyof Prisma.UserWhereInput, value: string): Promise<Entity> {
-    return this.entity.findFirstOrThrow({
+    return this.entity.findFirst({
       where: {
         [key]: value,
       },
@@ -29,6 +37,20 @@ abstract class BaseRepository<T> {
   public async count<Filters>(filters: Filters) {
     return this.entity.count({
       where: filters,
+    });
+  }
+
+  public async exists<Filters>(filters: Filters) {
+    const count = await this.count(filters);
+
+    return count > 0;
+  }
+
+  public async updateMany<Filters, Input, Select = void>(filters: Filters, input: Input, select?: Select): Promise<any> {
+    return this.entity.updateMany({
+      data: input,
+      where: filters,
+      select,
     });
   }
 

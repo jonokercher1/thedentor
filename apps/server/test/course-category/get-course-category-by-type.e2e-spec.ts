@@ -1,7 +1,6 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import TestDatabaseService from '@test/utils/test-database-service';
-import { faker } from '@faker-js/faker/locale/en_GB';
 import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
 import { TestCourseService } from '@test/utils/test-course-service';
@@ -33,9 +32,6 @@ describe('Get Course Categories', () => {
   it('should error if the user is unauthenticated', async () => {
     return request(app.getHttpServer())
       .get(URL)
-      .send({
-        password: faker.string.sample(4),
-      })
       .expect(401)
       .expect({
         statusCode: 401,

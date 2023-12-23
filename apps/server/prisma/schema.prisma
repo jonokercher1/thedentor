@@ -8,24 +8,23 @@ datasource db {
 }
 
 model User {
-  id                        String               @id @default(uuid())
-  name                      String
-  email                     String               @unique
-  phone                     String
-  gdcNumber                 String               @unique
-  password                  String?
+  id                        String            @id @default(uuid())
+  name                      String?
+  email                     String            @unique
+  phone                     String?
+  gdcNumber                 String?           @unique
   roleName                  RoleName
-  role                      Role                 @relation(fields: [roleName], references: [name])
+  role                      Role              @relation(fields: [roleName], references: [name])
   paymentProviderCustomerId String?
   rating                    Float?
-  createdAt                 DateTime             @default(now())
-  updatedAt                 DateTime             @default(now())
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime          @default(now())
   courses                   Course[]
   images                    Image[]
   videos                    Video[]
-  passwordResetTokens       PasswordResetToken[]
   reviewsLeft               Review[]
   dentorReviews             DentorReviews[]
+  oneTimeTokens             OneTimePassword[]
 }
 
 model Role {
@@ -35,12 +34,12 @@ model Role {
   users     User[]
 }
 
-model PasswordResetToken {
+model OneTimePassword {
   id        String   @id @default(uuid())
-  token     String   @unique
-  userId    String
   user      User     @relation(fields: [userId], references: [id])
-  expiresAt DateTime @default(dbgenerated("NOW() + interval '1 day'"))
+  userId    String
+  token     String
+  expiresAt DateTime @default(dbgenerated("NOW() + interval '10 minutes'"))
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }

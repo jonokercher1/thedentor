@@ -118,10 +118,6 @@ const OneTimePasscodeInput: FC<OneTimePasscodeInputProps> = ({ onPasswordEntered
           />
         ))}
       </div>
-
-      {error && (
-        <p className="text-xs absolute block top-full pt-1 text-state-error font-bold capitalize">{error}</p>
-      )}
     </div>
   )
 }
