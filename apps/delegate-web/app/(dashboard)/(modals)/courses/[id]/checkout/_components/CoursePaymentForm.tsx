@@ -1,5 +1,6 @@
 'use client'
 
+import { appConfig } from '@/config/app.config';
 import { Button, ButtonVariant, Icon, IconName, useToast } from '@dentor/ui';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useParams } from 'next/navigation';
@@ -26,10 +27,12 @@ const CoursePaymentForm: FC<CoursePaymentFormProps> = () => {
 
     setIsLoading(true)
 
+    const baseUrl = appConfig.baseUrl
+    const successUrl = `${baseUrl}/courses/${params.id}/checkout/success`
     const res = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.href}/success`,
+        return_url: successUrl
       },
     });
 

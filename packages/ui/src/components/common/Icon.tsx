@@ -23,7 +23,7 @@ import {
   CreditScore,
   CheckCircleOutline,
   Error,
-  PersonOutline
+  PersonOutline,
   VerifiedUser
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'

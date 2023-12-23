@@ -4,8 +4,8 @@ import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import { CourseService } from '@/course/services/course.service';
 import { CourseCheckoutResponse } from '../responses/course-checkout.response';
-import { User } from '@/common/decorators/current-user';
-import { CurrentUser } from '@/auth/types/current-user';
+import { CurrentUser } from '@/common/decorators/current-user';
+import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
 import { UserService } from '@/user/services/user.service';
 import { CreateCoursePurchaseIntentRequest } from '@/course/requests/create-course-purchase-intent.request';
 import MissingPropertyError from '@/common/errors/common/missing-property-error';
@@ -27,7 +27,7 @@ export class CourseCheckoutController {
   @Public()
   public async createPaymentIntent(
     @Param('courseId') courseId: string,
-    @User() user?: CurrentUser,
+    @CurrentUser() user?: ICurrentUser,
     @Body() body?: CreateCoursePurchaseIntentRequest,
   ) {
     try {
@@ -38,7 +38,7 @@ export class CourseCheckoutController {
       }
 
       const course = await this.courseService.findById(courseId);
-      const userData = await this.userService.getUserByEmail(userEmail);
+      const userData = await this.userService.getOrCreateUserByEmail(userEmail);
       const courseIsAlreadyOwned = await this.userCourseService.isCourseOwnedByUser(course, userData);
 
       if (courseIsAlreadyOwned) {
