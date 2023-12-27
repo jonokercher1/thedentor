@@ -1,7 +1,6 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import TestDatabaseService from '@test/utils/test-database-service';
-import { TestCategoryService } from '@test/utils/test-category-service';
 import TestJwtService from '@test/utils/test-jwt-service';
 import { TestCourseService } from '@test/utils/test-course-service';
 import TestApp from '@test/utils/test-app';
@@ -12,7 +11,6 @@ describe('Create course purchase intent', () => {
   const URL = '/course/checkout';
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
-  let testCategoryService: TestCategoryService;
   let testJwtService: TestJwtService;
   let testCourseService: TestCourseService;
   let testUserService: TestUserService;
@@ -21,7 +19,6 @@ describe('Create course purchase intent', () => {
   beforeAll(async () => {
     const testApp = new TestApp();
     testDatabaseService = new TestDatabaseService();
-    testCategoryService = new TestCategoryService(testDatabaseService);
     testJwtService = new TestJwtService();
     testCourseService = new TestCourseService(testDatabaseService);
     testUserService = new TestUserService(testDatabaseService);
