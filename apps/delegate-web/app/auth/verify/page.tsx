@@ -1,3 +1,5 @@
+'use client'
+
 import { type FC } from 'react'
 import LoginOneTimePasswordForm from '@/app/auth/_components/LoginOneTimePasswordForm'
 import { useRouter } from 'next/navigation'
