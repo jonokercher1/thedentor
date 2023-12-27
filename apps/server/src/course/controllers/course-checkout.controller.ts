@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Inject, Param, Put } from '@nestjs/common';
+import { BadRequestException, Controller, Inject, Param, Post } from '@nestjs/common';
 import { IPaymentProvider, PaymentProvider } from '@/payment/types/payment-provider';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
@@ -7,9 +7,6 @@ import { CourseCheckoutResponse } from '../responses/course-checkout.response';
 import { CurrentUser } from '@/common/decorators/current-user';
 import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
 import { UserService } from '@/user/services/user.service';
-import { CreateCoursePurchaseIntentRequest } from '@/course/requests/create-course-purchase-intent.request';
-import MissingPropertyError from '@/common/errors/common/missing-property-error';
-import { Public } from '@/common/guards/public.guard';
 import { UserCourseService } from '@/user/services/user-course.service';
 import CourseAlreadyPurchasedError from '@/common/errors/course/course-already-purchased-error';
 
@@ -23,22 +20,14 @@ export class CourseCheckoutController {
     private readonly userCourseService: UserCourseService,
   ) { }
 
-  @Put('/:courseId/intent')
-  @Public()
+  @Post('/:courseId/intent')
   public async createPaymentIntent(
     @Param('courseId') courseId: string,
-    @CurrentUser() user?: ICurrentUser,
-    @Body() body?: CreateCoursePurchaseIntentRequest,
+    @CurrentUser() user: ICurrentUser,
   ) {
     try {
-      const userEmail = user?.email ?? body.email;
-
-      if (!userEmail) {
-        throw new MissingPropertyError('CreateCoursePurchaseIntentRequest', ['email']);
-      }
-
       const course = await this.courseService.findById(courseId);
-      const userData = await this.userService.getOrCreateUserByEmail(userEmail);
+      const userData = await this.userService.getOrCreateUserByEmail(user.email);
       const courseIsAlreadyOwned = await this.userCourseService.isCourseOwnedByUser(course, userData);
 
       if (courseIsAlreadyOwned) {

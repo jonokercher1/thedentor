@@ -46,6 +46,28 @@ export class TestUserService {
     });
   }
 
+  public async purchaseCourse(courseId: string, userId?: string): Promise<void> {
+    let purchasingUserId = userId;
+
+    if (!purchasingUserId) {
+      const user = await this.createDentist();
+      purchasingUserId = user.id;
+    }
+
+    await this.entity.update({
+      where: {
+        id: purchasingUserId,
+      },
+      data: {
+        courses: {
+          connect: {
+            id: courseId,
+          },
+        },
+      },
+    });
+  }
+
   public async deleteAll(): Promise<void> {
     await this.databaseService.database.course.deleteMany();
     await this.entity.deleteMany();
