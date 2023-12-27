@@ -3,9 +3,9 @@ import { UserService } from '@/user/services/user.service';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import { UpdateSelfRequest } from '../requests/update-self.request';
-import { CurrentUser } from '@/auth/decorators/current-user';
 import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
 import { CurrentUserResponse } from '@/user/responses/current-user.response';
+import { CurrentUser } from '@/common/decorators/current-user';
 
 @Controller('user/self')
 export class UserSelfController {

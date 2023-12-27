@@ -20,8 +20,7 @@ export class AuthGuard implements CanActivate {
     private readonly jwtService: JwtService,
     private readonly sessionManager: SessionManager,
     private readonly reflector: Reflector,
-    @Inject(ILoggingProvider)
-    private readonly logger: ILogger,
+    @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -30,24 +29,21 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (isPublic) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
     const token = this.sessionManager.getSessionCookieFromRequest(request);
+
+    if (isPublic) {
+      try {
+        await this.optionalySetUserFromToken(token, request);
+      } catch { } // Fail silently as this is a public endpoint so a token is not required
+
+      return true;
+    }
 
     if (!token) throw new UnauthorizedException();
 
     try {
-      const payload = await this.jwtService.verifyAsync<CurrentUser>(
-        token,
-        {
-          secret: jwtConstants.secret,
-        },
-      );
-
-      request['user'] = payload;
+      await this.optionalySetUserFromToken(token, request);
     } catch (e) {
       this.logger.error('AuthGuard.canActivate', 'User Authentication Failed', e.message);
 
@@ -55,5 +51,20 @@ export class AuthGuard implements CanActivate {
     }
 
     return true;
+  }
+
+  private async tryToGetPayloadFromToken(token: string) {
+    return this.jwtService.verifyAsync<CurrentUser>(
+      token,
+      {
+        secret: jwtConstants.secret,
+      },
+    );
+  }
+
+  private async optionalySetUserFromToken(token: string, request: any) {
+    const payload = await this.tryToGetPayloadFromToken(token);
+
+    request['user'] = payload;
   }
 }

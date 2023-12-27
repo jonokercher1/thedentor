@@ -1,17 +1,27 @@
 import { type FC } from 'react'
 import CourseCheckout from './_components/CourseCheckout'
 import createCoursePurchaseIntent from '@/api/course/checkout/create-course-purchase-intent'
+import getSelf from '@/api/auth/get-self'
+import { redirect } from 'next/navigation'
 
 const CourseCheckoutView: FC = async ({ params }: any) => {
-  const { data } = await createCoursePurchaseIntent(params.id)
+  const currentUser = await getSelf({ suppressUnauthorisedError: true })
 
-  // TODO: show error screen here
+  if (!currentUser?.data?.email) {
+    redirect(`/courses/${params.id}/checkout/personal-details`)
+  }
+
+  const { data } = await createCoursePurchaseIntent({
+    courseId: params.id,
+    email: currentUser?.data?.email
+  })
+
   if (!data?.clientSecret) {
-    return <h1>unable to load checkout</h1>
+    throw new Error('Error loading checkout')
   }
 
   return (
-    <section className="w-full px-8 lg:px-20">
+    <section className="w-full">
       <CourseCheckout clientSecret={data.clientSecret} />
     </section>
   )

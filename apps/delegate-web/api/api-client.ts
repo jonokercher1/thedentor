@@ -1,10 +1,11 @@
 
+import { appConfig } from '@/config/app.config'
 import { redirect } from 'next/navigation'
 
-export type RequestOptions = Exclude<RequestInit, 'body'>
+export type RequestOptions = Exclude<RequestInit, 'body'> & { suppressUnauthorisedError?: boolean }
 
 export abstract class ApiClient {
-  private readonly BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+  private readonly BASE_URL = appConfig.api.baseUrl
 
   public async GET<Response>(resource: string, options?: RequestOptions) {
     return this.makeRequest<Response, undefined>(resource, { ...options, method: 'GET' })
@@ -36,7 +37,7 @@ export abstract class ApiClient {
 
     const response = await fetch(`${this.BASE_URL}/${resource}`, requestOptions)
 
-    if (response.status === 401) {
+    if (response.status === 401 && !options.suppressUnauthorisedError) {
       // TOOD: test if this works on a client call
       redirect('/auth/login')
     }
