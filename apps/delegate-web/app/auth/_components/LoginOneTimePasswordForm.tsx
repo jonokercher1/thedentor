@@ -14,13 +14,14 @@ interface LoginOneTimePasswordFormProps {
   heading?: string | JSX.Element
   subHeading?: JSX.Element
   onSuccess?: (data: CurrentUser) => void
+  onMissingEmail?: () => void
 }
 
 export interface LoginOneTimePasswordFormData {
   oneTimePassword: string[]
 }
 
-const LoginOneTimePasswordForm: FC<LoginOneTimePasswordFormProps> = ({ heading = 'Enter Your One Time Password', subHeading, onSuccess }) => {
+const LoginOneTimePasswordForm: FC<LoginOneTimePasswordFormProps> = ({ heading = 'Enter Your One Time Password', subHeading, onSuccess, onMissingEmail }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -75,7 +76,11 @@ const LoginOneTimePasswordForm: FC<LoginOneTimePasswordFormProps> = ({ heading =
   }
 
   if (!email) {
-    redirect('/auth/login')
+    if (onMissingEmail) {
+      onMissingEmail()
+    } else {
+      redirect('/auth/login')
+    }
   }
 
   return (

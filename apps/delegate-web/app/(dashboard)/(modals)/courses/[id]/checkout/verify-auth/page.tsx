@@ -11,9 +11,14 @@ const VerifyCheckoutAuth: FC<any> = ({ params }) => {
     router.replace(`/courses/${params.id}/checkout`)
   }
 
+  const onHandleMissingEmail = () => {
+    router.replace(`/courses/${params.id}/checkout/personal-details`)
+  }
+
   return (
     <LoginOneTimePasswordForm
       onSuccess={onHnadleSuccess}
+      onMissingEmail={onHandleMissingEmail}
     />
   )
 }
