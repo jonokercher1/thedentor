@@ -4,16 +4,16 @@ import createCoursePurchaseIntent from '@/api/course/checkout/create-course-purc
 import getSelf from '@/api/auth/get-self'
 import { redirect } from 'next/navigation'
 
-const CourseCheckoutView: FC = async ({ params, searchParams }: any) => {
+const CourseCheckoutView: FC = async ({ params }: any) => {
   const currentUser = await getSelf({ suppressUnauthorisedError: true })
 
-  if (!currentUser?.data?.email && !searchParams.email) {
+  if (!currentUser?.data?.email) {
     redirect(`/courses/${params.id}/checkout/personal-details`)
   }
 
   const { data } = await createCoursePurchaseIntent({
     courseId: params.id,
-    email: searchParams.email
+    email: currentUser?.data?.email
   })
 
   if (!data?.clientSecret) {
@@ -21,7 +21,7 @@ const CourseCheckoutView: FC = async ({ params, searchParams }: any) => {
   }
 
   return (
-    <section className="w-full px-8 lg:px-20">
+    <section className="w-full">
       <CourseCheckout clientSecret={data.clientSecret} />
     </section>
   )

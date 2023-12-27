@@ -5,7 +5,7 @@ import { Button, ButtonVariant, Icon, IconName } from '@dentor/ui'
 
 const CourseCheckoutSuccessView: FC = async ({ params }: any) => {
   return (
-    <section className="w-full px-8 lg:px-20">
+    <section className="w-full">
       <header className="mb-10">
         <Icon
           className="text-neutral-900 mb-7 !text-4xl"
