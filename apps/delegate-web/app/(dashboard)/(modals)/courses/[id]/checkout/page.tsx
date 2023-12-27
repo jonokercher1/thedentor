@@ -12,8 +12,7 @@ const CourseCheckoutView: FC = async ({ params }: any) => {
   }
 
   const { data } = await createCoursePurchaseIntent({
-    courseId: params.id,
-    email: currentUser?.data?.email
+    courseId: params.id
   })
 
   if (!data?.clientSecret) {
