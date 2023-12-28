@@ -17,6 +17,9 @@ export class DentorData {
   @Expose()
   public readonly rating: number;
 
+  @Expose()
+  public readonly bio: string;
+
   // TODO: add profile pictures
 
   constructor(dentorData?: IDentorData) {

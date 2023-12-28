@@ -13,6 +13,7 @@ model User {
   email                     String            @unique
   phone                     String?
   gdcNumber                 String?           @unique
+  bio                       String?
   roleName                  RoleName
   role                      Role              @relation(fields: [roleName], references: [name])
   paymentProviderCustomerId String?

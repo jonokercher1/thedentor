@@ -9,6 +9,7 @@ import * as cookieParser from 'cookie-parser';
 import { IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
 import ConsoleEmailProvider from '@/notification/channels/email/providers/ConsoleEmailProvider';
 
+// TODO: This isnt ideal as we have to maintain this alongside the prod app - we should control this from a config file instead
 export default class TestApp {
   private _instance: INestApplication;
 
