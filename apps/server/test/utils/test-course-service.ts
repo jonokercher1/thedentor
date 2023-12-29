@@ -10,7 +10,7 @@ export class TestCourseService {
 
   constructor(databaseService: TestDatabaseService) {
     this.entity = databaseService.database.course;
-    this, this.testUserService = new TestUserService(databaseService);
+    this.testUserService = new TestUserService(databaseService);
   }
 
   public async createInPersonCourse(categories: string[] = [], dataOverrides?: Partial<Course>): Promise<Course> {

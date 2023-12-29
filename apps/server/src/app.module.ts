@@ -12,6 +12,7 @@ import { NotificationModule } from '@/notification/notification.module';
 import { SearchModule } from './search/search.module';
 import { CourseModule } from './course/course.module';
 import { DentorModule } from './dentor/dentor.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DentorModule } from './dentor/dentor.module';
     SearchModule,
     CourseModule,
     DentorModule,
+    ReviewModule,
   ],
   providers: [
     {

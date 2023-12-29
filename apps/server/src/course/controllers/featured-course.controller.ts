@@ -23,8 +23,7 @@ export class FeaturedCourseController {
       const featuredCourses = await this.featuredCourseService.getByType(type, featuredCourseInput);
       const featuredCourseCount = await this.featuredCourseService.countWithFilters({ type });
 
-      // TODO: fix as any type
-      return CourseResponse.paginate(featuredCourses as any, featuredCourseCount, featuredCourseInput.page);
+      return CourseResponse.paginate(featuredCourses, featuredCourseCount, featuredCourseInput.page);
     } catch (e) {
       this.logger.error('FeaturedCourseController.getByType', `Error getting course by type ${type}`, {
         error: e.message,

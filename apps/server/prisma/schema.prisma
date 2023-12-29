@@ -23,8 +23,8 @@ model User {
   courses                   Course[]
   images                    Image[]
   videos                    Video[]
-  reviewsLeft               Review[]
-  dentorReviews             DentorReviews[]
+  reviewsLeft               Review[]          @relation("ReviewsLeft")
+  dentorReviews             Review[]          @relation("DentorReviews")
   oneTimeTokens             OneTimePassword[]
 }
 
@@ -120,22 +120,16 @@ model CourseVideo {
 }
 
 model Review {
-  id            String          @id @default(uuid())
-  title         String
-  content       String
-  rating        Float
-  authorId      String
-  author        User            @relation(fields: [authorId], references: [id])
-  dentorReviews DentorReviews[]
-}
-
-model DentorReviews {
-  dentorId String
-  dentor   User   @relation(fields: [dentorId], references: [id])
-  reviewId String
-  review   Review @relation(fields: [reviewId], references: [id])
-
-  @@id([dentorId, reviewId])
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  rating    Float
+  authorId  String
+  dentorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  author    User     @relation("ReviewsLeft", fields: [authorId], references: [id])
+  dentor    User     @relation("DentorReviews", fields: [dentorId], references: [id])
 }
 
 enum RoleName {

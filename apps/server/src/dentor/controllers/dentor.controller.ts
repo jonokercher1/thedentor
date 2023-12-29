@@ -10,8 +10,7 @@ import EntityNotFound from '@/common/errors/common/entity-not-found-error';
 export class DentorController {
   constructor(
     private readonly dentorService: DentorService,
-    @Inject(ILoggingProvider)
-    private readonly logger: ILogger,
+    @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
 
   @Get('/featured')
