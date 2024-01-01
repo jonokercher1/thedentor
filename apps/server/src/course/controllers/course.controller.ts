@@ -1,6 +1,6 @@
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
-import { BadRequestException, Controller, Get, Inject, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Inject, Query, ValidationPipe } from '@nestjs/common';
 import { CourseResponse } from '@/course/responses/course.response';
 import { CourseService } from '@/course/services/course.service';
 import { GetCoursesRequest } from '@/course/requests/get-courses.request';
@@ -13,16 +13,20 @@ import { PaginationInput } from '@/common/types/pagination';
 export class CourseController {
   constructor(
     private readonly courseService: CourseService,
-    @Inject(ILoggingProvider)
-    private readonly logger: ILogger,
+    @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
 
   @Get('/')
-  public async getMany(@Query() getCoursesInput: GetCoursesRequest): Promise<CourseResponse> {
+  // TODO: Probably best to export this to a reusable decorator @QueryWithTransformation
+  public async getMany(@Query(new ValidationPipe({ transform: true })) getCoursesInput: GetCoursesRequest): Promise<CourseResponse> {
     try {
       let courses: Course[];
       let coursesCount: number;
       const courseFilters: CourseFilters = { type: getCoursesInput.type };
+
+      if (getCoursesInput.dentors) {
+        courseFilters.dentorId = { in: getCoursesInput.dentors };
+      }
 
       if (getCoursesInput.search) {
         const searchResult = await this.courseService.getAndCountManyWithSearchTerm(getCoursesInput.search, courseFilters, getCoursesInput);
