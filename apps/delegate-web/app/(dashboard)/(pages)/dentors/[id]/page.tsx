@@ -16,7 +16,7 @@ const DentorViewPage: FC = async ({ params }: any) => {
 
   return (
     <main>
-      <Container className="grid gap-8 lg:grid-cols-3 lg:gap-12 pb-20 pt-5">
+      <Container className="grid gap-8 lg:grid-cols-3 lg:gap-20 pb-20 pt-5">
         <aside className="lg:col-span-1">
           {/* TODO: add dentor profile picture */}
           <div className="h-96 aspect-square bg-accent-primary rounded-2xl mb-7" />
@@ -26,7 +26,7 @@ const DentorViewPage: FC = async ({ params }: any) => {
         </aside>
 
         <section className="lg:col-span-2">
-          <DentorCourses />
+          <DentorCourses dentorId={dentor.data.id} />
         </section>
       </Container>
 

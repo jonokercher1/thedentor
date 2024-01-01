@@ -1,14 +1,19 @@
 import 'server-only'
 
 import { ServerApiClient } from '@/api/server-api-client'
-import { HttpSuccessResponse } from '@/types/api/http-success-response'
 import { Course } from '@/types/api/course/course'
 import { PaginationInput } from '@/types/api/pagination'
+import { constructApiRequestParameters } from '@/utils/api'
+import { HttpSucccessPaginatedResponse } from '@/types/api/http-success-paginated-response'
 
-export interface GetCoursesResponse extends HttpSuccessResponse<Course[]> { }
+export interface GetCoursesResponse extends HttpSucccessPaginatedResponse<Course[]> { }
 
-// TODO: add in course filters here
-const getCourses = async (search?: string, filters?: any, pagination?: PaginationInput): Promise<GetCoursesResponse> => {
+export interface GetCourseFilters {
+  dentors?: string[]
+}
+
+const getCourses = async (search?: string, filters?: GetCourseFilters, pagination?: PaginationInput): Promise<GetCoursesResponse> => {
+  console.log('calling get courses')
   const apiClient = new ServerApiClient()
   const paginationOptions: Record<string, string> = {
     page: pagination?.page?.toString() ?? '1',
@@ -17,15 +22,13 @@ const getCourses = async (search?: string, filters?: any, pagination?: Paginatio
     orderBy: pagination?.orderBy ?? 'startDate'
   }
 
-  const requestFilters: Record<string, string> = {
+  const queryParams = constructApiRequestParameters({
     ...paginationOptions,
-    ...(search ? { search } : {})
-    // TODO: add in filters
-  }
+    ...(search ? { search } : {}),
+    ...(filters?.dentors ? { dentors: filters.dentors } : {})
+  })
 
-  const queryParams = new URLSearchParams(requestFilters).toString()
-
-  return apiClient.GET<GetCoursesResponse>(`course/?${queryParams}`)
+  return apiClient.GET<GetCoursesResponse>(`course?${queryParams.toString()}`)
 }
 
 export default getCourses

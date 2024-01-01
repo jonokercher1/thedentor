@@ -13,7 +13,7 @@ const ReviewCard: FC<ReviewCardProps> = ({ review }) => {
     <article className="bg-white rounded-2xl shadow-lg px-7 py-8">
       <header className="flex gap-4 mb-7">
         {/* TOOD: add dentor profile image */}
-        <div className="shadow h-14 w-14 rounded-full bg-accent-primary" />
+        <div className="shadow h-14 w-14 rounded-full bg-accent-primary shrink-0" />
 
         <div>
           <h3 className="text-neutral-600 font-bold">{review.title}</h3>

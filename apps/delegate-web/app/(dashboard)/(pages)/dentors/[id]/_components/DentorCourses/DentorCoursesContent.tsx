@@ -1,13 +1,19 @@
 import { FC } from 'react'
 import { DentorCoursesProps } from '.'
+import getCourses from '@/api/course/get-courses'
+import DentorCoursesGrid from '../DentorCoursesGrid/DentorCoursesGrid'
 
-const DentorCoursesContent: FC<DentorCoursesProps> = async ({ params }: any) => {
-  // await new Promise(r => setTimeout(r, 10000));
+const DentorCoursesContent: FC<DentorCoursesProps> = async ({ dentorId }) => {
+  const dentorCourses = await getCourses(undefined, { dentors: [dentorId] })
+  console.log("🚀 ~ file: DentorCoursesContent.tsx:7 ~ constDentorCoursesContent:FC<DentorCoursesProps>= ~ dentorCourses:", dentorCourses)
+  if (!dentorCourses.data) {
+    return null
+  }
 
   return (
-    <section>
-      <h1>DentorCoursesContent</h1>
-    </section>
+    <DentorCoursesGrid
+      courses={dentorCourses.data}
+    />
   )
 }
 

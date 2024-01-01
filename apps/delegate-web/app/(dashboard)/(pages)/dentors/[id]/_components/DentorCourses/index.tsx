@@ -1,13 +1,17 @@
-import { FC, Suspense } from "react"
-import DentorCoursesLoading from "./DentorCoursesLoading"
-import DentorCoursesContent from "./DentorCoursesContent"
+import { FC, Suspense } from 'react'
+import DentorCoursesLoading from './DentorCoursesLoading'
+import DentorCoursesContent from './DentorCoursesContent'
 
-export interface DentorCoursesProps { }
+export interface DentorCoursesProps {
+  dentorId: string
+}
 
-const DentorCourses: FC<DentorCoursesProps> = () => {
+const DentorCourses: FC<DentorCoursesProps> = ({ dentorId }) => {
   return (
     <Suspense fallback={<DentorCoursesLoading />}>
-      <DentorCoursesContent />
+      <DentorCoursesContent
+        dentorId={dentorId}
+      />
     </Suspense>
   )
 }

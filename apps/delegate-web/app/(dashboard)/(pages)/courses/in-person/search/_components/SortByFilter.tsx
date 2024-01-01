@@ -1,7 +1,7 @@
 'use client'
 
-import useModifiableSearchParams from '@/hooks/useModifiableSearchParams'
 import { Dropdown, Icon, IconName } from '@dentor/ui'
+import useModifiableSearchParams from '@dentor/ui/hooks/useModifiableSearchParams'
 import classNames from 'classnames'
 import { useRouter } from 'next/navigation'
 import { useState, type FC, useId, useEffect } from 'react'

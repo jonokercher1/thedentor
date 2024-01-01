@@ -116,8 +116,15 @@ describe('Get Courses', () => {
     const secondDentorCourse = await testCourseService.createInPersonCourse([], { dentorId: secondDentor.id });
     const accessToken = await testJwtService.generateAccessToken();
 
+    const params = {
+      'page': '1',
+      'perPage': '2',
+    };
+    const searchParams = new URLSearchParams(params);
+    searchParams.append('dentors[]', dentor.id);
+
     return request(app.getHttpServer())
-      .get(`${URL}?page=1&perPage=2&dentors[]=${dentor.id}`)
+      .get(`${URL}?${searchParams.toString()}`)
       .set('Cookie', [`authSession=${accessToken}`])
       .expect(200)
       .expect((res) => {
@@ -138,8 +145,16 @@ describe('Get Courses', () => {
     const thirdDentorCourse = await testCourseService.createInPersonCourse([], { dentorId: thirdDentor.id });
     const accessToken = await testJwtService.generateAccessToken();
 
+    const params = {
+      'page': '1',
+      'perPage': '5',
+    };
+    const searchParams = new URLSearchParams(params);
+    searchParams.append('dentors[]', dentor.id);
+    searchParams.append('dentors[]', secondDentor.id);
+
     return request(app.getHttpServer())
-      .get(`${URL}?page=1&perPage=5&dentors[]=${dentor.id}&dentors[]=${secondDentor.id}`)
+      .get(`${URL}?${searchParams.toString()}`)
       .set('Cookie', [`authSession=${accessToken}`])
       .expect(200)
       .expect((res) => {
