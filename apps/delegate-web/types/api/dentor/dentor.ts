@@ -3,4 +3,5 @@ export interface Dentor {
   name: string
   gdcNumber: string
   rating: number
+  bio: string
 }

@@ -20,9 +20,6 @@ export class ReviewData {
   public readonly rating: number;
 
   @Expose()
-  public readonly bio: string;
-
-  @Expose()
   @Type(() => DentorData)
   public readonly dentor: DentorData;
 

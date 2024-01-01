@@ -10,8 +10,15 @@ export default class CourseSeeder {
     private readonly database: PrismaClient,
   ) {
     const algolia = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY);
+    // TODO: we need to find a better place for this stuff to live, maybe on app boot?
+    // We need to call initIndex whenever we create a new object for the index so maybe this is good enough?
     this.algolia = algolia.initIndex('course');
     this.algolia.setSettings({
+      searchableAttributes: [
+        'name',
+        'description',
+        'dentor.id',
+      ],
       attributesForFaceting: [
         'startDate',
         'endDate',
@@ -79,7 +86,10 @@ export default class CourseSeeder {
         objectID: course.id,
         name: course.name,
         description: course.description,
-        dentorName: dentorData.name,
+        dentor: {
+          id: course.dentorId,
+          name: dentorData.name,
+        },
         startDate: dayjs(startDate).unix(),
         endDate: dayjs(endDate).unix(),
       }).catch((e) => {

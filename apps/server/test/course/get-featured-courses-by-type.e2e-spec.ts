@@ -140,6 +140,7 @@ describe('Get Featured Courses By Type', () => {
       'dentor.id',
       'dentor.name',
       'dentor.gdcNumber',
+      'dentor.bio',
       'categories.0.slug',
       'categories.0.label',
     ]);
