@@ -1,30 +1,27 @@
-import 'server-only'
-
-import { ServerApiClient } from '@/api/server-api-client'
 import { Course } from '@/types/api/course/course'
 import { PaginationInput } from '@/types/api/pagination'
 import { constructApiRequestParameters } from '@/utils/api'
 import { HttpSucccessPaginatedResponse } from '@/types/api/http-success-paginated-response'
+import { ApiClient } from '@/api/api-client'
 
 export interface GetCoursesResponse extends HttpSucccessPaginatedResponse<Course[]> { }
 
-export interface GetCourseFilters {
+export interface GetCoursesFilters extends PaginationInput {
   dentors?: string[]
+  search?: string
 }
 
-const getCourses = async (search?: string, filters?: GetCourseFilters, pagination?: PaginationInput): Promise<GetCoursesResponse> => {
-  console.log('calling get courses')
-  const apiClient = new ServerApiClient()
+const getCourses = (apiClient: ApiClient) => async (filters?: GetCoursesFilters): Promise<GetCoursesResponse> => {
   const paginationOptions: Record<string, string> = {
-    page: pagination?.page?.toString() ?? '1',
-    perPage: pagination?.perPage?.toString() ?? '5',
-    order: pagination?.order ?? 'desc',
-    orderBy: pagination?.orderBy ?? 'startDate'
+    page: filters?.page?.toString() ?? '1',
+    perPage: filters?.perPage?.toString() ?? '5',
+    order: filters?.order ?? 'desc',
+    orderBy: filters?.orderBy ?? 'startDate'
   }
 
   const queryParams = constructApiRequestParameters({
     ...paginationOptions,
-    ...(search ? { search } : {}),
+    ...(filters?.search ? { search: filters.search } : {}),
     ...(filters?.dentors ? { dentors: filters.dentors } : {})
   })
 

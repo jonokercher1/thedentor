@@ -1,8 +1,9 @@
-import getCourses from '@/api/course/get-courses'
+
 import { type FC } from 'react'
 import SearchFilters from './_components/SearchFilters'
 import { Container, usePaginatedApiRequest, type PaginatedApiRequestParams } from '@dentor/ui'
 import InPersonSearchResults from './_components/SearchResults'
+import { getCoursesServer } from '@/api/course/get-courses/get-courses-server'
 
 const perPage = 5
 // TODO: create correct type for pages 
@@ -11,7 +12,7 @@ const SearchInPersonCoursesPage: FC<any> = async ({ searchParams }) => {
   const term = searchParams?.term
 
   const useGetCourses = async (params: PaginatedApiRequestParams) => {
-    return getCourses(params.term, {}, { page: params.page, perPage: params.perPage })
+    return getCoursesServer({ search: params.term, page: params.page, perPage: params.perPage })
   }
 
   const { data, totalResults } = await usePaginatedApiRequest(useGetCourses, { term, page, perPage })

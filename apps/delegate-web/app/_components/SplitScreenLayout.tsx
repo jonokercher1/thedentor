@@ -9,7 +9,9 @@ const SplitScreenLayout: FC<SplitScreenLayoutProps> = ({ children }) => {
   return (
     <main className="grid lg:grid-cols-2 w-full">
       <aside className="hidden lg:block bg-neutral-900 relative p-20">
-        <LinkableLogo />
+        <div className="absolute z-30">
+          <LinkableLogo />
+        </div>
         <Image
           src={BackgroundImage}
           alt=""

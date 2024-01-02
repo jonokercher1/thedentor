@@ -1,18 +1,21 @@
 import { FC } from 'react'
 import { DentorCoursesProps } from '.'
-import getCourses from '@/api/course/get-courses'
 import DentorCoursesGrid from '../DentorCoursesGrid/DentorCoursesGrid'
+import { getCoursesServer } from '@/api/course/get-courses/get-courses-server'
 
+const perPage = 5
 const DentorCoursesContent: FC<DentorCoursesProps> = async ({ dentorId }) => {
-  const dentorCourses = await getCourses(undefined, { dentors: [dentorId] })
-  console.log("🚀 ~ file: DentorCoursesContent.tsx:7 ~ constDentorCoursesContent:FC<DentorCoursesProps>= ~ dentorCourses:", dentorCourses)
+  const dentorCourses = await getCoursesServer({ dentors: [dentorId], page: 1, perPage })
+
   if (!dentorCourses.data) {
     return null
   }
 
   return (
     <DentorCoursesGrid
-      courses={dentorCourses.data}
+      initialCourses={dentorCourses.data}
+      totalCourses={dentorCourses.total}
+      dentorId={dentorId}
     />
   )
 }
