@@ -38,7 +38,7 @@ const InPersonCoursesLayout: FC<PropsWithChildren> = ({ children }) => {
   }
 
   useEffect(() => {
-    if (pathname === searchPathname && !!debouncedSearch) {
+    if (pathname === searchPathname) {
       searchParams.set('term', debouncedSearch)
       searchParams.persistStateToUrl()
     }
