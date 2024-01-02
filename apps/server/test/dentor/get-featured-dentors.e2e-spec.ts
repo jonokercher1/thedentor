@@ -101,6 +101,7 @@ describe('Get Featured Dentors', () => {
       'name',
       'gdcNumber',
       'rating',
+      'bio',
     ]);
   });
 

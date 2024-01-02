@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { type PropsWithChildren, type FC, useMemo, useState, useEffect } from 'react'
 import { useDebounce } from 'usehooks-ts'
 import SearchHeader from './search/_components/SearchHeader'
-import useModifiableSearchParams from '@/hooks/useModifiableSearchParams'
+import useModifiableSearchParams from '@dentor/ui/hooks/useModifiableSearchParams'
 
 const inPersonCourseTabs: Tab[] = [
   { label: 'Discover Courses', id: 'discover' },
@@ -34,11 +34,11 @@ const InPersonCoursesLayout: FC<PropsWithChildren> = ({ children }) => {
   const showTabs = useMemo(() => routesToShowTabs.includes(pathname), [pathname])
 
   const onChangeTab = (tabId: string) => {
-    router.push(`/courses/in-person/${tabId}`)
+    router.push(`/courses/in-person/${tabId}` as any)
   }
 
   useEffect(() => {
-    if (pathname === searchPathname && !!debouncedSearch) {
+    if (pathname === searchPathname) {
       searchParams.set('term', debouncedSearch)
       searchParams.persistStateToUrl()
     }

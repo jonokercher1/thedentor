@@ -15,7 +15,9 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new BodyValidationPipe());
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }));
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), { excludeExtraneousValues: true }),
+  );
   app.use(cookieParser());
 
   await app.listen(process.env.PORT ?? 4000);

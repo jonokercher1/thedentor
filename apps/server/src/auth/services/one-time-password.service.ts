@@ -16,14 +16,20 @@ export class OneTimePasswordService {
   ) { }
 
   public async canUserRequestOneTimePassword(user: User): Promise<boolean> {
-    const oneTimePasswordsFromLastMinute = await this.oneTimePasswordRepository.findFirst({
-      userId: user.id,
-      createdAt: {
-        gt: dayjs().subtract(1, 'minute').toDate(),
-      },
-    });
+    let canRequestOneTimePassword = true;
 
-    return !oneTimePasswordsFromLastMinute;
+    try {
+      const oneTimePasswordsFromLastMinute = await this.oneTimePasswordRepository.findFirst({
+        userId: user.id,
+        createdAt: {
+          gt: dayjs().subtract(1, 'minute').toDate(),
+        },
+      });
+
+      canRequestOneTimePassword = !oneTimePasswordsFromLastMinute;
+    } catch { } // fail silently
+
+    return canRequestOneTimePassword;
   }
 
   public async expireAllUsersOneTimePasswords(user: User): Promise<boolean> {

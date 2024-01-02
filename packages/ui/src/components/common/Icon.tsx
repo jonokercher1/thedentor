@@ -24,7 +24,7 @@ import {
   CheckCircleOutline,
   Error,
   PersonOutline,
-  VerifiedUser
+  VerifiedUser,
 } from '@mui/icons-material'
 import { memo, type FC } from 'react'
 
@@ -52,7 +52,7 @@ export enum IconName {
   CircleCheck,
   Error,
   User,
-  VerifiedUser
+  VerifiedUser,
 }
 
 interface IconProps {

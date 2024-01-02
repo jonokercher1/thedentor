@@ -12,6 +12,7 @@ export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
     phone: true,
     gdcNumber: true,
     roleName: true,
+    bio: true,
     createdAt: true,
     updatedAt: true,
   };

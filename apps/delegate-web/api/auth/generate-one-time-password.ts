@@ -1,5 +1,5 @@
 import { HttpSuccessResponse } from '@/types/api/http-success-response'
-import { ClientApiClient } from '@/api/client-api-client'
+import { BrowserApiClient } from '@/api/browser-api-client'
 
 export interface GenerateOneTimePasswordBody {
   email: string
@@ -8,7 +8,7 @@ export interface GenerateOneTimePasswordBody {
 export interface GenerateOneTimePasswordResponse extends HttpSuccessResponse<{ createdAt: string }> { }
 
 const generateOneTimePassword = async (body?: GenerateOneTimePasswordBody): Promise<GenerateOneTimePasswordResponse> => {
-  const apiClient = new ClientApiClient()
+  const apiClient = new BrowserApiClient()
   return apiClient.POST<GenerateOneTimePasswordResponse, GenerateOneTimePasswordBody>('auth/one-time-password', body, { cache: 'no-cache' })
 }
 

@@ -130,6 +130,7 @@ describe('Get Upcoming In Person Courses', () => {
       'dentor.id',
       'dentor.name',
       'dentor.gdcNumber',
+      'dentor.bio',
       'categories.0.slug',
       'categories.0.label',
     ]);

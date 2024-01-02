@@ -8,6 +8,7 @@ import { CourseType } from '@prisma/client';
 import TestApp from '@test/utils/test-app';
 import * as dayjs from 'dayjs';
 import { TestHelpers } from '@test/utils/test-helpers';
+import { TestUserService } from '@test/utils/test-user-service';
 
 describe('Get Courses', () => {
   const URL = '/course';
@@ -16,6 +17,7 @@ describe('Get Courses', () => {
   let testCategoryService: TestCategoryService;
   let testJwtService: TestJwtService;
   let testCourseService: TestCourseService;
+  let testUserService: TestUserService;
   const testHelpers = new TestHelpers();
 
   beforeAll(async () => {
@@ -24,6 +26,7 @@ describe('Get Courses', () => {
     testCategoryService = new TestCategoryService(testDatabaseService);
     testJwtService = new TestJwtService();
     testCourseService = new TestCourseService(testDatabaseService);
+    testUserService = new TestUserService(testDatabaseService);
 
     app = await testApp.init();
   });
@@ -106,6 +109,66 @@ describe('Get Courses', () => {
     expect(response.body.data[0].id).toEqual(inPersonCourse.id);
   });
 
+  it('should allow filtering by dentor Id', async () => {
+    const dentor = await testUserService.createDentor();
+    const secondDentor = await testUserService.createDentor();
+    const dentorCourse = await testCourseService.createInPersonCourse([], { dentorId: dentor.id });
+    const secondDentorCourse = await testCourseService.createInPersonCourse([], { dentorId: secondDentor.id });
+    const accessToken = await testJwtService.generateAccessToken();
+
+    const params = {
+      'page': '1',
+      'perPage': '2',
+    };
+    const searchParams = new URLSearchParams(params);
+    searchParams.append('dentors[]', dentor.id);
+
+    return request(app.getHttpServer())
+      .get(`${URL}?${searchParams.toString()}`)
+      .set('Cookie', [`authSession=${accessToken}`])
+      .expect(200)
+      .expect((res) => {
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toEqual('success');
+        expect(res.body.data).toHaveLength(1);
+        expect(res.body.data[0].id).toEqual(dentorCourse.id);
+        expect(res.body.data[0].id).not.toEqual(secondDentorCourse.id);
+      });
+  });
+
+  it('should allow filtering by multiple dentors', async () => {
+    const dentor = await testUserService.createDentor();
+    const secondDentor = await testUserService.createDentor();
+    const thirdDentor = await testUserService.createDentor();
+    const firstDentorCourse = await testCourseService.createInPersonCourse([], { dentorId: dentor.id });
+    const secondDentorCourse = await testCourseService.createInPersonCourse([], { dentorId: secondDentor.id });
+    const thirdDentorCourse = await testCourseService.createInPersonCourse([], { dentorId: thirdDentor.id });
+    const accessToken = await testJwtService.generateAccessToken();
+
+    const params = {
+      'page': '1',
+      'perPage': '5',
+    };
+    const searchParams = new URLSearchParams(params);
+    searchParams.append('dentors[]', dentor.id);
+    searchParams.append('dentors[]', secondDentor.id);
+
+    return request(app.getHttpServer())
+      .get(`${URL}?${searchParams.toString()}`)
+      .set('Cookie', [`authSession=${accessToken}`])
+      .expect(200)
+      .expect((res) => {
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toEqual('success');
+        expect(res.body.data).toHaveLength(2);
+
+        const returnedCourseIds = res.body.data.map(d => d.id);
+        expect(returnedCourseIds.includes(firstDentorCourse.id)).toBeTruthy();
+        expect(returnedCourseIds.includes(secondDentorCourse.id)).toBeTruthy();
+        expect(returnedCourseIds.includes(thirdDentorCourse.id)).toBeFalsy();
+      });
+  });
+
   it('should allow changing the response order by any field', async () => {
     const firstInPersonCourse = await testCourseService.createInPersonCourse([], { createdAt: dayjs().add(1, 'day').toDate(), startDate: dayjs().subtract(1, 'day').toDate() });
     const secondInPersonCourse = await testCourseService.createInPersonCourse([], { createdAt: dayjs().subtract(1, 'day').toDate(), startDate: dayjs().add(1, 'day').toDate() });
@@ -147,6 +210,7 @@ describe('Get Courses', () => {
       'dentor.id',
       'dentor.name',
       'dentor.gdcNumber',
+      'dentor.bio',
       'categories.0.slug',
       'categories.0.label',
     ]);

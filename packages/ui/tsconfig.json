@@ -27,6 +27,5 @@
   },
   "include": [
     "src",
-    "../../apps/delegate-web/hooks/useModifiableSearchParams.ts"
   ]
 }

@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { PaginationInput } from '@/common/types/pagination';
 import { UserRepository } from '@/user/repositories/user.repository';
-import { UserFilters, UserSelectFields } from '@/database/types/user';
+import { User, UserFilters, UserSelectFields } from '@/database/types/user';
 import { Role } from '@/database/types/role';
 
 @Injectable()
 export class DentorService {
   constructor(private readonly userRepository: UserRepository) { }
+
+  public async getById(id: string): Promise<User> {
+    return this.userRepository.findFirst({
+      id,
+      roleName: Role.Dentor,
+    });
+  }
 
   public async getFeaturedDentors(paginationInput?: Partial<PaginationInput>) {
     const pagination: PaginationInput = {
@@ -39,9 +46,9 @@ export class DentorService {
   private getFeaturedFilters(): UserFilters {
     return {
       ...this.getDefaultFilters(),
-      // rating: {
-      //   gte: 4.5,
-      // },
+      rating: {
+        gte: 4.5,
+      },
     };
   }
 }

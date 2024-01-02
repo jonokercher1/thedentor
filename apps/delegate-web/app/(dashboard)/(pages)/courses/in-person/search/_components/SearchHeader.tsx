@@ -18,6 +18,7 @@ const SearchHeader: FC<SearchHeaderProps> = ({ searchPathname, search, setSearch
   const [searchActive, setSearchActive] = useState(pathname === searchPathname)
 
   const onGoBack = () => {
+    // TODO: this should skip all history entries for the search page
     navigation.back()
   }
 
