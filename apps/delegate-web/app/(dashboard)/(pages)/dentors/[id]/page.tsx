@@ -3,10 +3,18 @@ import { Container } from '@dentor/ui'
 import DentorReviews from './_components/DentorReviews'
 import getDentor from '@/api/dentor/get-dentor'
 import { notFound } from 'next/navigation'
-import DentorCourses from './_components/DentorCourses'
+import DentorInPersonCourses from './_components/DentorInPersonCourses'
+import DentorCoursesTabs from './_components/DentorCoursesTabs'
+import DentorVideoCourses from './_components/DentorVideoCourses'
 
-const DentorViewPage: FC = async ({ params }: any) => {
+export enum DentorCoursesTab {
+  Courses = 'courses',
+  Videos = 'videos',
+}
+
+const DentorViewPage: FC = async ({ params, searchParams }: any) => {
   const dentorId = params.id
+  const currentTab = searchParams.tab ?? DentorCoursesTab.Courses
 
   const dentor = await getDentor(dentorId)
 
@@ -26,7 +34,13 @@ const DentorViewPage: FC = async ({ params }: any) => {
         </aside>
 
         <section className="lg:col-span-2">
-          <DentorCourses dentorId={dentor.data.id} />
+          <DentorCoursesTabs />
+
+          {currentTab === DentorCoursesTab.Courses ? (
+            <DentorInPersonCourses dentorId={dentor.data.id} />
+          ) : (
+            <DentorVideoCourses dentorId={dentor.data.id} />
+          )}
         </section>
       </Container>
 
