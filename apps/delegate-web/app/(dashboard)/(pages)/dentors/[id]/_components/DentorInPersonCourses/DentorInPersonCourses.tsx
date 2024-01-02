@@ -7,8 +7,11 @@ const perPage = 5
 const DentorInPersonCourses: FC<DentorCoursesProps> = async ({ dentorId }) => {
   const dentorCourses = await getCoursesServer({ dentors: [dentorId], page: 1, perPage })
 
-  if (!dentorCourses.data) {
-    return null
+  if (!dentorCourses.data?.length) {
+    // TOOD: no courses card
+    return (
+      <p className="text-white font-bold text-xl">No Courses</p>
+    )
   }
 
   return (
