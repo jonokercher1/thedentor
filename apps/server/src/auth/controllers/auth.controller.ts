@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, Inject, Post, Req, Res, UnauthorizedEx
 import { UserService } from '@/user/services/user.service';
 import { CurrentUserResponse } from '@/user/responses/current-user.response';
 import { AuthService } from '@/auth/services/auth.service';
-import { Public } from '@/common/guards/public.guard';
+import { Public } from '@/auth/guards/public.guard';
 import { Response } from 'express';
 import SessionManager from '@/auth/utils/session-manager';
 import AuthenticatedRequest from '@/common/types/authenticated-request';

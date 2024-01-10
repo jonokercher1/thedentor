@@ -26,6 +26,7 @@ model User {
   reviewsLeft               Review[]          @relation("ReviewsLeft")
   dentorReviews             Review[]          @relation("DentorReviews")
   oneTimeTokens             OneTimePassword[]
+  apiKeys                   ApiKey[]
 }
 
 model Role {
@@ -130,6 +131,16 @@ model Review {
   updatedAt DateTime @default(now())
   author    User     @relation("ReviewsLeft", fields: [authorId], references: [id])
   dentor    User     @relation("DentorReviews", fields: [dentorId], references: [id])
+}
+
+model ApiKey {
+  id        String    @id @default(uuid())
+  key       String    @unique
+  dentorId  String
+  dentor    User      @relation(fields: [dentorId], references: [id])
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
 }
 
 enum RoleName {

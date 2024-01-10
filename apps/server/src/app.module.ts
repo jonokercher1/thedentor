@@ -13,6 +13,7 @@ import { SearchModule } from './search/search.module';
 import { CourseModule } from './course/course.module';
 import { DentorModule } from './dentor/dentor.module';
 import { ReviewModule } from './review/review.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -28,10 +29,12 @@ import { ReviewModule } from './review/review.module';
     CourseModule,
     DentorModule,
     ReviewModule,
+    UserModule,
   ],
   providers: [
     {
       provide: APP_GUARD,
+      // TODO: work out how to register the api key guard too. We may need to make a new decorator for @Auth(ApiKey, Session) or something similar
       useClass: AuthGuard,
     },
   ],

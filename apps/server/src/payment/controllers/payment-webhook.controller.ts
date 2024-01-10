@@ -1,4 +1,4 @@
-import { Public } from '@/common/guards/public.guard';
+import { Public } from '@/auth/guards/public.guard';
 import HttpSuccessResponse from '@/common/responses/http-success.response';
 import { BadRequestException, Controller, Headers, Inject, Post, RawBodyRequest, Req } from '@nestjs/common';
 import { IPaymentProvider, PaymentProvider } from '@/payment/types/payment-provider';

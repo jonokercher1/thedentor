@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '@/user/repositories/user.repository';
 import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
-import { UserFilters, type CreateUserInput, type UpdateUserInput, type User } from '@/database/types/user';
+import { UserFilters, type CreateUserInput, type UpdateUserInput, type User, OptionalUserCreateData } from '@/database/types/user';
 import { Role } from '@/database/types/role';
 
 @Injectable()
@@ -46,15 +46,22 @@ export class UserService {
     return this.userRepository.existsWithAnyUniqueKey(email, gdcNumber);
   }
 
-  public async getOrCreateUserByEmail(email: string, role = Role.Dentist): Promise<User> {
+  public async getOrCreateUserByEmail(email: string, optionalUserData?: OptionalUserCreateData): Promise<User> {
     const userExists = await this.userRepository.exists<UserFilters>({ email });
 
     if (userExists) {
       return this.getUserByEmail(email);
     }
 
+    const role = optionalUserData?.roleName ?? Role.Dentist;
+
+    // Dont spread the user data field in, its best to be explicit to prevent any unexpected data being passed in
     return this.createUser({
       email,
+      name: optionalUserData?.name,
+      phone: optionalUserData?.phone,
+      gdcNumber: optionalUserData?.gdcNumber,
+      bio: optionalUserData?.bio,
       role: {
         connect: {
           name: role,
