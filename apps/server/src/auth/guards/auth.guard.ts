@@ -8,11 +8,13 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/auth/constants';
 import { CurrentUser } from '@/auth/types/current-user';
-import { IS_PUBLIC_KEY } from '@/common/guards/public.guard';
+import { IS_PUBLIC_KEY } from '@/auth/guards/public.guard';
 import { Reflector } from '@nestjs/core';
 import SessionManager from '@/auth/utils/session-manager';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
+import { REQUIRES_API_KEY_KEY } from './api-key.guard';
+import { AuthService } from '@/auth/services/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,16 +22,36 @@ export class AuthGuard implements CanActivate {
     private readonly jwtService: JwtService,
     private readonly sessionManager: SessionManager,
     private readonly reflector: Reflector,
+    private readonly authService: AuthService,
     @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
+    const usesApiKeyAuth = this.reflector.getAllAndOverride<boolean>(REQUIRES_API_KEY_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
     const request = context.switchToHttp().getRequest();
+
+    if (usesApiKeyAuth) {
+      try {
+        const apiKey = request.headers['x-api-key'];
+        await this.tryToSetUserFromApiKey(apiKey, request);
+
+        return true;
+      } catch (e) {
+        this.logger.error('AuthGuard.canActivate', 'API Key Authentication Failed', e.message);
+
+        throw new UnauthorizedException();
+      }
+    }
+
     const token = this.sessionManager.getSessionCookieFromRequest(request);
 
     if (isPublic) {
@@ -66,5 +88,11 @@ export class AuthGuard implements CanActivate {
     const payload = await this.tryToGetPayloadFromToken(token);
 
     request['user'] = payload;
+  }
+
+  private async tryToSetUserFromApiKey(apiKey: string, request: any) {
+    const user = await this.authService.getUserFromApiKey(apiKey);
+
+    request['user'] = user;
   }
 }

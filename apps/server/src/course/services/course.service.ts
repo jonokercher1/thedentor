@@ -91,6 +91,12 @@ export class CourseService {
     return course;
   }
 
+  public async courseHasAvailablePlaces(courseId: string): Promise<boolean> {
+    const course = await this.findById(courseId);
+
+    return course.availablePlaces > 0;
+  }
+
   // TODO: this probably doesnt live here
   private getPaginationFromInput(paginationInput?: PaginationInput): PaginationInput {
     return {

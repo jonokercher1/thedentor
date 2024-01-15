@@ -59,7 +59,7 @@ export class TestUserService {
         id: purchasingUserId,
       },
       data: {
-        courses: {
+        purchasedCourses: {
           connect: {
             id: courseId,
           },
