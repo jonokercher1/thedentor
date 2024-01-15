@@ -20,7 +20,8 @@ model User {
   rating                    Float?
   createdAt                 DateTime          @default(now())
   updatedAt                 DateTime          @default(now())
-  courses                   Course[]
+  courses                   Course[]          @relation("CoursesCreated")
+  purchasedCourses          Course[]          @relation("PurchasedCourses")
   images                    Image[]
   videos                    Video[]
   reviewsLeft               Review[]          @relation("ReviewsLeft")
@@ -69,9 +70,11 @@ model Course {
   availablePlaces Int
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @default(now())
-  dentor          User          @relation(fields: [dentorId], references: [id])
+  dentor          User          @relation("CoursesCreated", fields: [dentorId], references: [id])
+  ownedByUsers    User[]        @relation("PurchasedCourses")
   category        Category[]
   videos          CourseVideo[]
+  userId          String?
 }
 
 model File {

@@ -9,13 +9,28 @@ import { SearchModule } from '@/search/search.module';
 import { CourseCheckoutController } from './controllers/course-checkout.controller';
 import { PaymentModule } from '@/payment/payment.module';
 import { UserModule } from '@/user/user.module';
+import { CoursePurchaseController } from '@/course/controllers/course-purchase.controller';
+import { CoursePurchaseService } from '@/course/services/course-purchase.service';
+import { DentorCourseService } from '@/dentor/services/dentor-course.service';
 
 @Module({
-  controllers: [CourseController, FeaturedCourseController, CourseCheckoutController],
-  providers: [CourseService, FeaturedCourseService, CourseRepository],
+  controllers: [
+    CourseController,
+    FeaturedCourseController,
+    CourseCheckoutController,
+    CoursePurchaseController,
+  ],
+  providers: [
+    CourseService,
+    FeaturedCourseService,
+    CourseRepository,
+    CoursePurchaseService,
+    DentorCourseService,
+  ],
   imports: [
     DatabaseModule,
     SearchModule,
+    forwardRef(() => CourseModule),
     forwardRef(() => PaymentModule),
     UserModule,
   ],

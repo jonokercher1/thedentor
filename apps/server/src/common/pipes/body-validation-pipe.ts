@@ -8,10 +8,22 @@ export class BodyValidationPipe extends ValidationPipe {
           statusCode: 422,
           message: 'Unprocessable Entity',
           error: errors.reduce(
-            (acc, e) => ({
-              ...acc,
-              [e.property]: Object.values(e.constraints),
-            }),
+            (acc, e) => {
+              if (e.children) {
+                return {
+                  ...acc,
+                  [e.property]: e.children.reduce((acc, cur) => ({
+                    ...acc,
+                    [cur.property]: Object.values(cur.constraints),
+                  }), {}),
+                };
+              }
+
+              return {
+                ...acc,
+                [e.property]: Object.values(e.constraints),
+              };
+            },
             {},
           ),
         });
