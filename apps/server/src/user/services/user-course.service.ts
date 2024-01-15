@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '@/user/repositories/user.repository';
-import { Course } from '@/database/types/course';
 import { User, UserFilters, UserSelectFields } from '@/database/types/user';
 
 @Injectable()
@@ -9,24 +8,24 @@ export class UserCourseService {
     private readonly userRepository: UserRepository,
   ) { }
 
-  public async isCourseOwnedByUser(course: Course, user: User): Promise<boolean> {
+  public async isCourseOwnedByUser(courseId: string, userId: string): Promise<boolean> {
     const ownedCourse = await this.userRepository.findMany<UserFilters, UserSelectFields>({
       courses: {
         some: {
-          id: course.id,
+          id: courseId,
         },
       },
-      id: user.id,
+      id: userId,
     });
 
     return !!ownedCourse.length;
   }
 
-  public async attachCourseToUser(course: Course, user: User): Promise<User> {
-    return this.userRepository.update(user.id, {
-      courses: {
+  public async attachCourseToUser(courseId: string, userId: string): Promise<User> {
+    return this.userRepository.update(userId, {
+      purchasedCourses: {
         connect: {
-          id: course.id,
+          id: courseId,
         },
       },
     });

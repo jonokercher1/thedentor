@@ -62,11 +62,10 @@ export class StripeProvider implements PaymentProvider {
       }
 
       const user = await this.userService.getUserByEmail(metadata.email);
-      const course = await this.courseService.findById(metadata.course);
-      const isCourseAlreadyOwned = await this.userCourseService.isCourseOwnedByUser(course, user);
+      const isCourseAlreadyOwned = await this.userCourseService.isCourseOwnedByUser(metadata.course, user.id);
 
       if (!isCourseAlreadyOwned) {
-        await this.userCourseService.attachCourseToUser(course, user);
+        await this.userCourseService.attachCourseToUser(metadata.course, user.id);
       }
     }
   }

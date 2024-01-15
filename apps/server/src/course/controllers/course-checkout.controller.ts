@@ -28,7 +28,7 @@ export class CourseCheckoutController {
     try {
       const course = await this.courseService.findById(courseId);
       const userData = await this.userService.getOrCreateUserByEmail(user.email);
-      const courseIsAlreadyOwned = await this.userCourseService.isCourseOwnedByUser(course, userData);
+      const courseIsAlreadyOwned = await this.userCourseService.isCourseOwnedByUser(courseId, userData.id);
 
       if (courseIsAlreadyOwned) {
         throw new CourseAlreadyPurchasedError();

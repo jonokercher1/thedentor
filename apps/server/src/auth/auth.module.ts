@@ -13,6 +13,7 @@ import { OneTimePasswordService } from '@/auth/services/one-time-password.servic
 import { OneTimePasswordRepository } from '@/auth/repositories/one-time-password.repository';
 import { NotificationModule } from '@/notification/notification.module';
 import { NotificationService } from '@/notification/notification.service';
+import { ApiKeyRepository } from '@/auth/repositories/api-key.repository';
 
 @Module({
   providers: [
@@ -21,9 +22,10 @@ import { NotificationService } from '@/notification/notification.service';
     OneTimePasswordService,
     OneTimePasswordRepository,
     NotificationService,
+    ApiKeyRepository,
   ],
   controllers: [AuthController],
-  exports: [SessionManager],
+  exports: [SessionManager, AuthService],
   imports: [
     DatabaseModule,
     UserModule,

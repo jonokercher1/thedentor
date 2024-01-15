@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { TestRepository } from '@/search/repositories/test.repository';
-import { Public } from '@/common/guards/public.guard';
+import { Public } from '@/auth/guards/public.guard';
 
 @Controller('search')
 export class SearchController {
