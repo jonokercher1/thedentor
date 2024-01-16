@@ -13,6 +13,7 @@ import { SearchModule } from './search/search.module';
 import { CourseModule } from './course/course.module';
 import { DentorModule } from './dentor/dentor.module';
 import { ReviewModule } from './review/review.module';
+import { CourseFeedbackModule } from './course-feedback/course-feedback.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module';
     CourseModule,
     DentorModule,
     ReviewModule,
+    CourseFeedbackModule,
     UserModule,
   ],
   providers: [

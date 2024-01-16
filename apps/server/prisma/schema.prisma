@@ -8,26 +8,27 @@ datasource db {
 }
 
 model User {
-  id                        String            @id @default(uuid())
+  id                        String                   @id @default(uuid())
   name                      String?
-  email                     String            @unique
+  email                     String                   @unique
   phone                     String?
-  gdcNumber                 String?           @unique
+  gdcNumber                 String?                  @unique
   bio                       String?
   roleName                  RoleName
-  role                      Role              @relation(fields: [roleName], references: [name])
+  role                      Role                     @relation(fields: [roleName], references: [name])
   paymentProviderCustomerId String?
   rating                    Float?
-  createdAt                 DateTime          @default(now())
-  updatedAt                 DateTime          @default(now())
-  courses                   Course[]          @relation("CoursesCreated")
-  purchasedCourses          Course[]          @relation("PurchasedCourses")
+  createdAt                 DateTime                 @default(now())
+  updatedAt                 DateTime                 @default(now())
+  courses                   Course[]                 @relation("CoursesCreated")
+  purchasedCourses          Course[]                 @relation("PurchasedCourses")
   images                    Image[]
   videos                    Video[]
-  reviewsLeft               Review[]          @relation("ReviewsLeft")
-  dentorReviews             Review[]          @relation("DentorReviews")
+  reviewsLeft               Review[]                 @relation("ReviewsLeft")
+  dentorReviews             Review[]                 @relation("DentorReviews")
   oneTimeTokens             OneTimePassword[]
   apiKeys                   ApiKey[]
+  courseFeedback            CourseFeedbackResponse[]
 }
 
 model Role {
@@ -56,25 +57,26 @@ model Category {
 }
 
 model Course {
-  id              String        @id @default(uuid())
-  type            CourseType
-  price           Int
-  cpdValue        Float
-  name            String
-  description     String
-  dentorId        String
-  startDate       DateTime?
-  endDate         DateTime?
-  featuredUntil   DateTime?
-  rating          Float         @default(0)
-  availablePlaces Int
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @default(now())
-  dentor          User          @relation("CoursesCreated", fields: [dentorId], references: [id])
-  ownedByUsers    User[]        @relation("PurchasedCourses")
-  category        Category[]
-  videos          CourseVideo[]
-  userId          String?
+  id                String                   @id @default(uuid())
+  type              CourseType
+  price             Int
+  cpdValue          Float
+  name              String
+  description       String
+  dentorId          String
+  startDate         DateTime?
+  endDate           DateTime?
+  featuredUntil     DateTime?
+  rating            Float                    @default(0)
+  availablePlaces   Int
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @default(now())
+  dentor            User                     @relation("CoursesCreated", fields: [dentorId], references: [id])
+  ownedByUsers      User[]                   @relation("PurchasedCourses")
+  category          Category[]
+  videos            CourseVideo[]
+  feedbackQuestions CourseFeedbackQuestion[]
+  feedback          CourseFeedbackResponse[]
 }
 
 model File {
@@ -146,6 +148,30 @@ model ApiKey {
   updatedAt DateTime  @default(now())
 }
 
+model CourseFeedbackQuestion {
+  id        String                     @id @default(uuid())
+  question  String
+  type      CourseFeedbackQuestionType
+  order     Int
+  courseId  String
+  course    Course                     @relation(fields: [courseId], references: [id])
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @default(now())
+
+  @@unique([courseId, order])
+}
+
+model CourseFeedbackResponse {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  answers   Json
+  user      User     @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
 enum RoleName {
   Dentist
   Dentor
@@ -159,4 +185,10 @@ enum CourseType {
 enum FileSize {
   Thumbnail
   Original
+}
+
+enum CourseFeedbackQuestionType {
+  Rating
+  Text
+  YesNo
 }
