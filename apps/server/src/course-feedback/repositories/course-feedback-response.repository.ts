@@ -17,4 +17,9 @@ export class CourseFeedbackResponseRepository extends BaseRepository<Prisma.Cour
   constructor(database: PrismaService) {
     super(database, database.courseFeedbackResponse);
   }
+
+  // TODO: move to base repository if needed again
+  public async createMany(data: Prisma.CourseFeedbackResponseCreateManyInput[]) {
+    return this.database.courseFeedbackResponse.createMany({ data });
+  }
 }

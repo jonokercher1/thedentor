@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, HttpCode, NotFoundException, Param, Query, Put } from '@nestjs/common';
+import { BadRequestException, Controller, Get, HttpCode, NotFoundException, Param, Query, Put, Inject, Body } from '@nestjs/common';
 import { CourseFeedbackService } from '@/course-feedback/services/course-feedback.service';
 import EntityNotFound from '@/common/errors/common/entity-not-found-error';
 import { CourseFeedbackQuestionResponse } from '../responses/course-feedback-question.response';
@@ -8,12 +8,18 @@ import { CurrentUser } from '@/common/decorators/current-user';
 import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
 import { CourseNotOwnedByUserError } from '@/course/errors/course-not-owned-by-user-error';
 import { PaginationInput } from '@/common/types/pagination';
+import { ILoggingProvider } from '@/logging/logging.provider';
+import { ILogger } from '@/logging/types/Logger';
+import { SubmitCourseFeedbackAnswersRequest } from '../requests/submit-course-feedback-answers.request';
+import { CourseService } from '@/course/services/course.service';
 
 @Controller('course/:courseId/feedback')
 export class CourseFeedbackController {
   constructor(
     private readonly courseFeedbackService: CourseFeedbackService,
     private readonly userCourseService: UserCourseService,
+    private readonly courseService: CourseService,
+    @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
 
   @Get('/questions')
@@ -40,7 +46,12 @@ export class CourseFeedbackController {
         getUpcomingCoursesInput.page ?? 1,
       );
     } catch (e) {
-      console.log('🚀 ~ CourseFeedbackController ~ e:', e);
+      this.logger.error('CourseFeedbackController.getCourseFeedbackQuestions', 'Error getting course feedback questions', {
+        error: e.message,
+        courseId,
+        getUpcomingCoursesInput,
+      });
+
       // TODO: need to move this logic to an interceptor and remove try catches on every route
       if (e instanceof EntityNotFound) {
         throw new NotFoundException();
@@ -51,11 +62,24 @@ export class CourseFeedbackController {
   }
 
   @Put('/answers')
-  @HttpCode(200)
-  public async submitAnswers() {
+  @HttpCode(204)
+  public async submitAnswers(
+    @Param('courseId') courseId: string,
+    @CurrentUser() currentUser: ICurrentUser,
+    @Body() body: SubmitCourseFeedbackAnswersRequest,
+  ): Promise<void> {
     try {
-      // TODO
+      await this.courseFeedbackService.submitUserAnswersForCourse(currentUser.id, courseId, body.answers);
     } catch (e) {
+      this.logger.error('CourseFeedbackController.submitAnswers', 'Error submitting course feedback', {
+        error: e.message,
+      });
+
+      // TODO: need to move this logic to an interceptor and remove try catches on every route
+      if (e instanceof EntityNotFound) {
+        throw new NotFoundException();
+      }
+
       throw new BadRequestException();
     }
   }

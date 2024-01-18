@@ -8,8 +8,9 @@ import { TestCourseFeedbackService } from '@test/utils/test-course-feedback-serv
 import { TestUserCourseService } from '@test/utils/test-user-course-service';
 import { TestUserService } from '@test/utils/test-user-service';
 import { TestHelpers } from '@test/utils/test-helpers';
+import { faker } from '@faker-js/faker/locale/en_GB';
 
-describe('Get Course Feedback Questions', () => {
+describe('Submit Course Feedback', () => {
   const URL = '/course';
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
@@ -32,11 +33,10 @@ describe('Get Course Feedback Questions', () => {
     app = await testApp.init();
   });
 
-
   it('should error if the user is unauthenticated', async () => {
     const course = await testCourseService.createCourse();
     return request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions`)
+      .put(`${URL}/${course.id}/feedback/answers`)
       .expect(401)
       .expect({
         statusCode: 401,
@@ -44,12 +44,38 @@ describe('Get Course Feedback Questions', () => {
       });
   });
 
+  // TOOD: need to properly format the response in body-validation-pipe.ts
+  xit('should error if the request body is invalid', async () => {
+    const course = await testCourseService.createCourse();
+    const accessToken = await testJwtService.generateAccessToken();
+
+    return request(app.getHttpServer())
+      .put(`${URL}/${course.id}/feedback/answers`)
+      .set('Cookie', [`authSession=${accessToken}`])
+      .send({
+        answers: [
+          { questionId: '123', answer: 'test' },
+        ],
+      })
+      .expect(422)
+      .expect({
+        statusCode: 422,
+        message: 'Unprocessible Entity',
+        error: '',
+      });
+  });
+
   it('should error if the course does not exist', async () => {
     const accessToken = await testJwtService.generateAccessToken();
 
     return request(app.getHttpServer())
-      .get(`${URL}/123/feedback/questions`)
+      .put(`${URL}/invalidcourseid/feedback/answers`)
       .set('Cookie', [`authSession=${accessToken}`])
+      .send({
+        answers: [
+          { questionId: faker.string.uuid(), answer: faker.word.words(2) },
+        ],
+      })
       .expect(404)
       .expect({
         statusCode: 404,
@@ -58,12 +84,17 @@ describe('Get Course Feedback Questions', () => {
   });
 
   it('should error if the user has not attended the course', async () => {
-    const accessToken = await testJwtService.generateAccessToken();
     const course = await testCourseService.createCourse();
+    const accessToken = await testJwtService.generateAccessToken();
 
     return request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions`)
+      .put(`${URL}/${course.id}/feedback/answers`)
       .set('Cookie', [`authSession=${accessToken}`])
+      .send({
+        answers: [
+          { questionId: faker.string.uuid(), answer: faker.word.words(2) },
+        ],
+      })
       .expect(400)
       .expect({
         statusCode: 400,
@@ -71,70 +102,54 @@ describe('Get Course Feedback Questions', () => {
       });
   });
 
-  it('should return the course feedback questions in the correct order', async () => {
+  it('should error if the user has already submitted feedback for the course', async () => {
+    const course = await testCourseService.createCourse();
     const user = await testUserService.createDentist();
     const accessToken = await testJwtService.generateAccessToken(user);
-    const course = await testCourseService.createCourse();
-    await testCourseFeedbackService.createQuestionsForCourse(course.id, 3);
-    await testUserCourseService.markUserAsAttendedCourse(user.id, course.id);
+
+    await testCourseFeedbackService.submitUserAnswersForCourse(user.id, course.id, [
+      { questionId: faker.string.uuid(), answer: faker.word.words(2) },
+    ]);
 
     return request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions`)
+      .put(`${URL}/${course.id}/feedback/answers`)
       .set('Cookie', [`authSession=${accessToken}`])
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.data).toHaveLength(3);
-        expect(res.body.data[0].order).toBe(0);
-        expect(res.body.data[1].order).toBe(1);
-        expect(res.body.data[2].order).toBe(2);
-      });
-  });
-
-  it('should return a response with the correct format', async () => {
-    const user = await testUserService.createDentist();
-    const accessToken = await testJwtService.generateAccessToken(user);
-    const course = await testCourseService.createCourse();
-    await testCourseFeedbackService.createQuestionsForCourse(course.id, 3);
-    await testUserCourseService.markUserAsAttendedCourse(user.id, course.id);
-
-    return request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions`)
-      .set('Cookie', [`authSession=${accessToken}`])
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.data).toHaveLength(3);
-        const responseKeys = testHelpers.convertResponseKeysToFlatArray(res.body.data[0]);
-        expect(responseKeys).toEqual(['id', 'question', 'type', 'order']);
+      .send({
+        answers: [
+          { questionId: faker.string.uuid(), answer: faker.word.words(2) },
+        ],
+      })
+      .expect(400)
+      .expect({
+        statusCode: 400,
+        message: 'Bad Request',
       });
 
   });
 
-  it('should paginate the questions', async () => {
+  it('should successfully store the users submission', async () => {
+    const course = await testCourseService.createCourse();
     const user = await testUserService.createDentist();
     const accessToken = await testJwtService.generateAccessToken(user);
-    const course = await testCourseService.createCourse();
-    await testCourseFeedbackService.createQuestionsForCourse(course.id, 3);
+    await testCourseFeedbackService.createQuestionsForCourse(course.id);
+    const questions = await testCourseFeedbackService.getQuestionsForCourse(course.id);
+
     await testUserCourseService.markUserAsAttendedCourse(user.id, course.id);
 
-    const firstResponse = await request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions?perPage=1&page=1`)
-      .set('Cookie', [`authSession=${accessToken}`]);
+    const answer = { questionId: questions[0].id, answer: faker.word.words(2) };
 
-    expect(firstResponse.body.data).toHaveLength(1);
-    expect(firstResponse.body.data[0].order).toBe(0);
+    await request(app.getHttpServer())
+      .put(`${URL}/${course.id}/feedback/answers`)
+      .set('Cookie', [`authSession=${accessToken}`])
+      .send({
+        answers: [
+          answer,
+        ],
+      })
+      .expect(204);
 
-    const secondResponse = await request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions?perPage=1&page=2`)
-      .set('Cookie', [`authSession=${accessToken}`]);
-
-    expect(secondResponse.body.data).toHaveLength(1);
-    expect(secondResponse.body.data[0].order).toBe(1);
-
-    const thirdResponse = await request(app.getHttpServer())
-      .get(`${URL}/${course.id}/feedback/questions?perPage=1&page=3`)
-      .set('Cookie', [`authSession=${accessToken}`]);
-
-    expect(thirdResponse.body.data).toHaveLength(1);
-    expect(thirdResponse.body.data[0].order).toBe(2);
+    const responses = await testCourseFeedbackService.getResponsesForCourseByUser(course.id, user.id);
+    expect(responses).toHaveLength(1);
+    expect((responses[0].answers as any).answer).toEqual(answer.answer);
   });
 });

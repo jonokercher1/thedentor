@@ -29,4 +29,27 @@ export class TestCourseFeedbackService {
       data: questionData,
     });
   }
+
+  public async submitUserAnswersForCourse(userId: string, courseId: string, answers: { questionId: string, answer: string }[]) {
+    return this.feedbackResponseEntity.createMany({
+      data: answers.map((answer) => ({
+        userId,
+        courseId,
+        answers: answer,
+      })),
+    });
+  }
+
+  public async getQuestionsForCourse(courseId: string) {
+    return this.questionsEntity.findMany({ where: { courseId } });
+  }
+
+  public async getResponsesForCourseByUser(courseId: string, userId: string) {
+    return this.feedbackResponseEntity.findMany({
+      where: {
+        courseId,
+        userId,
+      },
+    });
+  }
 }

@@ -6,6 +6,12 @@ import EntityNotFound from '@/common/errors/common/entity-not-found-error';
 import { PaginationInput } from '@/common/types/pagination';
 import { CourseFeedbackResponseRepository } from '../repositories/course-feedback-response.repository';
 import { UserCourseService } from '@/user/services/user-course.service';
+import { InvalidCourseFeedbackSubmissionError } from '../errors/invalid-course-feedback-submission-error';
+import { CourseFeedbackQuestion } from '@/database/types/course-feedback';
+import { InvalidFeedbackQuestionError } from '../errors/invalid-feedback-question-error';
+
+// TODO: extract this
+type CourseFeedbackResponseData = { questionId: string, answer: string };
 
 @Injectable()
 export class CourseFeedbackService {
@@ -39,22 +45,48 @@ export class CourseFeedbackService {
     return this.courseFeedbackQuestionsRepository.count({ courseId });
   }
 
-  public async submitUserAnswersForCourse(userId: string, courseId: string) {
-    const course = await this.courseService.findById(courseId);
+  public async submitUserAnswersForCourse(userId: string, courseId: string, answers: CourseFeedbackResponseData[]) {
+    await this.courseService.findById(courseId); // Need to ensure the course exists
 
-    // TODO: encapsulate this logic in the base repository
-    if (!course) {
-      throw new EntityNotFound('course', 'course does not exist');
+    const userCanSubmitFeedback = await this.userCanSubmitCourseFeedback(userId, courseId);
+
+    if (!userCanSubmitFeedback) {
+      throw new InvalidCourseFeedbackSubmissionError(userId, courseId);
     }
 
-    const userHasAlreadySubmittedFeedback = await this.getCourseFeedbackResponseForUser(userId, courseId);
-    const userHasAttendedCourse = await this.userCourseService.hasUserAttendedCourse(course.id, userId);
+    const formattedData = await this.injectQuestionDataIntoResponse(userId, courseId, answers);
 
-    // Save answers
-
+    return this.courseFeedbackResponseRepository.createMany(formattedData);
   }
 
   public async getCourseFeedbackResponseForUser(userId: string, courseId: string) {
     return this.courseFeedbackResponseRepository.exists({ userId, courseId });
+  }
+
+  public async userCanSubmitCourseFeedback(userId: string, courseId: string) {
+    const userHasAlreadySubmittedFeedback = await this.getCourseFeedbackResponseForUser(userId, courseId);
+    const userHasAttendedCourse = await this.userCourseService.hasUserAttendedCourse(courseId, userId);
+
+    return userHasAttendedCourse && !userHasAlreadySubmittedFeedback;
+  }
+
+  private async injectQuestionDataIntoResponse(userId: string, courseId: string, answers: CourseFeedbackResponseData[]) {
+    return Promise.all(answers.map(async ({ questionId, answer }) => {
+      const question = await this.courseFeedbackQuestionsRepository
+        .findUnique<CourseFeedbackQuestion>('id', questionId)
+        .catch(() => {
+          throw new InvalidFeedbackQuestionError(questionId);
+        });
+
+      return {
+        userId,
+        courseId,
+        answers: {
+          questionId,
+          question: question.question,
+          answer,
+        },
+      };
+    }));
   }
 }
