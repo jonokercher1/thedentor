@@ -42,6 +42,9 @@ const config: Config = {
       },
       fontFamily: {
         body: 'var(--body-font)',
+      },
+      transitionProperty: {
+        'width': 'width',
       }
     },
   },

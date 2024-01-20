@@ -39,7 +39,7 @@ export class OneTimePasswordService {
   public async requestNewOneTimePasswordForUser(user: User): Promise<any> {
     await this.expireAllUsersOneTimePasswords(user);
 
-    const oneTimePassword = await this.oneTimePasswordRepository.create(user.id);
+    const oneTimePassword = await this.oneTimePasswordRepository.createWithRandomToken(user.id);
 
     this.notificationService.notifyUser(
       user,

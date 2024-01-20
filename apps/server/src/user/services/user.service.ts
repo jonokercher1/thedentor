@@ -25,7 +25,7 @@ export class UserService {
       throw new DuplicateEntityError('User');
     }
 
-    return this.userRepository.create({
+    return this.userRepository.create<CreateUserInput, User>({
       email: input.email,
       name: input.name,
       phone: input.phone,

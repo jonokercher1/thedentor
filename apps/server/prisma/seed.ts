@@ -5,6 +5,7 @@ import UserSeeder from './seed/user-seeder';
 import CourseSeeder from './seed/course-seeder';
 import DentorSeeder from './seed/dentor-seeder';
 import ReviewSeeder from './seed/review-seeder';
+import CourseFeedbackQuestionsSeeder from './seed/course-feedback-questions-seeder';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +32,7 @@ async function main() {
   await new CourseSeeder(prisma).run();
   await new DentorSeeder(prisma).run();
   await new ReviewSeeder(prisma).run();
+  await new CourseFeedbackQuestionsSeeder(prisma).run();
 }
 
 main()

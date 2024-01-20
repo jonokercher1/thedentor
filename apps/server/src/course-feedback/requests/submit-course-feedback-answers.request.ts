@@ -1,3 +1,4 @@
+import { IsNumberOrString } from '@/common/decorators/is-number-or-string';
 import { Type } from 'class-transformer';
 import { IsArray, IsString, IsUUID, ValidateNested } from 'class-validator';
 
@@ -6,8 +7,8 @@ class CourseFeedbackQuestionAnswer {
   @IsUUID()
   questionId: string;
 
-  @IsString()
-  answer: string;
+  @IsNumberOrString()
+  answer: string | number;
 }
 
 export class SubmitCourseFeedbackAnswersRequest {

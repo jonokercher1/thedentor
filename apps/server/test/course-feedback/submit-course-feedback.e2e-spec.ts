@@ -7,8 +7,8 @@ import TestApp from '@test/utils/test-app';
 import { TestCourseFeedbackService } from '@test/utils/test-course-feedback-service';
 import { TestUserCourseService } from '@test/utils/test-user-course-service';
 import { TestUserService } from '@test/utils/test-user-service';
-import { TestHelpers } from '@test/utils/test-helpers';
 import { faker } from '@faker-js/faker/locale/en_GB';
+import { TestHelpers } from '@test/utils/test-helpers';
 
 describe('Submit Course Feedback', () => {
   const URL = '/course';
@@ -136,6 +136,39 @@ describe('Submit Course Feedback', () => {
 
     await testUserCourseService.markUserAsAttendedCourse(user.id, course.id);
 
+    const answerOne = { questionId: questions[0].id, answer: faker.word.words(2) };
+    const answerTwo = { questionId: questions[1].id, answer: faker.number.int() };
+
+    await request(app.getHttpServer())
+      .put(`${URL}/${course.id}/feedback/answers`)
+      .set('Cookie', [`authSession=${accessToken}`])
+      .send({
+        answers: [
+          answerOne,
+          answerTwo,
+        ],
+      })
+      .expect(200);
+
+    const responses = await testCourseFeedbackService.getResponsesForCourseByUser(course.id, user.id);
+
+    expect(responses).toHaveLength(1);
+    expect(responses[0].answers).toHaveLength(2);
+    expect(responses[0].answers[0].questionId).toEqual(answerOne.questionId);
+    expect(responses[0].answers[0].answer).toEqual(answerOne.answer);
+    expect(responses[0].answers[1].questionId).toEqual(answerTwo.questionId);
+    expect(responses[0].answers[1].answer).toEqual(answerTwo.answer);
+  });
+
+  it('should return a response in the correct format', async () => {
+    const course = await testCourseService.createCourse();
+    const user = await testUserService.createDentist();
+    const accessToken = await testJwtService.generateAccessToken(user);
+    await testCourseFeedbackService.createQuestionsForCourse(course.id);
+    const questions = await testCourseFeedbackService.getQuestionsForCourse(course.id);
+
+    await testUserCourseService.markUserAsAttendedCourse(user.id, course.id);
+
     const answer = { questionId: questions[0].id, answer: faker.word.words(2) };
 
     await request(app.getHttpServer())
@@ -146,10 +179,16 @@ describe('Submit Course Feedback', () => {
           answer,
         ],
       })
-      .expect(204);
-
-    const responses = await testCourseFeedbackService.getResponsesForCourseByUser(course.id, user.id);
-    expect(responses).toHaveLength(1);
-    expect((responses[0].answers as any).answer).toEqual(answer.answer);
+      .expect(200)
+      .expect((response) => {
+        const responseObjectKeys = testHelpers.convertResponseKeysToFlatArray(response.body.data);
+        expect(responseObjectKeys).toEqual([
+          'id',
+          'courseId',
+          'answers.0.questionId',
+          'answers.0.question',
+          'answers.0.answer',
+        ]);
+      });
   });
 });

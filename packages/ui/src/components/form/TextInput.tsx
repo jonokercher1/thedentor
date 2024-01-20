@@ -2,6 +2,7 @@
 
 import classNames from 'classnames'
 import { useId, type ChangeEventHandler, type ForwardRefRenderFunction, forwardRef, ReactNode } from 'react'
+import InputError from './InputError'
 
 export interface TextInputProps {
   label?: {
@@ -63,9 +64,7 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = ({
         {endSlot}
       </div>
 
-      {error && (
-        <p className="text-xs absolute block top-full pt-1 text-state-error font-bold capitalize">{error}</p>
-      )}
+      <InputError error={error} />
     </div>
   )
 }

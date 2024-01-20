@@ -11,14 +11,13 @@ import { PaginationInput } from '@/common/types/pagination';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import { SubmitCourseFeedbackAnswersRequest } from '../requests/submit-course-feedback-answers.request';
-import { CourseService } from '@/course/services/course.service';
+import { CourseFeedbackAnswerResponse } from '../responses/course-feedback-answer.response';
 
 @Controller('course/:courseId/feedback')
 export class CourseFeedbackController {
   constructor(
     private readonly courseFeedbackService: CourseFeedbackService,
     private readonly userCourseService: UserCourseService,
-    private readonly courseService: CourseService,
     @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
 
@@ -62,17 +61,20 @@ export class CourseFeedbackController {
   }
 
   @Put('/answers')
-  @HttpCode(204)
+  @HttpCode(200)
   public async submitAnswers(
     @Param('courseId') courseId: string,
     @CurrentUser() currentUser: ICurrentUser,
     @Body() body: SubmitCourseFeedbackAnswersRequest,
-  ): Promise<void> {
+  ) {
     try {
-      await this.courseFeedbackService.submitUserAnswersForCourse(currentUser.id, courseId, body.answers);
+      const feedbackResponse = await this.courseFeedbackService.submitUserAnswersForCourse(currentUser.id, courseId, body.answers);
+
+      return new CourseFeedbackAnswerResponse(feedbackResponse);
     } catch (e) {
       this.logger.error('CourseFeedbackController.submitAnswers', 'Error submitting course feedback', {
         error: e.message,
+        stack: e.stack,
       });
 
       // TODO: need to move this logic to an interceptor and remove try catches on every route

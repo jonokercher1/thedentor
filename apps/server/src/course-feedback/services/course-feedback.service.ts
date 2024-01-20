@@ -11,7 +11,7 @@ import { CourseFeedbackQuestion } from '@/database/types/course-feedback';
 import { InvalidFeedbackQuestionError } from '../errors/invalid-feedback-question-error';
 
 // TODO: extract this
-type CourseFeedbackResponseData = { questionId: string, answer: string };
+type CourseFeedbackResponseData = { questionId: string, answer: string | number };
 
 @Injectable()
 export class CourseFeedbackService {
@@ -54,9 +54,13 @@ export class CourseFeedbackService {
       throw new InvalidCourseFeedbackSubmissionError(userId, courseId);
     }
 
-    const formattedData = await this.injectQuestionDataIntoResponse(userId, courseId, answers);
+    const formattedAnswers = await this.injectQuestionDataIntoResponse(answers);
 
-    return this.courseFeedbackResponseRepository.createMany(formattedData);
+    return this.courseFeedbackResponseRepository.create({
+      userId,
+      courseId,
+      answers: formattedAnswers,
+    });
   }
 
   public async getCourseFeedbackResponseForUser(userId: string, courseId: string) {
@@ -70,7 +74,7 @@ export class CourseFeedbackService {
     return userHasAttendedCourse && !userHasAlreadySubmittedFeedback;
   }
 
-  private async injectQuestionDataIntoResponse(userId: string, courseId: string, answers: CourseFeedbackResponseData[]) {
+  private async injectQuestionDataIntoResponse(answers: CourseFeedbackResponseData[]) {
     return Promise.all(answers.map(async ({ questionId, answer }) => {
       const question = await this.courseFeedbackQuestionsRepository
         .findUnique<CourseFeedbackQuestion>('id', questionId)
@@ -79,13 +83,9 @@ export class CourseFeedbackService {
         });
 
       return {
-        userId,
-        courseId,
-        answers: {
-          questionId,
-          question: question.question,
-          answer,
-        },
+        questionId,
+        question: question.question,
+        answer,
       };
     }));
   }
