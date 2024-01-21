@@ -1,6 +1,6 @@
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
-import { BadRequestException, Controller, Get, Inject, Query, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Controller, Get, HttpCode, Inject, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { CourseResponse } from '@/course/responses/course.response';
 import { CourseService } from '@/course/services/course.service';
 import { GetCoursesRequest } from '@/course/requests/get-courses.request';
@@ -8,6 +8,7 @@ import { GetUpcomingCoursesRequest } from '@/course/requests/get-upcoming-course
 import { CourseType } from '@prisma/client';
 import { Course, CourseFilters } from '@/database/types/course';
 import { PaginationInput } from '@/common/types/pagination';
+import EntityNotFound from '@/common/errors/common/entity-not-found-error';
 
 @Controller('course')
 export class CourseController {
@@ -44,6 +45,28 @@ export class CourseController {
         error: e.message,
         getCoursesInput,
       });
+
+      throw new BadRequestException();
+    }
+  }
+
+  @Get('/:id')
+  @HttpCode(200)
+  public async getById(@Param('id') id: string): Promise<CourseResponse> {
+    try {
+      const course = await this.courseService.getByIdWithDentorAndCategory(id);
+
+      return new CourseResponse(course);
+    } catch (e) {
+      this.logger.error('CourseController.getById', 'Error getting course', {
+        error: e.message,
+        courseId: id,
+      });
+
+      // TODO: need to move this logic to an interceptor and remove try catches on every route
+      if (e instanceof EntityNotFound) {
+        throw new NotFoundException();
+      }
 
       throw new BadRequestException();
     }

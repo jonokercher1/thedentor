@@ -7,12 +7,14 @@ import FeedbackFormField from './FeedbackFormField';
 import { Controller, useForm } from 'react-hook-form';
 import submitCourseFeedback, { CourseFeedbackAnswer, SubmitCourseFeedbackArgs, SubmitCourseFeedbackResponse } from '@/api/course/feedback/submit-course-feedback';
 import { useParams } from 'next/navigation';
+import { Course } from '@/types/api/course/course';
 
 interface FeedbackQuestionsFormProps {
   questions: CourseFeedbackQuestion[]
+  course: Course
 }
 
-const FeedbackQuestionsForm: FC<FeedbackQuestionsFormProps> = ({ questions }) => {
+const FeedbackQuestionsForm: FC<FeedbackQuestionsFormProps> = ({ questions, course }) => {
   const { id } = useParams()
   const { successToast, errorToast } = useToast()
   const { control, handleSubmit, formState: { errors } } = useForm({ mode: 'all' })
@@ -50,7 +52,7 @@ const FeedbackQuestionsForm: FC<FeedbackQuestionsFormProps> = ({ questions }) =>
           />
 
           {/* TODO: get from course endpoint, make a Text component in the ui kit */}
-          <h1 className="text-neutral-900 font-bold text-4xl mb-2 font-body">Polishing The Anterior Composite Restoration</h1>
+          <h1 className="text-neutral-900 font-bold text-4xl mb-2 font-body">{course.name}</h1>
           <p className="text-base font-light text-neutral-900">Please fill in the feedback form. You will be emailed your CPD Certificate.</p>
         </div>
 

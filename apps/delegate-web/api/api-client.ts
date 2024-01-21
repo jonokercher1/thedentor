@@ -12,15 +12,15 @@ export abstract class ApiClient {
   }
 
   public async POST<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
-    return this.makeRequest(resource, { ...options, method: 'POST' }, body)
+    return this.makeRequest<Response, Body>(resource, { ...options, method: 'POST' }, body)
   }
 
   public async PUT<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
-    return this.makeRequest(resource, { ...options, method: 'PUT' }, body)
+    return this.makeRequest<Response, Body>(resource, { ...options, method: 'PUT' }, body)
   }
 
   public async PATCH<Response, Body>(resource: string, body?: Body, options?: RequestOptions): Promise<Response> {
-    return this.makeRequest(resource, { ...options, method: 'PATCH' }, body)
+    return this.makeRequest<Response, Body>(resource, { ...options, method: 'PATCH' }, body)
   }
 
   protected async makeRequest<Response, Body>(resource: string, options: RequestOptions, body?: Body): Promise<Response> {
@@ -38,6 +38,7 @@ export abstract class ApiClient {
     const response = await fetch(`${this.BASE_URL}/${resource}`, requestOptions)
 
     if (response.status === 401 && !options.suppressUnauthorisedError) {
+      // TODO: need to get the from query param and append here
       // TOOD: test if this works on a client call
       redirect('/auth/login')
     }
