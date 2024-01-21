@@ -13,7 +13,9 @@ import { SearchModule } from './search/search.module';
 import { CourseModule } from './course/course.module';
 import { DentorModule } from './dentor/dentor.module';
 import { ReviewModule } from './review/review.module';
+import { CourseFeedbackModule } from './course-feedback/course-feedback.module';
 import { UserModule } from './user/user.module';
+import { IsNumberOrStringConstraint } from './common/decorators/is-number-or-string';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { UserModule } from './user/user.module';
     CourseModule,
     DentorModule,
     ReviewModule,
+    CourseFeedbackModule,
     UserModule,
   ],
   providers: [
@@ -37,6 +40,7 @@ import { UserModule } from './user/user.module';
       // TODO: work out how to register the api key guard too. We may need to make a new decorator for @Auth(ApiKey, Session) or something similar
       useClass: AuthGuard,
     },
+    IsNumberOrStringConstraint,
   ],
 })
 export class AppModule { }

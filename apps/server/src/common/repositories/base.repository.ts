@@ -53,6 +53,10 @@ abstract class BaseRepository<T> {
     return count > 0;
   }
 
+  public async create<Data, Entity, Select = object>(data: Data, select?: Select): Promise<Entity> {
+    return this.entity.create({ data, select });
+  }
+
   public async updateMany<Filters, Input, Select = void>(filters: Filters, input: Input, select?: Select): Promise<any> {
     return this.entity.updateMany({
       data: input,

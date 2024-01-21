@@ -10,7 +10,7 @@ export class UserCourseService {
 
   public async isCourseOwnedByUser(courseId: string, userId: string): Promise<boolean> {
     const ownedCourse = await this.userRepository.findMany<UserFilters, UserSelectFields>({
-      courses: {
+      purchasedCourses: {
         some: {
           id: courseId,
         },
@@ -29,5 +29,10 @@ export class UserCourseService {
         },
       },
     });
+  }
+
+  public async hasUserAttendedCourse(courseId: string, userId: string): Promise<boolean> {
+    // TODO: This needs to check attendance records once we have that built
+    return this.isCourseOwnedByUser(courseId, userId);
   }
 }

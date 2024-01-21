@@ -78,7 +78,7 @@ export class CourseService {
   }
 
   public async findById(courseId: string): Promise<Course> {
-    return this.courseRepository.findUnique('id', courseId);
+    return this.courseRepository.findFirst({ id: courseId });
   }
 
   public async getCourseByIdToPurchase(courseId: string): Promise<Course> {

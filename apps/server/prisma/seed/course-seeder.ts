@@ -81,6 +81,7 @@ export default class CourseSeeder {
         },
       });
 
+      // TODO: disable this for test db seeds
       // Init an index for this object in algolia
       await this.algolia.saveObject({
         objectID: course.id,

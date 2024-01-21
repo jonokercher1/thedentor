@@ -45,9 +45,4 @@ export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
       },
     });
   }
-
-  // TODO: Move to generic base repository
-  public async create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.entity.create({ data });
-  }
 }

@@ -36,18 +36,19 @@ export class OneTimePasswordRepository extends BaseRepository<Prisma.OneTimePass
   }
 
   // TODO: move to generic base repository
-  public async create(userId: string, select?: Prisma.OneTimePasswordSelect) {
+  public async createWithRandomToken(userId: string, select?: Prisma.OneTimePasswordSelect) {
     const token = randomInt(100000, 999999).toString();
 
-    return this.entity.create({
-      data: {
-        token,
-        userId,
+    return super.create<Prisma.OneTimePasswordCreateInput, OneTimePassword, Prisma.OneTimePasswordSelect>({
+      token,
+      user: {
+        connect: {
+          id: userId,
+        },
       },
-      select: {
-        ...OneTimePasswordRepository.DEFAULT_FIELDS,
-        ...select,
-      },
+    }, {
+      ...OneTimePasswordRepository.DEFAULT_FIELDS,
+      ...select,
     });
   }
 }

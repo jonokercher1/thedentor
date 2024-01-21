@@ -39,7 +39,6 @@ const LoginEmailForm: FC<LoginEmailFormProps> = ({
       }
     },
     onError: (e) => {
-      console.log("🚀 ~ file: LoginEmailForm.tsx:46 ~ e:", e)
       errorToast('Unable to login')
     },
     setFieldError: (name, { message }) => setError(name as any, { message })
