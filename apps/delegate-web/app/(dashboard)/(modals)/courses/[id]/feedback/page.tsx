@@ -1,24 +1,28 @@
 import { FC } from 'react'
 import getCourseFeedbackQuestions from '@/api/course/feedback/get-course-feedback-questions';
-import { Logo } from '@dentor/ui';
+import { LinkableLogo } from '@dentor/ui';
 import FeedbackQuestionsForm from './components/FeedbackQuestionsForm';
 import { redirect } from 'next/navigation';
+import getCourse from '@/api/course/get-course';
 
 const CourseFeedbackPage: FC = async ({ params }: any) => {
-  // const course = await getCourse(params.id) // todo: build get course api endpoint
+  const course = await getCourse(params.id)
   const questions = await getCourseFeedbackQuestions(params.id)
 
   if (!questions.data) {
-    redirect(`/dashboard/courses/${params.id}`)
+    redirect(`/courses/${params.id}`)
   }
 
   return (
     <main className="bg-neutral-200">
       <header className="flex items-center justify-center py-12 bg-neutral-700 w-screen">
-        <Logo className="text-white" />
+        <LinkableLogo className="text-white" />
       </header>
 
-      <FeedbackQuestionsForm questions={questions.data} />
+      <FeedbackQuestionsForm
+        questions={questions.data}
+        course={course.data}
+      />
     </main>
   )
 }

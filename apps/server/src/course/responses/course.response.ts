@@ -6,7 +6,7 @@ import { DentorData } from '@/dentor/responses/dentor.response';
 import { Expose, Type } from 'class-transformer';
 
 type ICourseDentorData = Partial<User>;
-type ICourseData = Partial<Course> & { dentor: ICourseDentorData; category: ICourseCategoryData[] };
+type ICourseData = Partial<Course> & { dentor?: ICourseDentorData; category?: ICourseCategoryData[] };
 
 class CourseData {
   @Expose()

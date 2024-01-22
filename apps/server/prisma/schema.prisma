@@ -154,7 +154,7 @@ model CourseFeedbackQuestion {
   type      CourseFeedbackQuestionType
   order     Int
   courseId  String
-  course    Course                     @relation(fields: [courseId], references: [id])
+  course    Course                     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime                   @default(now())
   updatedAt DateTime                   @default(now())
 
@@ -166,8 +166,8 @@ model CourseFeedbackResponse {
   userId    String
   courseId  String
   answers   Json
-  user      User     @relation(fields: [userId], references: [id])
-  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }

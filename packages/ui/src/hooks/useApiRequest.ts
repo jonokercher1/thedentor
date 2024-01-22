@@ -27,7 +27,6 @@ export const useApiRequest = <Response extends HttpSuccessResponse<Response['dat
     try {
       queryLoading()
       const response = await args.request(body)
-      console.log("🚀 ~ sendApiRequest ~ response:", response)
 
       if (response.statusCode > 299) {
         if (response.statusCode === 422 && args.setFieldError) {

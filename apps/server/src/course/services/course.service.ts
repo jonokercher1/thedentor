@@ -73,6 +73,20 @@ export class CourseService {
     );
   }
 
+  public async getByIdWithDentorAndCategory(courseId: string): Promise<Course> {
+    return this.courseRepository.findFirst({
+      id: courseId,
+    }, {
+      ...CourseRepository.DEFAULT_FIELDS,
+      dentor: {
+        select: UserRepository.DEFAULT_FIELDS,
+      },
+      category: {
+        select: CourseCategoryRepository.DEFAULT_FIELDS,
+      },
+    });
+  }
+
   public async count(filters?: CourseFilters) {
     return this.courseRepository.count(filters);
   }
