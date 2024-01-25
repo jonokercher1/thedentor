@@ -2,7 +2,10 @@
 import { appConfig } from '@/config/app.config'
 import { redirect } from 'next/navigation'
 
-export type RequestOptions = Exclude<RequestInit, 'body'> & { suppressUnauthorisedError?: boolean }
+export interface RequestOptions extends Omit<RequestInit, 'body'> {
+  suppressUnauthorisedError?: boolean
+  redirectAfterLogin?: string
+}
 
 export abstract class ApiClient {
   private readonly BASE_URL = appConfig.api.baseUrl
@@ -40,7 +43,13 @@ export abstract class ApiClient {
     if (response.status === 401 && !options.suppressUnauthorisedError) {
       // TODO: need to get the from query param and append here
       // TOOD: test if this works on a client call
-      redirect('/auth/login')
+      let url = '/auth/login'
+
+      if (options.redirectAfterLogin) {
+        url += `?from=${options.redirectAfterLogin}`
+      }
+
+      redirect(url)
     }
 
     const data = await response.json()

@@ -6,9 +6,11 @@ import { redirect } from 'next/navigation';
 import getCourse from '@/api/course/get-course';
 
 const CourseFeedbackPage: FC = async ({ params }: any) => {
-  const course = await getCourse(params.id)
-  const questions = await getCourseFeedbackQuestions(params.id)
+  const redirectAfterLogin = `/courses/${params.id}/feedback`
+  const course = await getCourse(params.id, { redirectAfterLogin })
+  const questions = await getCourseFeedbackQuestions(params.id, undefined, { redirectAfterLogin })
 
+  // TODO: handle no course data (e.g. course doesnt exist)
   if (!questions.data) {
     redirect(`/courses/${params.id}`)
   }
@@ -21,7 +23,7 @@ const CourseFeedbackPage: FC = async ({ params }: any) => {
 
       <FeedbackQuestionsForm
         questions={questions.data}
-        course={course.data}
+        course={course.data!}
       />
     </main>
   )

@@ -4,10 +4,15 @@ import { ServerApiClient } from '@/api/server-api-client'
 import { PaginationInput } from '@/types/api/pagination'
 import { CourseFeedbackQuestion } from '@/types/api/course/course-feedback'
 import { HttpSuccessPaginatedResponse } from '@dentor/ui/types/api/http-success-response'
+import { RequestOptions } from '@/api/api-client'
 
 export interface GetCourseFeedbackQuestionsResponse extends HttpSuccessPaginatedResponse<CourseFeedbackQuestion[]> { }
 
-const getCourseFeedbackQuestions = async (courseId: string, pagination?: PaginationInput): Promise<GetCourseFeedbackQuestionsResponse> => {
+const getCourseFeedbackQuestions = async (
+  courseId: string,
+  pagination?: PaginationInput,
+  requestOptions?: RequestOptions
+): Promise<GetCourseFeedbackQuestionsResponse> => {
   const apiClient = new ServerApiClient()
   const paginationOptions: Record<string, string> = {
     page: pagination?.page?.toString() ?? '1',
@@ -16,7 +21,10 @@ const getCourseFeedbackQuestions = async (courseId: string, pagination?: Paginat
 
   const queryParams = new URLSearchParams(paginationOptions).toString()
 
-  return apiClient.GET<GetCourseFeedbackQuestionsResponse>(`course/${courseId}/feedback/questions?${queryParams}`)
+  return apiClient.GET<GetCourseFeedbackQuestionsResponse>(
+    `course/${courseId}/feedback/questions?${queryParams}`,
+    requestOptions
+  )
 }
 
 export default getCourseFeedbackQuestions
