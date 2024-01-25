@@ -23,6 +23,7 @@ const FeedbackQuestionsForm: FC<FeedbackQuestionsFormProps> = ({ questions, cour
     request: submitCourseFeedback,
     onSuccess: () => {
       successToast('Feedback submitted successfully')
+      window.open('https://drive.google.com/file/d/1dKX35mJtaZXaZUGQcdgr3xnPZfR15yNU/view?usp=sharing', '_blank')
       // Navigate to show PDF certificate
     },
     onError: (e) => {

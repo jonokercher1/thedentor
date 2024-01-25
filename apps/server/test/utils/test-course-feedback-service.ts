@@ -30,7 +30,18 @@ export class TestCourseFeedbackService {
     });
   }
 
-  public async submitUserAnswersForCourse(userId: string, courseId: string, answers: { questionId: string, answer: string }[]) {
+  public async submitUserAnswersForCourse(userId: string, courseId: string, overrideAnswers?: { questionId: string, answer: string }[]) {
+    let answers = overrideAnswers;
+
+    if (!answers?.length) {
+      const questions: string[] = Array(3).fill(faker.string.uuid());
+
+      answers = questions.map((question) => ({
+        questionId: question,
+        answer: faker.lorem.sentence(),
+      }));
+    }
+
     return this.feedbackResponseEntity.createMany({
       data: answers.map((answer) => ({
         userId,

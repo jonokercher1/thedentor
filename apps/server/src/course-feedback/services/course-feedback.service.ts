@@ -63,12 +63,12 @@ export class CourseFeedbackService {
     });
   }
 
-  public async getCourseFeedbackResponseForUser(userId: string, courseId: string) {
+  public async checkUserHasSubmittedFeedback(userId: string, courseId: string) {
     return this.courseFeedbackResponseRepository.exists({ userId, courseId });
   }
 
   public async userCanSubmitCourseFeedback(userId: string, courseId: string) {
-    const userHasAlreadySubmittedFeedback = await this.getCourseFeedbackResponseForUser(userId, courseId);
+    const userHasAlreadySubmittedFeedback = await this.checkUserHasSubmittedFeedback(userId, courseId);
     const userHasAttendedCourse = await this.userCourseService.hasUserAttendedCourse(courseId, userId);
 
     return userHasAttendedCourse && !userHasAlreadySubmittedFeedback;

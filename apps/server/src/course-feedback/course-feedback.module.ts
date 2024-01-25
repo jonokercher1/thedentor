@@ -24,5 +24,6 @@ import { UserRepository } from '@/user/repositories/user.repository';
     UserRepository,
   ],
   imports: [CourseModule, DatabaseModule, SearchModule, UserModule],
+  exports: [CourseFeedbackService],
 })
 export class CourseFeedbackModule { }

@@ -2,7 +2,7 @@ import { RequiresApiKey } from '@/auth/guards/api-key.guard';
 import { BadRequestException, Body, Controller, HttpCode, Inject, NotFoundException, Param, Put } from '@nestjs/common';
 import { CreateUserCoursePurchaseRequest } from '@/course/requests/create-user-course-purchase.request';
 import { CurrentUser } from '@/common/decorators/current-user';
-import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
+import { ICurrentUser } from '@/auth/types/current-user';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import { UserService } from '@/user/services/user.service';

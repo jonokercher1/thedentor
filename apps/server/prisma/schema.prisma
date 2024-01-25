@@ -29,6 +29,7 @@ model User {
   oneTimeTokens             OneTimePassword[]
   apiKeys                   ApiKey[]
   courseFeedback            CourseFeedbackResponse[]
+  cpdCertificates           CpdCertificate[]
 }
 
 model Role {
@@ -57,26 +58,28 @@ model Category {
 }
 
 model Course {
-  id                String                   @id @default(uuid())
-  type              CourseType
-  price             Int
-  cpdValue          Float
-  name              String
-  description       String
-  dentorId          String
-  startDate         DateTime?
-  endDate           DateTime?
-  featuredUntil     DateTime?
-  rating            Float                    @default(0)
-  availablePlaces   Int
-  createdAt         DateTime                 @default(now())
-  updatedAt         DateTime                 @default(now())
-  dentor            User                     @relation("CoursesCreated", fields: [dentorId], references: [id])
-  ownedByUsers      User[]                   @relation("PurchasedCourses")
-  category          Category[]
-  videos            CourseVideo[]
-  feedbackQuestions CourseFeedbackQuestion[]
-  feedback          CourseFeedbackResponse[]
+  id                      String                   @id @default(uuid())
+  type                    CourseType
+  price                   Int
+  cpdValue                Float
+  name                    String
+  description             String
+  dentorId                String
+  startDate               DateTime?
+  endDate                 DateTime?
+  featuredUntil           DateTime?
+  rating                  Float                    @default(0)
+  availablePlaces         Int
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @default(now())
+  dentor                  User                     @relation("CoursesCreated", fields: [dentorId], references: [id])
+  ownedByUsers            User[]                   @relation("PurchasedCourses")
+  category                Category[]
+  videos                  CourseVideo[]
+  feedbackQuestions       CourseFeedbackQuestion[]
+  feedback                CourseFeedbackResponse[]
+  cpdCertificates         CpdCertificate[]
+  cpdCertificateTemplates CpdCertificateTemplate[]
 }
 
 model File {
@@ -170,6 +173,26 @@ model CourseFeedbackResponse {
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+
+model CpdCertificateTemplate {
+  id        String   @id @default(uuid())
+  courseId  String
+  fileUrl   String? // TODO: we should make this a file object but this will do for now
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model CpdCertificate {
+  id        String   @id @default(uuid())
+  fileUrl   String? // TODO: we should make this a file object but this will do for now
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
 }
 
 enum RoleName {

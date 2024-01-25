@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/auth/constants';
-import { CurrentUser } from '@/auth/types/current-user';
+import { ICurrentUser } from '@/auth/types/current-user';
 import { IS_PUBLIC_KEY } from '@/auth/guards/public.guard';
 import { Reflector } from '@nestjs/core';
 import SessionManager from '@/auth/utils/session-manager';
@@ -76,7 +76,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private async tryToGetPayloadFromToken(token: string) {
-    return this.jwtService.verifyAsync<CurrentUser>(
+    return this.jwtService.verifyAsync<ICurrentUser>(
       token,
       {
         secret: jwtConstants.secret,

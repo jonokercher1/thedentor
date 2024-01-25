@@ -5,7 +5,7 @@ import { ILogger } from '@/logging/types/Logger';
 import { CourseService } from '@/course/services/course.service';
 import { CourseCheckoutResponse } from '../responses/course-checkout.response';
 import { CurrentUser } from '@/common/decorators/current-user';
-import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
+import { ICurrentUser } from '@/auth/types/current-user';
 import { UserService } from '@/user/services/user.service';
 import { UserCourseService } from '@/user/services/user-course.service';
 import CourseAlreadyPurchasedError from '@/common/errors/course/course-already-purchased-error';

@@ -5,7 +5,7 @@ import { CourseFeedbackQuestionResponse } from '../responses/course-feedback-que
 import { GetUpcomingCoursesRequest } from '@/course/requests/get-upcoming-courses.request';
 import { UserCourseService } from '@/user/services/user-course.service';
 import { CurrentUser } from '@/common/decorators/current-user';
-import { CurrentUser as ICurrentUser } from '@/auth/types/current-user';
+import { ICurrentUser } from '@/auth/types/current-user';
 import { CourseNotOwnedByUserError } from '@/course/errors/course-not-owned-by-user-error';
 import { PaginationInput } from '@/common/types/pagination';
 import { ILoggingProvider } from '@/logging/logging.provider';
