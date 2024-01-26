@@ -6,10 +6,17 @@ import { CpdCertificateTemplateRepository } from '@/cpd/repositories/cpd-certifi
 import { DatabaseModule } from '@/database/database.module';
 import { CourseFeedbackModule } from '@/course-feedback/course-feedback.module';
 import { CourseModule } from '@/course/course.module';
+import { CpdCertificateGenerationSerivce } from '@/cpd/services/cpd-certificate-generation.service';
+import { UserModule } from '@/user/user.module';
 
 @Module({
-  imports: [DatabaseModule, CourseFeedbackModule, CourseModule],
-  providers: [CpdCertificateService, CpdCertificateRepository, CpdCertificateTemplateRepository],
+  imports: [DatabaseModule, CourseFeedbackModule, CourseModule, UserModule],
+  providers: [
+    CpdCertificateService,
+    CpdCertificateRepository,
+    CpdCertificateTemplateRepository,
+    CpdCertificateGenerationSerivce,
+  ],
   controllers: [CpdCertificateController],
 })
 export class CpdModule { }

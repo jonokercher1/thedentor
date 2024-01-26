@@ -179,7 +179,7 @@ model CpdCertificateTemplate {
   id        String   @id @default(uuid())
   courseId  String
   fileUrl   String? // TODO: we should make this a file object but this will do for now
-  course    Course   @relation(fields: [courseId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
@@ -191,8 +191,8 @@ model CpdCertificate {
   courseId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 enum RoleName {

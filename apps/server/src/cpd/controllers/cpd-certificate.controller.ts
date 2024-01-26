@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpCode, Inject, NotFoundException, Put } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, Inject, NotFoundException, Param, Put } from '@nestjs/common';
 import { CreateCpdCertificateRequest } from '@/cpd/requests/CreateCpdCertificate.request';
 import { CurrentUser } from '@/common/decorators/current-user';
 import { ICurrentUser } from '@/auth/types/current-user';
@@ -16,7 +16,7 @@ export class CpdCertificateController {
     private readonly cpdCertificateSerivce: CpdCertificateService,
     @Inject(ILoggingProvider) private readonly logger: ILogger,
   ) { }
-  // Put a new certificate
+
   @Put('/')
   @HttpCode(200)
   public async createUserCertificateForCourse(
@@ -43,5 +43,27 @@ export class CpdCertificateController {
       throw new BadRequestException();
     }
   }
-  // Get the certificate -> should generate PDF (if not set) and return it
+
+  @Get('/:certificateId')
+  @HttpCode(200)
+  public async getUserCertificateForCourse(@CurrentUser() user: ICurrentUser, @Param('certificateId') certificateId: string) {
+    try {
+      const certificate = await this.cpdCertificateSerivce.getCertificateForUser(certificateId, user.id);
+
+      return new CpdCertificateResponse(certificate);
+    } catch (e) {
+      this.logger.error('CpdCertificateController.getUserCertificateForCourse', 'Error getting CPD certificate for user', {
+        error: e.message,
+        userId: user.id,
+        certificateId,
+      });
+
+      // TODO: need to move this logic to an interceptor and remove try catches on every route
+      if (e instanceof EntityNotFound) {
+        throw new NotFoundException();
+      }
+
+      throw new BadRequestException();
+    }
+  }
 }
