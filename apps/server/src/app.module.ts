@@ -17,6 +17,7 @@ import { CourseFeedbackModule } from './course-feedback/course-feedback.module';
 import { UserModule } from './user/user.module';
 import { IsNumberOrStringConstraint } from './common/decorators/is-number-or-string';
 import { CpdModule } from './cpd/cpd.module';
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CpdModule } from './cpd/cpd.module';
     CourseFeedbackModule,
     UserModule,
     CpdModule,
+    PdfModule,
   ],
   providers: [
     {

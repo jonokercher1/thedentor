@@ -176,23 +176,38 @@ model CourseFeedbackResponse {
 }
 
 model CpdCertificateTemplate {
-  id        String   @id @default(uuid())
-  courseId  String
-  fileUrl   String? // TODO: we should make this a file object but this will do for now
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id              String                        @id @default(uuid())
+  courseId        String
+  fileUrl         String? // TODO: we should make this a file object but this will do for now
+  course          Course                        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt       DateTime                      @default(now())
+  updatedAt       DateTime                      @default(now())
+  cpdCertificates CpdCertificate[]
+  fields          CpdCertificateTemplateField[]
+}
+
+model CpdCertificateTemplateField {
+  id         String                          @id @default(uuid())
+  type       CpdCertificateTemplateFieldType
+  positionX  Int
+  positionY  Int
+  template   CpdCertificateTemplate          @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  templateId String
+  createdAt  DateTime                        @default(now())
+  updatedAt  DateTime                        @default(now())
 }
 
 model CpdCertificate {
-  id        String   @id @default(uuid())
-  fileUrl   String? // TODO: we should make this a file object but this will do for now
-  userId    String
-  courseId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  id         String                  @id @default(uuid())
+  fileUrl    String? // TODO: we should make this a file object but this will do for now
+  userId     String
+  courseId   String
+  templateId String?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @default(now())
+  user       User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course                  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  template   CpdCertificateTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
 }
 
 enum RoleName {
@@ -214,4 +229,11 @@ enum CourseFeedbackQuestionType {
   Rating
   Text
   YesNo
+}
+
+enum CpdCertificateTemplateFieldType {
+  CourseName
+  DentorName
+  DentorGdcNumber
+  CourseObjectives
 }

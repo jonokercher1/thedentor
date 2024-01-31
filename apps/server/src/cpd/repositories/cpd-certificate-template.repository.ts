@@ -9,6 +9,14 @@ export class CpdCertificateTemplateRepository extends BaseRepository<Prisma.CpdC
     id: true,
     fileUrl: true,
     courseId: true,
+    fields: {
+      select: {
+        id: true,
+        type: true,
+        positionX: true,
+        positionY: true,
+      },
+    },
     createdAt: true,
     updatedAt: true,
   };

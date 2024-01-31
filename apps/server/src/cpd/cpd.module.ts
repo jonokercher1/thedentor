@@ -8,14 +8,17 @@ import { CourseFeedbackModule } from '@/course-feedback/course-feedback.module';
 import { CourseModule } from '@/course/course.module';
 import { CpdCertificateGenerationSerivce } from '@/cpd/services/cpd-certificate-generation.service';
 import { UserModule } from '@/user/user.module';
+import { PdfModule } from '@/pdf/pdf.module';
+import { CpdCertificateTemplateService } from '@/cpd/services/cpd-certificate-template.service';
 
 @Module({
-  imports: [DatabaseModule, CourseFeedbackModule, CourseModule, UserModule],
+  imports: [DatabaseModule, CourseFeedbackModule, CourseModule, UserModule, PdfModule],
   providers: [
     CpdCertificateService,
     CpdCertificateRepository,
     CpdCertificateTemplateRepository,
     CpdCertificateGenerationSerivce,
+    CpdCertificateTemplateService,
   ],
   controllers: [CpdCertificateController],
 })

@@ -26,11 +26,7 @@ abstract class BaseRepository<T> {
 
 
   public async findUnique<Entity>(key: keyof Prisma.UserWhereInput, value: string): Promise<Entity> {
-    return this.entity.findFirstOrThrow({
-      where: {
-        [key]: value,
-      },
-    });
+    return this.findFirst({ [key]: value });
   }
 
   public async findMany<Filters, Select>(filters: Filters, pagination?: PaginationInput, select?: Select) {
