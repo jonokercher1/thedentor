@@ -4,9 +4,6 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [
-      "notification/channels/email/templates/**"
-    ],
     "watchAssets": true
   }
 }
