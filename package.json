@@ -7,7 +7,8 @@
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
     "db:seed": "cd ./apps/server && npm run db:seed",
-    "server:build": "turbo run build --filter=server",
+    "db:generate": "cd ./apps/server && npm run db:generate",
+    "server:build": "npm run db:generate && turbo run build --filter=server",
     "server:run": "turbo run start:prod --filter=server"
   },
   "devDependencies": {
