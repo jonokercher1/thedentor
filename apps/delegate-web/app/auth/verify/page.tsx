@@ -2,23 +2,24 @@
 
 import { type FC } from 'react'
 import LoginOneTimePasswordForm from '@/app/auth/_components/LoginOneTimePasswordForm'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { CurrentUser } from '@/types/api/auth/current-user'
 
 const VerifyLogin: FC = () => {
   const router = useRouter()
-  const params = useParams()
-  console.log("🚀 ~ params:", params.from)
+  const params = useSearchParams()
 
   const onHnadleSuccess = (data: CurrentUser) => {
     switch (data.onboardingState) {
       case 'complete':
-        router.replace('/courses')
+        router.replace(params.get('from') ?? '/courses' as any)
+        break;
 
       case 'incomplete':
       case 'not-started':
       default:
         router.replace('/auth/account-details')
+        break;
     }
   }
 

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '@/database/prisma.service';
 import BaseRepository from '@/common/repositories/base.repository';
+import { UpdateUserInput, UserFilters, UserSelect } from '@/database/types/user';
 
 @Injectable()
 export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
@@ -34,15 +35,15 @@ export class UserRepository extends BaseRepository<Prisma.UserDelegate> {
     return usersWithProperties > 0;
   }
 
-  // TODO: move to generic base repository
-  public async update(id: string, data: Prisma.UserUpdateInput, select?: Prisma.UserSelect): Promise<User> {
-    return this.entity.update({
-      where: { id },
-      data: data,
-      select: {
+  // TODO: improve base repository to avoid any types
+  public async update(filters: any, data: any, select?: any): Promise<any> {
+    return super.update<UserFilters, UpdateUserInput, User, UserSelect>(
+      filters,
+      data,
+      {
         ...UserRepository.DEFAULT_FIELDS,
         ...select,
       },
-    });
+    );
   }
 }

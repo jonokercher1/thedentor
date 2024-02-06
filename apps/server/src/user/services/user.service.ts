@@ -39,7 +39,7 @@ export class UserService {
   }
 
   public async updateUser(id: string, input: UpdateUserInput): Promise<User> {
-    return this.userRepository.update(id, input);
+    return this.userRepository.update({ id }, input);
   }
 
   public async checkUserExists(email: string, gdcNumber: string): Promise<boolean> {

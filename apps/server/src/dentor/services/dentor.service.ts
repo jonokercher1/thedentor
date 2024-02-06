@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PaginationInput } from '@/common/types/pagination';
 import { UserRepository } from '@/user/repositories/user.repository';
-import { User, UserFilters, UserSelectFields } from '@/database/types/user';
+import { User, UserFilters, UserSelect } from '@/database/types/user';
 import { Role } from '@/database/types/role';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class DentorService {
     const filters = this.getFeaturedFilters();
     const select = { ...UserRepository.DEFAULT_FIELDS, rating: true };
 
-    return this.userRepository.findMany<UserFilters, UserSelectFields>(filters, pagination, select);
+    return this.userRepository.findMany<UserFilters, UserSelect>(filters, pagination, select);
   }
 
   public async countFeatured() {

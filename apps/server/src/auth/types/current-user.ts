@@ -1,5 +1,5 @@
 import { Role } from '@/database/types/role';
-export interface CurrentUser {
+export interface ICurrentUser {
   id: string;
   email: string;
   role: Role

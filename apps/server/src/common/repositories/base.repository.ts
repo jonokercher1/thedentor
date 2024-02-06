@@ -2,7 +2,7 @@ import { PrismaService } from '@/database/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { PaginationInput } from '@/common/types/pagination';
 import { Prisma } from '@prisma/client';
-import EntityNotFound from '../errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/common/entity-not-found-error';
 
 @Injectable()
 abstract class BaseRepository<T> {
@@ -26,11 +26,7 @@ abstract class BaseRepository<T> {
 
 
   public async findUnique<Entity>(key: keyof Prisma.UserWhereInput, value: string): Promise<Entity> {
-    return this.entity.findFirstOrThrow({
-      where: {
-        [key]: value,
-      },
-    });
+    return this.findFirst({ [key]: value });
   }
 
   public async findMany<Filters, Select>(filters: Filters, pagination?: PaginationInput, select?: Select) {
@@ -55,6 +51,14 @@ abstract class BaseRepository<T> {
 
   public async create<Data, Entity, Select = object>(data: Data, select?: Select): Promise<Entity> {
     return this.entity.create({ data, select });
+  }
+
+  public async update<Filters, Data, Entity, Select = object>(filters: Filters, data: Data, select?: Select): Promise<Entity> {
+    return this.entity.update({
+      where: filters,
+      data,
+      select,
+    });
   }
 
   public async updateMany<Filters, Input, Select = void>(filters: Filters, input: Input, select?: Select): Promise<any> {

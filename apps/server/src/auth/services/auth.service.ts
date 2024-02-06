@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '@/user/services/user.service';
-import { CurrentUser } from '@/auth/types/current-user';
+import { ICurrentUser } from '@/auth/types/current-user';
 import { ApiKeyRepository } from '@/auth/repositories/api-key.repository';
 import { ApiKeyFilters, ApiKeySelect } from '@/database/types/api-key';
 import EntityNotFound from '@/common/errors/common/entity-not-found-error';
@@ -17,7 +17,7 @@ export class AuthService {
 
   public async getAccessToken(email: string): Promise<string> {
     const user = await this.userService.getUserByEmail(email);
-    const payload: CurrentUser = {
+    const payload: ICurrentUser = {
       id: user.id,
       email: user.email,
       role: user.roleName,
@@ -26,10 +26,10 @@ export class AuthService {
     return this.jwtService.signAsync(payload);
   }
 
-  public async decryptAccessToken(accessToken: string): Promise<CurrentUser> {
+  public async decryptAccessToken(accessToken: string): Promise<ICurrentUser> {
     const payload = this.jwtService.decode(accessToken);
 
-    return payload as CurrentUser;
+    return payload as ICurrentUser;
   }
 
   public async validateApiKey(apiKey: string): Promise<boolean> {
@@ -53,7 +53,7 @@ export class AuthService {
     }
   }
 
-  public async getUserFromApiKey(apiKey: string): Promise<CurrentUser> {
+  public async getUserFromApiKey(apiKey: string): Promise<ICurrentUser> {
     const isApiKeyValid = await this.validateApiKey(apiKey);
 
     if (!isApiKeyValid) {
