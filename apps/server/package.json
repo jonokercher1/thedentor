@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "npm install --production=false && nest build && npm ci",
+    "build": "nest build",
     "db:generate": "prisma generate",
     "db:migrate:create": "prisma migrate dev --create-only --name ",
     "db:migrate:reset": "prisma migrate reset --force",
