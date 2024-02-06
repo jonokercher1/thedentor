@@ -16,7 +16,7 @@
     "dev": "concurrently 'nest start --watch' 'npm run stripe:listener'",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "start": "nest start",
     "test:setup": "dotenv -e .env.test prisma migrate reset --force && dotenv -e .env.test prisma migrate deploy && dotenv -e .env.test prisma generate && dotenv -e .env.test -- npm run db:seed",
     "test:cov": "jest --coverage",
