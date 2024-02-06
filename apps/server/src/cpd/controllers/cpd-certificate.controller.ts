@@ -46,7 +46,7 @@ export class CpdCertificateController {
 
   @Get('/:certificateId')
   @HttpCode(200)
-  public async getUserCertificateForCourse(@CurrentUser() user: ICurrentUser, @Param('certificateId') certificateId: string) {
+  public async getUserCertificate(@CurrentUser() user: ICurrentUser, @Param('certificateId') certificateId: string) {
     try {
       const certificate = await this.cpdCertificateSerivce.getCertificateForUser(certificateId, user.id);
 

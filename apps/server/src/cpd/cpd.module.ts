@@ -10,9 +10,10 @@ import { CpdCertificateGenerationSerivce } from '@/cpd/services/cpd-certificate-
 import { UserModule } from '@/user/user.module';
 import { PdfModule } from '@/pdf/pdf.module';
 import { CpdCertificateTemplateService } from '@/cpd/services/cpd-certificate-template.service';
+import { StorageModule } from '@/storage/storage.module';
 
 @Module({
-  imports: [DatabaseModule, CourseFeedbackModule, CourseModule, UserModule, PdfModule],
+  imports: [DatabaseModule, CourseFeedbackModule, CourseModule, UserModule, PdfModule, StorageModule],
   providers: [
     CpdCertificateService,
     CpdCertificateRepository,

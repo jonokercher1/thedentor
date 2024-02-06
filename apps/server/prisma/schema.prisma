@@ -176,14 +176,13 @@ model CourseFeedbackResponse {
 }
 
 model CpdCertificateTemplate {
-  id              String                        @id @default(uuid())
-  courseId        String
-  fileUrl         String? // TODO: we should make this a file object but this will do for now
-  course          Course                        @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  createdAt       DateTime                      @default(now())
-  updatedAt       DateTime                      @default(now())
-  cpdCertificates CpdCertificate[]
-  fields          CpdCertificateTemplateField[]
+  id        String                        @id @default(uuid())
+  courseId  String
+  fileUrl   String? // TODO: we should make this a file object but this will do for now
+  course    Course                        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @default(now())
+  fields    CpdCertificateTemplateField[]
 }
 
 model CpdCertificateTemplateField {
@@ -198,16 +197,14 @@ model CpdCertificateTemplateField {
 }
 
 model CpdCertificate {
-  id         String                  @id @default(uuid())
-  fileUrl    String? // TODO: we should make this a file object but this will do for now
-  userId     String
-  courseId   String
-  templateId String?
-  createdAt  DateTime                @default(now())
-  updatedAt  DateTime                @default(now())
-  user       User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course     Course                  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  template   CpdCertificateTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  id        String   @id @default(uuid())
+  fileUrl   String? // TODO: we should make this a file object but this will do for now
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 enum RoleName {

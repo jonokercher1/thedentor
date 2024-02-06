@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CpdCertificateRepository } from '@/cpd/repositories/cpd-certificate.repository';
 import { CourseFeedbackService } from '@/course-feedback/services/course-feedback.service';
 import { CpdCertificate, CpdCertificateFilters, CpdCertificateSelect, CreateCpdCertificateInput } from '@/database/types/cpd';
 import { MissingCourseFeedbackError } from '@/course-feedback/errors/missing-course-feedback-error';
 import { CpdCertificateGenerationSerivce } from '@/cpd/services/cpd-certificate-generation.service';
+import { IStorageClient } from '@/storage/storage.provider';
+import { StorageClient } from '@/storage/types/storage-client';
 
 @Injectable()
 export class CpdCertificateService {
@@ -11,6 +13,7 @@ export class CpdCertificateService {
     private readonly cpdCertificateRepository: CpdCertificateRepository,
     private readonly courseFeedbackService: CourseFeedbackService,
     private readonly cpdCertificateGenerationSerivce: CpdCertificateGenerationSerivce,
+    @Inject(IStorageClient) private readonly storageClient: StorageClient,
   ) { }
 
   public async createCertificateForUser(courseId: string, userId: string) {
@@ -41,14 +44,20 @@ export class CpdCertificateService {
     });
 
     if (!certificate.fileUrl) {
-      const fileUrl = await this.cpdCertificateGenerationSerivce.generateCertificateForUser(certificate);
+      const storagePath = await this.cpdCertificateGenerationSerivce.generateCertificateForUser(certificate);
       certificate = await this.cpdCertificateRepository.update<CpdCertificateFilters, Partial<CpdCertificate>, CpdCertificate>({
         id: certificateId,
       }, {
-        fileUrl,
+        fileUrl: storagePath,
       });
     }
 
-    return certificate;
+    // TOOD: it would be better to have this transformation in the response class - need a better response pattern to do this
+    const resolvedFileUrl = this.storageClient.generateUrlFromPath(certificate.fileUrl);
+
+    return {
+      ...certificate,
+      fileUrl: resolvedFileUrl,
+    };
   }
 }

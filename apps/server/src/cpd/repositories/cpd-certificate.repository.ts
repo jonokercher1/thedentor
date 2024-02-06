@@ -8,7 +8,6 @@ export class CpdCertificateRepository extends BaseRepository<Prisma.CpdCertifica
   public static readonly DEFAULT_FIELDS: Prisma.CpdCertificateSelect = {
     id: true,
     fileUrl: true,
-    templateId: true,
     userId: true,
     courseId: true,
     createdAt: true,

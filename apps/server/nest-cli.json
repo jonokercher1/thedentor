@@ -5,7 +5,11 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": [
-      "notification/channels/email/templates/**"
+      {
+        "include": "../public",
+        "outDir": "dist/public",
+        "watchAssets": true
+      }
     ],
     "watchAssets": true
   }

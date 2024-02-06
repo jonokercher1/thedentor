@@ -6,6 +6,7 @@ import TestApp from '@test/utils/test-app';
 import { TestCpdCertificateService } from '@test/utils/test-cpd-certificate-service';
 import { TestUserService } from '@test/utils/test-user-service';
 import { TestHelpers } from '@test/utils/test-helpers';
+import { TestCpdCertificateTemplateService } from '@test/utils/test-cpd-certificate-template-service';
 
 describe('Get CPD Certificate', () => {
   const URL = '/cpd-certificate';
@@ -14,6 +15,7 @@ describe('Get CPD Certificate', () => {
   let testJwtService: TestJwtService;
   let testCpdCertificateService: TestCpdCertificateService;
   let testUserService: TestUserService;
+  let testCpdCertificateTemplateService: TestCpdCertificateTemplateService;
   const testHelpers = new TestHelpers();
 
   beforeAll(async () => {
@@ -22,6 +24,7 @@ describe('Get CPD Certificate', () => {
     testJwtService = new TestJwtService();
     testCpdCertificateService = new TestCpdCertificateService(testDatabaseService);
     testUserService = new TestUserService(testDatabaseService);
+    testCpdCertificateTemplateService = new TestCpdCertificateTemplateService(testDatabaseService);
 
     app = await testApp.init();
   });
@@ -59,6 +62,7 @@ describe('Get CPD Certificate', () => {
     const dentist = await testUserService.createDentist();
     const cpdCertificate = await testCpdCertificateService.createUserCertificateForCourse(dentist.id);
     const accessToken = await testJwtService.generateAccessToken(dentist);
+    await testCpdCertificateTemplateService.createTemplate({ courseId: cpdCertificate.courseId });
 
     expect(cpdCertificate.fileUrl).toBeNull();
 
@@ -75,6 +79,7 @@ describe('Get CPD Certificate', () => {
     const dentist = await testUserService.createDentist();
     const cpdCertificate = await testCpdCertificateService.createUserCertificateForCourse(dentist.id);
     const accessToken = await testJwtService.generateAccessToken(dentist);
+    await testCpdCertificateTemplateService.createTemplate({ courseId: cpdCertificate.courseId });
 
     return request(app.getHttpServer())
       .get(`${URL}/${cpdCertificate.id}`)
