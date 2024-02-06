@@ -1,8 +1,5 @@
-import * as fs from 'fs/promises';
-import * as mjml2html from 'mjml';
 import { Inject } from '@nestjs/common';
 import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
-import { compile } from 'handlebars';
 
 export interface EmailConfig {
   template: string
