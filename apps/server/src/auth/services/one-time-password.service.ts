@@ -40,17 +40,15 @@ export class OneTimePasswordService {
     await this.expireAllUsersOneTimePasswords(user);
 
     const oneTimePassword = await this.oneTimePasswordRepository.createWithRandomToken(user.id);
-
-    this.notificationService.notifyUser(
-      user,
-      new OneTimePasswordNotification(
-        {
-          user,
-          token: oneTimePassword.token,
-        },
-        this.emailProvider,
-      ),
+    const oneTimePasswordNotification = new OneTimePasswordNotification(
+      {
+        user,
+        token: oneTimePassword.token,
+      },
+      this.emailProvider,
     );
+
+    this.notificationService.notifyUser(user, oneTimePasswordNotification);
 
     return oneTimePassword;
   }
