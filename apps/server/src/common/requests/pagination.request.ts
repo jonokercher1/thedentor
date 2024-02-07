@@ -1,6 +1,10 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
-import { Order } from '@/common/types/filtering';
+
+export enum Order {
+  Asc = 'asc',
+  Desc = 'desc'
+}
 
 export class PaginationRequest {
   @IsOptional()
