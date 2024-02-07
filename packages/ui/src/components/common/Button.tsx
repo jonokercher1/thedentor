@@ -3,7 +3,7 @@
 import { type FC } from 'react'
 import classNames from 'classnames'
 import LoadingSpinner from './LoadingSpinner'
-import { AtomWithChildrenProps } from '../../types/Component'
+import { AtomWithChildrenProps } from '../../types/component'
 import Link from 'next/link'
 
 export enum ButtonVariant {
@@ -55,7 +55,7 @@ const Button: FC<ButtonProps> = ({ onClick, children, id, className, fluid, type
   if (href) {
     return (
       <Link
-        href={href}
+        href={href as any}
         id={id}
         className={buttonClasses}
       >

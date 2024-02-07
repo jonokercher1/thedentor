@@ -1,6 +1,6 @@
 'server-only'
 
-import { HttpSuccessPaginatedResponse } from "@/types/api/http-success-response"
+// import { HttpSuccessPaginatedResponse } from "@/types/api/http-success-response"
 
 export interface PaginatedApiRequestParams {
   page: number
@@ -22,7 +22,8 @@ export const usePaginatedApiRequest = async <SearchParams extends PaginatedApiRe
 
   // TOOD: this isnt very efficient, we should be able to get all pages together rather than in sequence
   for (let i = 1; i <= page; i++) {
-    const coursesResponse: HttpSuccessPaginatedResponse<unknown[]> = await apiRequest({ term, page: i, perPage });
+    // const coursesResponse: HttpSuccessPaginatedResponse<unknown[]> = await apiRequest({ term, page: i, perPage });
+    const coursesResponse: any = await apiRequest({ term, page: i, perPage });
 
     if (coursesResponse?.data) {
       data.push(...coursesResponse.data)

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { type FC } from 'react'
 import { Logo } from '../icons'
-import { AtomProps } from '@/types/Component'
+import { AtomProps } from '@/types/component'
 import classNames from 'classnames'
 
 interface LinkableLogoProps extends AtomProps { }

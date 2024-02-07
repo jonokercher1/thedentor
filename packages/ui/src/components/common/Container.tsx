@@ -1,4 +1,4 @@
-import { type AtomWithChildrenProps } from '@/types/Component'
+import { type AtomWithChildrenProps } from '@/types/component'
 import classNames from 'classnames'
 import { type FC } from 'react'
 
