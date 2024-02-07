@@ -1,6 +1,6 @@
 'use client'
 
-import { AtomWithChildrenProps } from '@/types/Component'
+import { AtomWithChildrenProps } from '@/types/component'
 import { useRef, type FC, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import Chip from './Chip'

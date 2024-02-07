@@ -6,11 +6,7 @@ import { notFound } from 'next/navigation'
 import DentorInPersonCourses from './_components/DentorInPersonCourses'
 import DentorCoursesTabs from './_components/DentorCoursesTabs'
 import DentorVideoCourses from './_components/DentorVideoCourses'
-
-export enum DentorCoursesTab {
-  Courses = 'courses',
-  Videos = 'videos',
-}
+import { DentorCoursesTab } from './types'
 
 const DentorViewPage: FC = async ({ params, searchParams }: any) => {
   const dentorId = params.id

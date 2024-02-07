@@ -1,6 +1,6 @@
 'use client'
 
-import { AtomProps } from '@/types/Component'
+import { AtomProps } from '@/types/component'
 import classNames from 'classnames'
 import { type FC } from 'react'
 

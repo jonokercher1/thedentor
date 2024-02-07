@@ -1,6 +1,6 @@
 'use client'
 
-import { AtomProps } from '@dentor/ui/types/Component';
+import { AtomProps } from '@dentor/ui/types/component';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
