@@ -18,13 +18,13 @@
     "turbo": "latest"
   },
   "name": "the-dentor",
-  "packageManager": "npm@8.19.4",
+  "packageManager": "npm@9.5.0",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "engines": {
     "node": "v18.15.0",
-    "npm": "8.19.4"
+    "npm": "9.5.0"
   }
 }
