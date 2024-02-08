@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '@/user/repositories/user.repository';
-import DuplicateEntityError from '@/common/errors/common/duplicate-entity-error';
+import DuplicateEntityError from '@/common/errors/duplicate-entity-error';
 import { UserFilters, type CreateUserInput, type UpdateUserInput, type User, OptionalUserCreateData } from '@/database/types/user';
 import { Role } from '@/database/types/role';
 

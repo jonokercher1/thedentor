@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import { PaymentProvider, ProductData } from '@/payment/types/payment-provider';
 import { User } from '@prisma/client';
 import { stripeConfig } from '../config/stripe.config';
-import MissingPropertyError from '@/common/errors/common/missing-property-error';
+import MissingPropertyError from '@/common/errors/missing-property-error';
 import { UserService } from '@/user/services/user.service';
 import { CourseService } from '@/course/services/course.service';
 import { UserCourseService } from '@/user/services/user-course.service';

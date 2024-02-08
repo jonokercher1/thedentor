@@ -8,7 +8,7 @@ import { CurrentUser } from '@/common/decorators/current-user';
 import { ICurrentUser } from '@/auth/types/current-user';
 import { UserService } from '@/user/services/user.service';
 import { UserCourseService } from '@/user/services/user-course.service';
-import CourseAlreadyPurchasedError from '@/common/errors/course/course-already-purchased-error';
+import CourseAlreadyPurchasedError from '@/course/errors/course-already-purchased-error';
 
 @Controller('course/checkout')
 export class CourseCheckoutController {

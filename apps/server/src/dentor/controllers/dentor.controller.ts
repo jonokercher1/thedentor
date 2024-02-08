@@ -4,7 +4,7 @@ import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
 import { DentorResponse } from '../responses/dentor.response';
 import { GetFeaturedDentorsRequest } from '../requests/get-featured-dentors.request';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 
 @Controller('dentor')
 export class DentorController {
