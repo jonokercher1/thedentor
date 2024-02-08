@@ -4,7 +4,7 @@ import { CurrentUser } from '@/common/decorators/current-user';
 import { ICurrentUser } from '@/auth/types/current-user';
 import { ILoggingProvider } from '@/logging/logging.provider';
 import { ILogger } from '@/logging/types/Logger';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 import { CpdCertificateService } from '../services/cpd-certificate.service';
 import { CourseService } from '@/course/services/course.service';
 import { CpdCertificateResponse } from '@/cpd/responses/cpd-certificate.response';

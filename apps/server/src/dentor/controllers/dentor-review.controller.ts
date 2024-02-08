@@ -4,7 +4,7 @@ import { BadRequestException, Controller, Get, Inject, NotFoundException, Param,
 import { DentorReviewService } from '@/dentor/services/dentor-review.service';
 import { GetDentorReviewsRequest } from '../requests/get-dentor-reviews.request';
 import { DentorService } from '../services/dentor.service';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 import { ReviewResponse } from '@/review/responses/review.response';
 
 @Controller('dentor/:id/reviews')

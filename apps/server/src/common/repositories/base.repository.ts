@@ -2,7 +2,7 @@ import { PrismaService } from '@/database/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { PaginationInput } from '@/common/types/pagination';
 import { Prisma } from '@prisma/client';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 
 @Injectable()
 abstract class BaseRepository<T> {

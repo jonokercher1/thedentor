@@ -10,7 +10,7 @@ import { CoursePurchaseService } from '../services/course-purchase.service';
 import { DentorCourseService } from '@/dentor/services/dentor-course.service';
 import { InvalidCoursePurchaseAttemptError } from '../errors/invalid-course-purchase-attempt-error';
 import HttpSuccessResponse from '@/common/responses/http-success.response';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 
 @Controller('course/:courseId/purchase')
 export class CoursePurchaseController {

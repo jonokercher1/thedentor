@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { CourseFeedbackQuestionsRepository } from '../repositories/course-feedback-questions.repository';
 import { CourseService } from '@/course/services/course.service';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 import { PaginationInput } from '@/common/types/pagination';
 import { CourseFeedbackResponseRepository } from '../repositories/course-feedback-response.repository';
 import { UserCourseService } from '@/user/services/user-course.service';

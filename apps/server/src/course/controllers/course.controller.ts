@@ -8,7 +8,7 @@ import { GetUpcomingCoursesRequest } from '@/course/requests/get-upcoming-course
 import { CourseType } from '@prisma/client';
 import { Course, CourseFilters } from '@/database/types/course';
 import { PaginationInput } from '@/common/types/pagination';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 
 @Controller('course')
 export class CourseController {

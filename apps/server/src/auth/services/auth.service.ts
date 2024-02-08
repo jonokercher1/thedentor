@@ -4,7 +4,7 @@ import { UserService } from '@/user/services/user.service';
 import { ICurrentUser } from '@/auth/types/current-user';
 import { ApiKeyRepository } from '@/auth/repositories/api-key.repository';
 import { ApiKeyFilters, ApiKeySelect } from '@/database/types/api-key';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 import InvalidApiKeyError from '../errors/invalid-api-key';
 
 @Injectable()

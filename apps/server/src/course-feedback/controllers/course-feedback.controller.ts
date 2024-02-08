@@ -1,6 +1,6 @@
 import { BadRequestException, Controller, Get, HttpCode, NotFoundException, Param, Query, Put, Inject, Body } from '@nestjs/common';
 import { CourseFeedbackService } from '@/course-feedback/services/course-feedback.service';
-import EntityNotFound from '@/common/errors/common/entity-not-found-error';
+import EntityNotFound from '@/common/errors/entity-not-found-error';
 import { CourseFeedbackQuestionResponse } from '../responses/course-feedback-question.response';
 import { GetUpcomingCoursesRequest } from '@/course/requests/get-upcoming-courses.request';
 import { UserCourseService } from '@/user/services/user-course.service';
