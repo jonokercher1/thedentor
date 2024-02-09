@@ -6,8 +6,8 @@ import { BodyValidationPipe } from '@/common/pipes/body-validation-pipe';
 import { Reflector } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import * as cookieParser from 'cookie-parser';
-import { IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
-import ConsoleEmailProvider from '@/notification/channels/email/providers/ConsoleEmailProvider';
+import ConsoleEmailProvider from '@/notification/channels/email/providers/console-email.provider';
+import { IEmailNotificationProvider } from '@/notification/channels/email/email-notification.provider';
 
 // TODO: This isnt ideal as we have to maintain this alongside the prod app - we should control this from a config file instead
 export default class TestApp {

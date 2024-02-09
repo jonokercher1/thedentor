@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { User } from '@/database/types/user';
 import { OneTimePasswordRepository } from '@/auth/repositories/one-time-password.repository';
 import { NotificationService } from '@/notification/notification.service';
-import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
-import OneTimePasswordNotification from '@/notification/notifications/one-time-password.notification';
+import OneTimePasswordNotification from '@/notification/notifications/one-time-password/one-time-password.notification';
 import * as dayjs from 'dayjs';
+import { IEmailNotificationProvider } from '@/notification/channels/email/email-notification.provider';
+import { EmailNotificaitonProvider } from '@/notification/channels/email/types/email-provider';
 
 @Injectable()
 export class OneTimePasswordService {
