@@ -8,28 +8,29 @@ datasource db {
 }
 
 model User {
-  id                        String                   @id @default(uuid())
+  id                        String                      @id @default(uuid())
   name                      String?
-  email                     String                   @unique
+  email                     String                      @unique
   phone                     String?
-  gdcNumber                 String?                  @unique
+  gdcNumber                 String?                     @unique
   bio                       String?
   roleName                  RoleName
-  role                      Role                     @relation(fields: [roleName], references: [name])
+  role                      Role                        @relation(fields: [roleName], references: [name])
   paymentProviderCustomerId String?
   rating                    Float?
-  createdAt                 DateTime                 @default(now())
-  updatedAt                 DateTime                 @default(now())
-  courses                   Course[]                 @relation("CoursesCreated")
-  purchasedCourses          Course[]                 @relation("PurchasedCourses")
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @default(now())
+  courses                   Course[]                    @relation("CoursesCreated")
+  purchasedCourses          Course[]                    @relation("PurchasedCourses")
   images                    Image[]
   videos                    Video[]
-  reviewsLeft               Review[]                 @relation("ReviewsLeft")
-  dentorReviews             Review[]                 @relation("DentorReviews")
+  reviewsLeft               Review[]                    @relation("ReviewsLeft")
+  dentorReviews             Review[]                    @relation("DentorReviews")
   oneTimeTokens             OneTimePassword[]
   apiKeys                   ApiKey[]
   courseFeedback            CourseFeedbackResponse[]
   cpdCertificates           CpdCertificate[]
+  notificationPreference    UserNotificationPreference?
 }
 
 model Role {
@@ -205,6 +206,16 @@ model CpdCertificate {
   updatedAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model UserNotificationPreference {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  email     Boolean  @default(true)
+  sms       Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 enum RoleName {

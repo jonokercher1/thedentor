@@ -1,13 +1,19 @@
 import { Inject } from '@nestjs/common';
-import { EmailNotificaitonProvider, IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
+import { EmailNotificaitonProvider } from '@/notification/channels/email/types/email-provider';
+import { IEmailNotificationProvider } from '@/notification/channels/email/email-notification.provider';
 
 export interface EmailConfig {
-  template: string
+  emailContents: string
   subject: string
 }
 
-export default abstract class Notification<Data> {
-  protected abstract readonly emailConfig: EmailConfig;
+export interface INotification {
+  viaEmail(emailAddress: string): Promise<boolean>
+  emailConfig: EmailConfig
+}
+
+export default abstract class Notification<Data> implements INotification {
+  public abstract readonly emailConfig: EmailConfig;
 
   constructor(
     public readonly data: Data,
@@ -25,7 +31,8 @@ export default abstract class Notification<Data> {
     // const compiledTemplate = compile(templateContents);
     // const mjml = compiledTemplate(this.data);
     // const { html } = mjml2html(mjml);
+    // TODO: compile a react email template, passing data in as props. Compile to HTML and pass in as content
 
-    return this.emailProvider.sendEmail(emailAddress, this.emailConfig.subject, '');
+    return this.emailProvider.sendEmail(emailAddress, this.emailConfig.subject, this.emailConfig.emailContents);
   }
 }

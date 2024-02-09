@@ -1,16 +1,16 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { NotificationService } from '@/notification/notification.service';
-import { IEmailNotificationProvider } from '@/notification/channels/email/types/email-provider';
-import ConsoleEmailProvider from '@/notification/channels/email/providers/ConsoleEmailProvider';
+import { UserModule } from '@/user/user.module';
+import { EmailNotificationProvider, IEmailNotificationProvider } from '@/notification/channels/email/email-notification.provider';
 
 @Module({
   providers: [
     NotificationService,
-    {
-      provide: IEmailNotificationProvider,
-      useClass: ConsoleEmailProvider, // // TODO: use a factory with env values
-    },
+    EmailNotificationProvider,
   ],
   exports: [IEmailNotificationProvider],
+  imports: [
+    forwardRef(() => UserModule),
+  ],
 })
 export class NotificationModule { }
